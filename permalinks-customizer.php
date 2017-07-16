@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: Permalinks Customizer
- * Version: 0.3.4
+ * Version: 0.3.5
  * Plugin URI: https://wordpress.org/plugins/permalinks-customizer/
  * Description: Set permalinks for default post-type and custom post-type which can be changed from the single post edit page.
  * Author: Sami Ahmed Siddiqui
@@ -115,13 +115,13 @@ function permalinks_customizer_customization($post_id, $post, $update) {
             $permalink = rtrim($permalink, '/');
             $set_permalink = rtrim($set_permalink, '/');
          }
-         $qry = "SELECT * FROM wp_postmeta WHERE meta_key = 'permalink_customizer' AND meta_value = '".$permalink."' AND post_id != ".$post_id." OR meta_key = 'permalink_customizer' AND meta_value = '".$permalink."/' AND post_id != ".$post_id." LIMIT 1";
+         $qry = "SELECT * FROM $wpdb->postmeta WHERE meta_key = 'permalink_customizer' AND meta_value = '".$permalink."' AND post_id != ".$post_id." OR meta_key = 'permalink_customizer' AND meta_value = '".$permalink."/' AND post_id != ".$post_id." LIMIT 1";
          $check_exist_url = $wpdb->get_results($qry);
          if(!empty($check_exist_url)){
             $i = 2;
             while(1){
                $permalink = $set_permalink.'-'.$i;
-               $qry = "SELECT * FROM wp_postmeta WHERE meta_key = 'permalink_customizer' AND meta_value = '".$permalink."' AND post_id != ".$post_id." OR meta_key = 'permalink_customizer' AND meta_value = '".$permalink."/' AND post_id != ".$post_id." LIMIT 1";
+               $qry = "SELECT * FROM $wpdb->postmeta WHERE meta_key = 'permalink_customizer' AND meta_value = '".$permalink."' AND post_id != ".$post_id." OR meta_key = 'permalink_customizer' AND meta_value = '".$permalink."/' AND post_id != ".$post_id." LIMIT 1";
                $check_exist_url = $wpdb->get_results($qry);
                if(empty($check_exist_url)){
                   break;
@@ -357,7 +357,7 @@ function permalinks_customizer_request($query) {
 
 function permalinks_customizer_get_sample_permalink_html($html, $id, $new_title, $new_slug) {
    $permalink = get_post_meta( $id, 'permalink_customizer', true );
-   $post = &get_post($id);
+   $post = get_post($id);
   
    ob_start();
    ?>
@@ -386,23 +386,25 @@ function permalinks_customizer_get_sample_permalink_html($html, $id, $new_title,
 }
 
 function permalinks_customizer_term_options($object) {
-   $permalink = permalinks_customizer_permalink_for_term($object->term_id);
-  
-   if ( $object->term_id ) {
-      $originalPermalink = ($object->taxonomy == 'post_tag' ? permalinks_customizer_original_tag_link($object->term_id) : permalinks_customizer_original_category_link($object->term_id) );
-   }
-      
-   permalinks_customizer_form($permalink, $originalPermalink);
+  if ( isset($object) && isset($object->term_id) ) {
+    $permalink = permalinks_customizer_permalink_for_term($object->term_id);
 
-   wp_enqueue_script('jquery');
-   ?>
-   <script type="text/javascript">
-   jQuery(document).ready(function() {
+    if ( $object->term_id ) {
+      $originalPermalink = ($object->taxonomy == 'post_tag' ? permalinks_customizer_original_tag_link($object->term_id) : permalinks_customizer_original_category_link($object->term_id) );
+    }
+
+    permalinks_customizer_form($permalink, $originalPermalink);
+
+    wp_enqueue_script('jquery');
+    ?>
+    <script type="text/javascript">
+    jQuery(document).ready(function() {
       var button = jQuery('#permalinks_customizer_form').parent().find('.submit');
       button.remove().insertAfter(jQuery('#permalinks_customizer_form'));
-   });
-   </script>
+    });
+    </script>
    <?php
+  }
 }
 
 function permalinks_customizer_original_tag_link($tag_id) {
@@ -651,11 +653,11 @@ function permalinks_customizer_convert_url() {
    $plugin_slug = 'permalinks-customizer-convert-url';
    $step        = isset( $_GET['processing'] ) ? absint( $_GET['processing'] ) : 1;
    $steps       = isset( $_GET['limit'] ) ? $_GET['limit'] : 0;
-   $data        = $wpdb->get_row( 'SELECT meta_id from wp_postmeta where meta_key = "custom_permalink" LIMIT 1');
+   $data        = $wpdb->get_row( "SELECT meta_id from $wpdb->postmeta where meta_key = 'custom_permalink' LIMIT 1");
    echo '<div class="wrap"><h2>'.esc_html( get_admin_page_title() ).'</h2>';
    if ( isset( $_GET['processing'] ) ) :
       if ( isset($data) && !empty($data) ) {
-         $wpdb->query( $wpdb->prepare( 'UPDATE wp_postmeta SET meta_key = "permalink_customizer" where meta_id = %d ', $data->meta_id) );
+         $wpdb->query( $wpdb->prepare( "UPDATE $wpdb->postmeta SET meta_key = 'permalink_customizer' where meta_id = %d ", $data->meta_id) );
          echo '<p>The batch update routine has started. Please be patient as this may take some time to complete <img class="conversion-in-process" src="'.includes_url( 'images/spinner-2x.gif' ).'" alt="Loading..." ) width="20px" height="20px" style="vertical-align:bottom" /></p>';
          echo '<p class="processing"><strong>Converting '.(int) $step.' out of '.(int) $steps.' custom permalinks</strong></p>'; 
          ?>
@@ -684,15 +686,15 @@ function permalinks_customizer_convert_url() {
    else : 
       if( $_GET["no-permalink"] == 1 ) {
          $completed = $_GET["processed"] - 1;
-         $cat_data = $wpdb->get_row( 'SELECT option_id from wp_options where option_name LIKE "%custom_permalink_table%" ' );
+         $cat_data = $wpdb->get_row( "SELECT option_id from $wpdb->options where option_name LIKE '%custom_permalink_table%' " );
          if( isset($cat_data) && !empty($cat_data)) {
-            $wpdb->query( $wpdb->prepare( 'UPDATE wp_options SET option_name = "permalinks_customizer_table" where option_id = %d ', $cat_data->option_id) );
+            $wpdb->query( $wpdb->prepare( "UPDATE $wpdb->options SET option_name = 'permalinks_customizer_table' where option_id = %d ", $cat_data->option_id) );
          }
          echo '<div class="updated"><p>'. $completed .' <strong>Custom Permalink</strong> have been converted to <strong>Permalink Customizer</strong> successfully.</p></div>';
       } elseif( $_GET["processed"] > 0 ) {
-         $cat_data = $wpdb->get_row( 'SELECT option_id from wp_options where option_name LIKE "%custom_permalink_table%" ' );
+         $cat_data = $wpdb->get_row( "SELECT option_id from $wpdb->options where option_name LIKE '%custom_permalink_table%' " );
          if( isset($cat_data) && !empty($cat_data)) {
-            $wpdb->query( $wpdb->prepare( 'UPDATE wp_options SET option_name = "permalinks_customizer_table" where option_id = %d ', $cat_data->option_id) );
+            $wpdb->query( $wpdb->prepare( "UPDATE $wpdb->options SET option_name = 'permalinks_customizer_table' where option_id = %d ", $cat_data->option_id) );
          }
          echo '<div class="updated"><p>'. $_GET["processed"] .' <strong>Custom Permalink</strong> have been converted to <strong>Permalink Customizer</strong> successfully.</p></div>';
       }

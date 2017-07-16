@@ -4,8 +4,8 @@ License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: address, category, custom, custom permalink, custom post permalinks, link, permalink, rewrite slug, redirects, slug, tags, url
 Requires at least: 3.5
-Tested up to: 4.5
-Stable tag: 0.3.4
+Tested up to: 4.6
+Stable tag: 0.3.5
 
 Set permalinks for default post-type and custom post-type which can be changed from the single post edit page.
 
@@ -89,6 +89,10 @@ A. Yes, you can use all the tags as defined on the [Permalinks Customizer page](
 A. No, This plugin does not work with [custom permalinks](https://wordpress.org/plugins/custom-permalinks/).
 
 == Changelog ==
+
+= 0.3.5 =
+
+ * Fixed Table Prefix Issue and some PHP Warnings
 
 = 0.3.4 =
 
