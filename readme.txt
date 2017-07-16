@@ -5,17 +5,17 @@ License URI: http://www.gnu.org/licenses/gpl.html
 Tags: address, category, custom, custom permalink, custom post permalinks, link, permalink, rewrite slug, redirects, slug, tags, url
 Requires at least: 3.5
 Tested up to: 4.7
-Stable tag: 0.3.6
+Stable tag: 0.3.7
 
 Set permalinks for default post-type and custom post-type which can be changed from the single post edit page.
 
 == Description ==
 
-This plugin is a fork of [Custom Permalink](https://wordpress.org/plugins/custom-permalinks/). It has some expanded bug patches and some features which were not in the [Custom Permalink](https://wordpress.org/plugins/custom-permalinks/).
+> This plugin is a fork of [Custom Permalinks](https://wordpress.org/plugins/custom-permalinks/). It contains the enhancement of the Permalinks Functionality. You can set different permalinks for your post types and use symbols in your Permalinks.
 
-Customize your URL and set the slug. You can use basic keywords which is defined by the wordpress for defining the permalinks as well as someother new keywords which is defined by this plugin. All the keywords is defined on the Tags page under Permalinks Customizer.
+Customize your URL and set the slug. You can use basic keywords which is defined by the wordpress for defining the permalinks as well as some new keywords which is defined by this plugin. All the keywords is defined on the Tags page under Permalinks Customizer.
 
-By using <strong>Permalinks Customizer</strong> you can set the permalinks for each post-type seperately. 
+By using <strong>Permalinks Customizer</strong> you can set the permalinks for each post-type separately. 
 
 = How to set the Permalinks for the post-types seperately =
 
@@ -47,18 +47,18 @@ If you leave the some post-type fields empty. So, <strong>Permalinks Customizer<
 * <strong>%second%</strong> : Second of the minute, for example 33
 * <strong>%post_id%</strong> : The unique ID # of the post, for example 423
 * <strong>%postname%</strong> : A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So "This Is A Great Post!" becomes this-is-a-great-post in the URI.
+* <strong>%parent_postname%</strong> : A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So "This Is A Great Post!" becomes this-is-a-great-post in the URI. This <strong>Tag</strong> contains Immediate <strong>Parent Page Slug</strong> if any parent page is selected before publishing.
+* <strong>%all_parents_postname%</strong> : A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So "This Is A Great Post!" becomes this-is-a-great-post in the URI. This <strong>Tag</strong> contains all the <strong>Parent Page Slugs</strong> if any parent page is selected before publishing.
 * <strong>%category%</strong> : A sanitized version of the category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI.
 * <strong>%child-category%</strong> : A sanitized version of the category name (category slug field on New/Edit Category panel).
 * <strong>%product_cat%</strong> : A sanitized version of the product category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI. <i>This <strong>tag</strong> is specially used for WooCommerce Products.</i>
 * <strong>%author%</strong> : A sanitized version of the author name.
+* <strong>%author_firstname%</strong> : A sanitized version of the author first name. If author first name is not available so, it uses the author\'s username.
+* <strong>%author_lastname%</strong> : A sanitized version of the author last name. If author last name is not available so, it uses the author\'s username.
 
 <strong>Note</strong>: *%postname%* is similar as of the *%title%* tag but the difference is that *%postname%* can only be set once whereas *%title%* can be changed. let's say the title is "This Is A Great Post!" so, it becomes "this-is-a-great-post" in the URI(At the first time, *%postname%* and *%title%* works same) but if you edit and change title let's say "This Is A WordPress Post!" so, *%postname%* in the URI remains same "this-is-a-great-post" whereas *%title%* in the URI becomes "this-is-a-wordpress-post"
 
 <strong>Be warned:</strong> *This plugin is not a replacement for WordPress's built-in permalink system*. Check your WordPress administration's "Permalinks" settings page first, to make sure that this doesn't already meet your needs.
-
-= Tags =
-
-address, permalink, permalinks, custom permalink, custom post permalink, url, tag, category, redirects, slug, set permalink, change permalink, rewrite slug, convert permalink, convert custom permalink, batch processing
 
 == Installation ==
 
@@ -90,6 +90,14 @@ A. Yes, you can use all the tags as defined on the [Permalinks Customizer page](
 A. No, This plugin does not work with [custom permalinks](https://wordpress.org/plugins/custom-permalinks/).
 
 == Changelog ==
+
+= 0.3.7 =
+
+ * Added 4 new Tags (author_firstname, author_lastname, parent_postname, all_parents_postname)
+
+= 0.3.6 =
+
+ * Added 1 new Tag
 
 = 0.3.5 =
 
