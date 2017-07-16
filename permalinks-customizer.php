@@ -2,11 +2,11 @@
 
 /**
  * Plugin Name: Permalinks Customizer
- * Version: 0.3.5
+ * Version: 0.3.6
  * Plugin URI: https://wordpress.org/plugins/permalinks-customizer/
  * Description: Set permalinks for default post-type and custom post-type which can be changed from the single post edit page.
  * Author: Sami Ahmed Siddiqui
- * Author URI: http://www.yassglobal.com
+ * Author URI: http://www.yasglobal.com/web-design-development/wordpress/permalinks-customizer/
  * Text Domain: permalinks-customizer
  * License: GPL v3
  */
@@ -74,7 +74,10 @@ function permalinks_customizer_options_page() {
    $post_types = get_post_types( '', 'objects' );
    echo '<div class="wrap">';
    echo '<h2>Set Your Permalinks Settings</h2>';
-   echo '<div>Define the Permalinks for each post type. You can define different structures for each post type. </div>';
+   echo '<div>
+          <p>Define the Permalinks for each post type. You can define different structures for each post type.</p>
+          <p>Please check all the <a href="'.site_url().'/wp-admin/admin.php?page=permalinks-customizer-tags" title="structured tags">structured tags</a> which can be used with this plugin, <a href="'.site_url().'/wp-admin/admin.php?page=permalinks-customizer-tags" title="here">here</a>.</p>
+        </div>';
    echo '<form method="post" action="options.php">';
    settings_fields( 'permalinks-customizer-settings-group' );
    do_settings_sections( 'permalinks-customizer-settings-group' );
@@ -193,6 +196,10 @@ function permalinks_customizer_tags_page(){
    $html .= '<tr valign="top">
                 <th scope="row">%category%</th>
                 <td>A sanitized version of the category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI.</td>
+             </tr>';
+   $html .= '<tr valign="top">
+                <th scope="row">%child-category%</th>
+                <td>A sanitized version of the category name (category slug field on New/Edit Category panel).</td>
              </tr>';
    $html .= '<tr valign="top">
                 <th scope="row">%product_cat%</th>
@@ -600,6 +607,22 @@ function permalinks_customizer_replace_tags($post_id, $post, $replace_tag){
          $category = $parent_category->slug.'/'.$category;
       }
       $replace_tag = str_replace('%category%', $category, $replace_tag);
+   }
+   if(strpos($replace_tag, "%child-category%") !== false ){
+      $categories = get_the_category($post_id);
+      $total_cat = count($categories);
+      $tid = 1;
+      if($total_cat > 0){
+         $tid = '';
+         foreach($categories as $cat){
+            if($cat->term_id < $tid || empty($tid)){
+               $tid = $cat->term_id;
+            }
+         }
+      }
+      $term_category = get_term($tid);
+      $category = $term_category->slug;
+      $replace_tag = str_replace('%child-category%', $category, $replace_tag);
    }
    if(strpos($replace_tag, "%product_cat%") !== false ){
       $categories = get_the_terms($post_id, 'product_cat');

@@ -1,11 +1,11 @@
 === Permalinks Customizer ===
-Contributors: sasiddiqui, yasglobal, michaeltyson
+Contributors: sasiddiqui, yasglobal
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: address, category, custom, custom permalink, custom post permalinks, link, permalink, rewrite slug, redirects, slug, tags, url
 Requires at least: 3.5
-Tested up to: 4.6
-Stable tag: 0.3.5
+Tested up to: 4.7
+Stable tag: 0.3.6
 
 Set permalinks for default post-type and custom post-type which can be changed from the single post edit page.
 
@@ -48,6 +48,7 @@ If you leave the some post-type fields empty. So, <strong>Permalinks Customizer<
 * <strong>%post_id%</strong> : The unique ID # of the post, for example 423
 * <strong>%postname%</strong> : A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So "This Is A Great Post!" becomes this-is-a-great-post in the URI.
 * <strong>%category%</strong> : A sanitized version of the category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI.
+* <strong>%child-category%</strong> : A sanitized version of the category name (category slug field on New/Edit Category panel).
 * <strong>%product_cat%</strong> : A sanitized version of the product category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI. <i>This <strong>tag</strong> is specially used for WooCommerce Products.</i>
 * <strong>%author%</strong> : A sanitized version of the author name.
 
