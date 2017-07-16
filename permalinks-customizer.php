@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: Permalinks Customizer
- * Version: 0.3
+ * Version: 0.3.1
  * Plugin URI: https://wordpress.org/plugins/permalinks-customizer/
  * Description: Set permalinks for default post-type and custom post-type which can be changed from the single post edit page.
  * Author: Sami Ahmed Siddiqui
@@ -191,6 +191,10 @@ function permalinks_customizer_tags_page(){
    $html .= '<tr valign="top">
                 <th scope="row">%category%</th>
                 <td>A sanitized version of the category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI.</td>
+             </tr>';
+   $html .= '<tr valign="top">
+                <th scope="row">%product_cat%</th>
+                <td>A sanitized version of the product category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI. <i>This <strong>tag</strong> is specially used for WooCommerce Products.</i></td>
              </tr>';
    $html .= '<tr valign="top">
                 <th scope="row">%author%</th>
@@ -581,6 +585,30 @@ function permalinks_customizer_replace_tags($post_id, $post, $replace_tag){
       }
       $replace_tag = str_replace('%category%', $category, $replace_tag);
    }
+   if(strpos($replace_tag, "%product_cat%") !== false ){
+      $categories = get_the_terms($post_id, 'product_cat');
+      $total_cat = count($categories);
+      $tid = 1;
+      if($total_cat > 0){
+         $tid = '';
+         foreach($categories as $cat){
+            if($cat->term_id < $tid || empty($tid)){
+               $tid = $cat->term_id;
+               $pid = '';
+               if(!empty($cat->parent)){
+                  $pid = $cat->parent;
+               }
+            }
+         }         
+      }
+      $term_category = get_term($tid);
+      $category = $term_category->slug;
+      if(!empty($pid)){
+         $parent_category = get_term($pid);
+         $category = $parent_category->slug.'/'.$category;
+      }
+      $replace_tag = str_replace('%product_cat%', $category, $replace_tag);
+   }
    if(strpos($replace_tag, "%author%") !== false ){
       $author = get_the_author_meta( 'user_login', $post->post_author );
       $replace_tag = str_replace('%author%', $author, $replace_tag);
@@ -628,7 +656,7 @@ if (function_exists("add_action") && function_exists("add_filter")) {
    add_action( 'edit_tag_form', 'permalinks_customizer_term_options' );
    add_action( 'add_tag_form', 'permalinks_customizer_term_options' );
    add_action( 'edit_category_form', 'permalinks_customizer_term_options' );
-   add_action('save_post', 'permalinks_customizer_customization', 10, 3);
+   add_action( 'save_post', 'permalinks_customizer_customization', 10, 3);
    add_action( 'edited_post_tag', 'permalinks_customizer_save_tag' );
    add_action( 'edited_category', 'permalinks_customizer_save_category' );
    add_action( 'create_post_tag', 'permalinks_customizer_save_tag' );
@@ -639,5 +667,5 @@ if (function_exists("add_action") && function_exists("add_filter")) {
    add_action( 'admin_menu', 'permalinks_customizer_menu' );
 
    $plugin = plugin_basename(__FILE__); 
-   add_filter("plugin_action_links_$plugin", 'permalinks_customizer_settings_link' );
+   add_filter( "plugin_action_links_$plugin", 'permalinks_customizer_settings_link' );
 }

@@ -5,7 +5,7 @@ License URI: http://www.gnu.org/licenses/gpl.html
 Tags: address, category, custom, custom permalink, custom post permalinks, link, permalink, rewrite slug, redirects, slug, tags, url
 Requires at least: 3.5
 Tested up to: 4.4
-Stable tag: 0.3
+Stable tag: 0.3.1
 
 Set permalinks for default post-type and custom post-type which can be changed from the single post edit page.
 
@@ -21,12 +21,12 @@ By using <strong>Permalinks Customizer</strong> you can set the permalinks for e
 
 Let's assume that you have 6 <strong>post-types</strong> and they all have different style of <strong>permalinks</strong>. Like: 
 
-1. <strong>Blog:</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/blog/year-month-date-postname/
-2. <strong>Customers:</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/customers/postname/
-3. <strong>Events:</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/events/year-month-date-postname/
-4. <strong>Press:</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/press/category/year/postname/
-5. <strong>News:</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/news/year/postname/
-6. <strong>Sponsors:</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/company/sponsor/post_title/
+1. <strong>Blog :</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/blog/year-month-date-postname/
+2. <strong>Customers :</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/customers/postname/
+3. <strong>Events :</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/events/year-month-date-postname/
+4. <strong>Press :</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/press/category/year/postname/
+5. <strong>News :</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/news/year/postname/
+6. <strong>Sponsors :</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/company/sponsor/post_title/
 
 This plugin allows you to do this very easily. You just need to go on <strong>Permalinks Customizer</strong> Settings Page. Where text fields are shown with post-type name. You can define your permalinks you want to create for each post type. 
 
@@ -38,17 +38,18 @@ If you leave the some post-type fields empty. So, <strong>Permalinks Customizer<
 
 = Structure Tags =
 
-* <strong>%title%</strong>: Title of the post. let's say the title is "This Is A Great Post!" so, it becomes this-is-a-great-post in the URI.
-* <strong>%year%</strong>: The year of the post, four digits, for example 2004
-* <strong>%monthnum%</strong>: Month of the year, for example 05
-* <strong>%day%</strong>: Day of the month, for example 28
-* <strong>%hour%</strong>: Hour of the day, for example 15
-* <strong>%minute%</strong>: Minute of the hour, for example 43
-* <strong>%second%</strong>: Second of the minute, for example 33
-* <strong>%post_id%</strong>: The unique ID # of the post, for example 423
-* <strong>%postname%</strong>: A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So "This Is A Great Post!" becomes this-is-a-great-post in the URI.
-* <strong>%category%</strong>: A sanitized version of the category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI.
-* <strong>%author%</strong>: A sanitized version of the author name.
+* <strong>%title%</strong> : Title of the post. let's say the title is "This Is A Great Post!" so, it becomes this-is-a-great-post in the URI.
+* <strong>%year%</strong> : The year of the post, four digits, for example 2004
+* <strong>%monthnum%</strong> : Month of the year, for example 05
+* <strong>%day%</strong> : Day of the month, for example 28
+* <strong>%hour%</strong> : Hour of the day, for example 15
+* <strong>%minute%</strong> : Minute of the hour, for example 43
+* <strong>%second%</strong> : Second of the minute, for example 33
+* <strong>%post_id%</strong> : The unique ID # of the post, for example 423
+* <strong>%postname%</strong> : A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So "This Is A Great Post!" becomes this-is-a-great-post in the URI.
+* <strong>%category%</strong> : A sanitized version of the category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI.
+* <strong>%product_cat%</strong> : A sanitized version of the product category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI. <i>This <strong>tag</strong> is specially used for WooCommerce Products.</i>
+* <strong>%author%</strong> : A sanitized version of the author name.
 
 <strong>Note</strong>: *%postname%* is similar as of the *%title%* tag but the difference is that *%postname%* can only be set once whereas *%title%* can be changed. let's say the title is "This Is A Great Post!" so, it becomes "this-is-a-great-post" in the URI(At the first time, *%postname%* and *%title%* works same) but if you edit and change title let's say "This Is A WordPress Post!" so, *%postname%* in the URI remains same "this-is-a-great-post" whereas *%title%* in the URI becomes "this-is-a-wordpress-post"
 
@@ -84,6 +85,10 @@ A. Yes, you can use all the tags as defined on the [Permalinks Customizer page](
 A. No, This plugin does not work with [custom permalinks](https://wordpress.org/plugins/custom-permalinks/).
 
 == Changelog ==
+
+= 0.3.1 =
+
+ * Add product_cat tag which is specially used for WooCommerce Products
 
 = 0.3 =
 
