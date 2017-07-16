@@ -1,11 +1,11 @@
 === Permalinks Customizer ===
-Contributors: sasiddiqui, michaeltyson
+Contributors: sasiddiqui, yasglobal, michaeltyson
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: address, category, custom, custom permalink, custom post permalinks, link, permalink, rewrite slug, redirects, slug, tags, url
 Requires at least: 3.5
-Tested up to: 4.4
-Stable tag: 0.3.1
+Tested up to: 4.5
+Stable tag: 0.3.2
 
 Set permalinks for default post-type and custom post-type which can be changed from the single post edit page.
 
@@ -57,7 +57,7 @@ If you leave the some post-type fields empty. So, <strong>Permalinks Customizer<
 
 = Tags =
 
-address, permalink, permalinks, custom permalink, custom post permalink, url, tag, category, redirects, slug, set permalink, change permalink, rewrite slug
+address, permalink, permalinks, custom permalink, custom post permalink, url, tag, category, redirects, slug, set permalink, change permalink, rewrite slug, convert permalink, convert custom permalink, batch processing
 
 == Installation ==
 
@@ -73,6 +73,10 @@ address, permalink, permalinks, custom permalink, custom post permalink, url, ta
 
 * Permalinks can easily be changed for the single post from its post edit page.
 
+* You can easily convert the custom permalink to permalink customizer by going on [permalinks settings page](http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-convert-url)
+
+* Permalink conversion varies from servr to server. So, make sure to convert the url at a time on depending on your server capability. 
+
 == Frequently Asked Questions ==
 
 = Q. How to define slug of the post type? =
@@ -85,6 +89,10 @@ A. Yes, you can use all the tags as defined on the [Permalinks Customizer page](
 A. No, This plugin does not work with [custom permalinks](https://wordpress.org/plugins/custom-permalinks/).
 
 == Changelog ==
+
+= 0.3.2 =
+
+ * Convert custom permalink to permalink customizer
 
 = 0.3.1 =
 
