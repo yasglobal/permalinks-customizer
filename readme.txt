@@ -1,32 +1,74 @@
 === Permalinks Customizer ===
-Contributors: sasiddiqui, yasglobal
-Tags: custom permalinks, url, link, address, slug, category, redirect, page permalink, post redirect, tags, custom tags, post type, custom post type, custom post type permalinks
+Contributors: sasiddiqui, michaeltyson
+License: GPLv3
+License URI: http://www.gnu.org/licenses/gpl.html
+Tags: address, category, custom, custom permalink, custom post permalinks, link, permalink, rewrite slug, redirects, slug, tags, url
 Requires at least: 3.5
 Tested up to: 4.4
-Stable tag: 0.2
-License: GPLv2 or Later
+Stable tag: 0.3
 
-Set custom post-type permalink(custom permalinks on the post-type) or per-post of any post or page.
+Set permalinks for default post-type and custom post-type which can be changed from the single post edit page.
 
 == Description ==
 
-Lay out your site the way *you* want it. Customize your URL and set the slug. You can use basic keywords which is defined by the wordpress for the permalinks as well as someother new keywords which is defined by this plugin. All the keywords is defined on the Tags page under Permalinks Customizer.
+This plugin is a fork of [Custom Permalink](https://wordpress.org/plugins/custom-permalinks/). It has some expanded bug patches and some features which were not in the [Custom Permalink](https://wordpress.org/plugins/custom-permalinks/).
 
-Be warned: *This plugin is not a replacement for WordPress's built-in permalink system*. Check your WordPress administration's "Permalinks" settings page first, to make sure that this doesn't already meet your needs.
+Customize your URL and set the slug. You can use basic keywords which is defined by the wordpress for defining the permalinks as well as someother new keywords which is defined by this plugin. All the keywords is defined on the Tags page under Permalinks Customizer.
 
-This plugin is useful for defining slug of the post type as well as for *individual* posts or pages. You can change the permalink for the single post as well by editing the post.
+By using <strong>Permalinks Customizer</strong> you can set the permalinks for each post-type seperately. 
+
+= How to set the Permalinks for the post-types seperately =
+
+Let's assume that you have 6 <strong>post-types</strong> and they all have different style of <strong>permalinks</strong>. Like: 
+
+1. <strong>Blog:</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/blog/year-month-date-postname/
+2. <strong>Customers:</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/customers/postname/
+3. <strong>Events:</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/events/year-month-date-postname/
+4. <strong>Press:</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/press/category/year/postname/
+5. <strong>News:</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/news/year/postname/
+6. <strong>Sponsors:</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/company/sponsor/post_title/
+
+This plugin allows you to do this very easily. You just need to go on <strong>Permalinks Customizer</strong> Settings Page. Where text fields are shown with post-type name. You can define your permalinks you want to create for each post type. 
+
+If you leave the some post-type fields empty. So, <strong>Permalinks Customizer</strong> would create a permalink for that post-type by using the default <strong>permalink</strong> settings.
+
+> <strong>How to Configure Permalinks Customizer</strong>
+> 
+> You can configure the plugin by going to the menu `Permalinks Customizer` that appears in your admin menu.<br><br><strong>                                   OR</strong><br><br> http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-settings
+
+= Structure Tags =
+
+* <strong>%title%</strong>: Title of the post. let's say the title is "This Is A Great Post!" so, it becomes this-is-a-great-post in the URI.
+* <strong>%year%</strong>: The year of the post, four digits, for example 2004
+* <strong>%monthnum%</strong>: Month of the year, for example 05
+* <strong>%day%</strong>: Day of the month, for example 28
+* <strong>%hour%</strong>: Hour of the day, for example 15
+* <strong>%minute%</strong>: Minute of the hour, for example 43
+* <strong>%second%</strong>: Second of the minute, for example 33
+* <strong>%post_id%</strong>: The unique ID # of the post, for example 423
+* <strong>%postname%</strong>: A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So "This Is A Great Post!" becomes this-is-a-great-post in the URI.
+* <strong>%category%</strong>: A sanitized version of the category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI.
+* <strong>%author%</strong>: A sanitized version of the author name.
+
+<strong>Note</strong>: *%postname%* is similar as of the *%title%* tag but the difference is that *%postname%* can only be set once whereas *%title%* can be changed. let's say the title is "This Is A Great Post!" so, it becomes "this-is-a-great-post" in the URI(At the first time, *%postname%* and *%title%* works same) but if you edit and change title let's say "This Is A WordPress Post!" so, *%postname%* in the URI remains same "this-is-a-great-post" whereas *%title%* in the URI becomes "this-is-a-wordpress-post"
+
+<strong>Be warned:</strong> *This plugin is not a replacement for WordPress's built-in permalink system*. Check your WordPress administration's "Permalinks" settings page first, to make sure that this doesn't already meet your needs.
+
+= Tags =
+
+address, permalink, permalinks, custom permalink, custom post permalink, url, tag, category, redirects, slug, set permalink, change permalink, rewrite slug
 
 == Installation ==
 
-1. Unzip the package, and upload `permalinks-customizer` to the `/wp-content/plugins/` directory or Directly install the plugin through the WordPress plugins screen.
-2. Activate the plugin through the `Plugins` menu in WordPress.
-3. Define permalinks for the post types from the settings. Settings link is provided in the plugin directory as well as you can check 'Permalink Customizer' in the menu.
+1. Upload the `permalinks-customizer` folder to the `/wp-content/plugins/` directory or Directly install the plugin through the WordPress plugins screen.
+2. Activate the Permalinks Customizer plugin through the `Plugins` menu in WordPress.
+3. Configure the plugin by going to the menu `Permalinks Customizer` that appears in your admin menu
 
 == Screenshots ==
 
-* Permalinks can be defined for each and every post type from here. The empty permalink field for the post type will use the Wordpress Permalink Settings.
+* Permalinks can be set for each and every post type from [here](http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-settings). The empty permalink field for the post-type will use the Wordpress Permalink Settings.
 
-* All the available tags which can be used for defining the permalinks are listed here. Some of the tags are defined here may only be use with this plugin only. 
+* All the available tags which can be used for defining the permalinks are listed here. Some of the tags are defined here may only be use with [Permalinks Customizer](https://wordpress.org/plugins/permalinks-customizer/) plugin only. 
 
 * Permalinks can easily be changed for the single post from its post edit page.
 
@@ -36,12 +78,16 @@ This plugin is useful for defining slug of the post type as well as for *individ
 A. Go to Settings, there is a field with the post type name. On this fields, you can define slug for the post type.
 
 = Q. Can i use tags? =
-A. Yes, you can use all the tags as defined on the tags page.
+A. Yes, you can use all the tags as defined on the [Permalinks Customizer page](https://wordpress.org/plugins/permalinks-customizer/).
 
 = Q. May this plugin works with custom permalinks? =
-A. No, This plugin does not work with custom permalinks.
+A. No, This plugin does not work with [custom permalinks](https://wordpress.org/plugins/custom-permalinks/).
 
 == Changelog ==
+
+= 0.3 =
+
+ * Add functionality to create a permalink for category and tag for default post type
 
 = 0.2 =
 
