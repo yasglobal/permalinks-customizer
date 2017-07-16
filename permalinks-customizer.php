@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: Permalinks Customizer
- * Version: 0.3.2
+ * Version: 0.3.3
  * Plugin URI: https://wordpress.org/plugins/permalinks-customizer/
  * Description: Set permalinks for default post-type and custom post-type which can be changed from the single post edit page.
  * Author: Sami Ahmed Siddiqui
@@ -492,8 +492,12 @@ function permalinks_customizer_trailingslash($string, $type) {
   if ( !trim($request) ) return $string;
 
   if ( trim($_CPRegisteredURL,'/') == trim($request,'/') ) {
-    return ($string{0} == '/' ? '/' : '') . trailingslashit($url['path']) . $_CPRegisteredURL;
-  }
+		if( isset($url['path']) ){
+			return ($string{0} == '/' ? '/' : '') . trailingslashit($url['path']) . $_CPRegisteredURL;
+		}else{
+			return ($string{0} == '/' ? '/' : '') . $_CPRegisteredURL;
+		}
+	}
   return $string;
 }
 
