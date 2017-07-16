@@ -2,9 +2,10 @@
 
 /**
  * Plugin Name: Permalinks Customizer
- * Version: 0.3.7
+ * Version: 0.3.8
  * Plugin URI: https://wordpress.org/plugins/permalinks-customizer/
  * Description: Set permalinks for default post-type and custom post-type which can be changed from the single post edit page.
+ * Donate link: https://www.paypal.me/yasglobal
  * Author: Sami Ahmed Siddiqui
  * Author URI: http://www.yasglobal.com/web-design-development/wordpress/permalinks-customizer/
  * Text Domain: permalinks-customizer
@@ -281,7 +282,7 @@ function permalinks_customizer_request($query) {
   $request = (($pos=strpos($request, '?')) ? substr($request, 0, $pos) : $request);
   $request_noslash = preg_replace('@/+@','/', trim($request, '/'));
   if ( !$request ) return $query;
-  $sql = $wpdb->prepare("SELECT $wpdb->posts.ID, $wpdb->postmeta.meta_value, $wpdb->posts.post_type FROM $wpdb->posts  ".
+  $sql = $wpdb->prepare("SELECT $wpdb->posts.ID, $wpdb->postmeta.meta_value, $wpdb->posts.post_type, $wpdb->posts.post_status FROM $wpdb->posts  ".
            "LEFT JOIN $wpdb->postmeta ON ($wpdb->posts.ID = $wpdb->postmeta.post_id) WHERE ".
            "  meta_key = 'permalink_customizer' AND ".
            "  meta_value != '' AND ".
