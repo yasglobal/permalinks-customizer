@@ -4,7 +4,7 @@
 * Plugin Name: Permalinks Customizer
 * Plugin URI: https://wordpress.org/plugins/permalinks-customizer/
 * Description: Generate permalinks with provided structured for the post types or use wordpress permalink settings.
-* Version: 0.1
+* Version: 0.2
 * Author: YasGlobal Team
 * Author URI: http://www.yasglobal.com/
 * Text Domain: permalinks-customizer
@@ -75,6 +75,9 @@ function permalinks_customizer_options_page() {
  * Create Permalinks in bulk with the defined structure.
  */
 function permalinks_customizer_customization($post_id, $post, $update) {
+   if( $post_id == get_option('page_on_front') ){
+      return;
+   }
    $get_permalink = esc_attr( get_option('permalinks_customizer_'.$post->post_type) );
    if(empty($get_permalink)){
       $get_permalink = esc_attr( get_option('permalink_structure') );
@@ -184,6 +187,10 @@ function permalinks_customizer_tags_page(){
    $html .= '<p><b>Note:</b> "%postname%" is similar as of the "%title%" tag but the difference is that "%postname%" can only be set once whereas "%title%" can be changed. let&#039;s say the title is "This Is A Great Post!" so, it becomes "this-is-a-great-post" in the URI(At the first time, "%postname%" and "%title%" works same) but if you edit and change title let&#039;s say "This Is A WordPress Post!" so, "%postname%" in the URI remains same "this-is-a-great-post" whereas "%title%" in the URI becomes "this-is-a-wordpress-post" </p>';
    $html .= '</div>';
    echo $html;
+}
+
+function permalinks_customizer_static_page($prev_home_page_id, $new_home_page_id){
+   permalinks_customizer_delete_permalink($new_home_page_id);
 }
 
 function permalinks_customizer_post_link($permalink, $post) {
@@ -343,7 +350,7 @@ function permalinks_customizer_get_sample_permalink_html($html, $id, $new_title,
   <?php
   $content = ob_get_contents();
   ob_end_clean();
-    if($post->post_type == 'attachment'){
+    if( $post->post_type == 'attachment' || $post->ID == get_option('page_on_front') ){
        return $html;
     }
     if ( 'publish' == $post->post_status ) {
@@ -501,6 +508,7 @@ if (function_exists("add_action") && function_exists("add_filter")) {
       add_filter( 'get_sample_permalink_html', 'permalinks_customizer_get_sample_permalink_html', 'edit_files', 4 );
    } else {
       add_action( 'edit_form_advanced', 'permalinks_customizers_post_options' );
+      add_action( 'update_option_page_on_front', 'permalinks_customizer_static_page', 10, 2 );
       add_action( 'edit_page_form', 'permalinks_customizers_page_options' );
    }
    

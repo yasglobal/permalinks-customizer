@@ -3,7 +3,7 @@ Contributors: sasiddiqui, yasglobal
 Tags: custom permalinks, url, link, address, slug, category, redirect, page permalink, post redirect, tags, custom tags, post type, custom post type, custom post type permalinks
 Requires at least: 3.5
 Tested up to: 4.4
-Stable tag: 0.1
+Stable tag: 0.2
 License: GPLv2 or Later
 
 Set custom post-type permalink(custom permalinks on the post-type) or per-post of any post or page.
@@ -24,7 +24,7 @@ This plugin is useful for defining slug of the post type as well as for *individ
 
 == Screenshots ==
 
-* Permalinks can be defined for each and every post type from here. The empty permalink field for the post type will use the Wordpress Permalink Settings. 
+* Permalinks can be defined for each and every post type from here. The empty permalink field for the post type will use the Wordpress Permalink Settings.
 
 * All the available tags which can be used for defining the permalinks are listed here. Some of the tags are defined here may only be use with this plugin only. 
 
@@ -42,6 +42,10 @@ A. Yes, you can use all the tags as defined on the tags page.
 A. No, This plugin does not work with custom permalinks.
 
 == Changelog ==
+
+= 0.2 =
+
+ * Front Page Displays as Static Page Functionality
 
 = 0.1 =
 
