@@ -2,11 +2,11 @@
 
 /**
  * Plugin Name: Permalinks Customizer
- * Version: 0.3.9
+ * Version: 0.3.10
  * Plugin URI: https://wordpress.org/plugins/permalinks-customizer/
  * Description: Set permalinks for default post-type and custom post-type which can be changed from the single post edit page.
  * Donate link: https://www.paypal.me/yasglobal
- * Author: Sami Ahmed Siddiqui
+ * Author: YAS Global Team
  * Author URI: https://www.yasglobal.com/web-design-development/wordpress/permalinks-customizer/
  * Text Domain: permalinks-customizer
  * License: GPL v3
@@ -14,7 +14,7 @@
 
 /**
  *  Permalinks Customizer Plugin
- *  Copyright (C) 2016-2017, Sami Ahmed Siddiqui <sami@samisiddiqui.com>
+ *  Copyright (C) 2016-2017, Sami Ahmed Siddiqui <sami.siddiqui@yasglobal.com>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -504,10 +504,10 @@ function permalinks_customizer_delete_term($id) {
 function permalinks_customizer_trailingslash($string, $type) {     
   global $_CPRegisteredURL;
 
-  remove_filter( 'user_trailingslashit', 'custom_permalinks_trailingslash', 10, 2 );
+  remove_filter( 'user_trailingslashit', 'permalinks_customizer_trailingslash', 10, 2 );
   $url = parse_url(get_bloginfo('url'));
   $request = ltrim(isset($url['path']) ? substr($string, strlen($url['path'])) : $string, '/');
-  add_filter( 'user_trailingslashit', 'custom_permalinks_trailingslash', 10, 2 );
+  add_filter( 'user_trailingslashit', 'permalinks_customizer_trailingslash', 10, 2 );
 
   if ( !trim($request) ) return $string;
 
