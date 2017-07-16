@@ -55,10 +55,13 @@ If you leave the some post-type fields empty. So, **Permalinks Customizer** woul
 ## Frequently Asked Questions
 
 **Q. How to define slug of the post type?**
+
 A. Go to Settings, there is a field with the post type name. On this fields, you can define slug for the post type.
 
 **Q. Can i use tags?**
+
 A. Yes, you can use all the tags as defined on the [Permalinks Customizer page](https://wordpress.org/plugins/permalinks-customizer/).
 
 **Q. May this plugin works with custom permalinks?**
+
 A. No, This plugin does not work with [custom permalinks](https://wordpress.org/plugins/custom-permalinks/).
