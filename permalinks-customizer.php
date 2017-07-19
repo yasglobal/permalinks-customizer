@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: Permalinks Customizer
- * Version: 0.3.10
+ * Version: 0.4
  * Plugin URI: https://wordpress.org/plugins/permalinks-customizer/
  * Description: Set permalinks for default post-type and custom post-type which can be changed from the single post edit page.
  * Donate link: https://www.paypal.me/yasglobal
@@ -219,29 +219,50 @@ function permalinks_customizer_static_page($prev_home_page_id, $new_home_page_id
   permalinks_customizer_delete_permalink($new_home_page_id);
 }
 
+/**
+ * Filter to replace the post permalink with the custom one
+ */
 function permalinks_customizer_post_link($permalink, $post) {
   $permalinks_customizer = get_post_meta( $post->ID, 'permalink_customizer', true );
   if ( $permalinks_customizer ) {
-    return apply_filters( 'wpml_permalink', home_url()."/".$permalinks_customizer );
+    
+    $post_type = isset($post->post_type) ? $post->post_type : 'post';
+    $language_code = apply_filters( 'wpml_element_language_code', null, array( 'element_id' => $post->ID, 'element_type' => $post_type ) );
+    if ( $language_code ) 
+		  return apply_filters( 'wpml_permalink', home_url()."/".$permalinks_customizer, $language_code );
+    else 
+      return apply_filters( 'wpml_permalink', home_url()."/".$permalinks_customizer );
   }
   
   return $permalink;
 }
 
+/**
+ * Filter to replace the page permalink with the custom one
+ */
 function permalinks_customizer_page_link($permalink, $page) {
   $permalinks_customizer = get_post_meta( $page, 'permalink_customizer', true );
-  if ( $permalinks_customizer ) {
-    return apply_filters( 'wpml_permalink', home_url()."/".$permalinks_customizer );
+  if ( $permalinks_customizer ) {    
+    $language_code = apply_filters( 'wpml_element_language_code', null, array( 'element_id' => $page, 'element_type' => 'page' ) );
+	  if ( $language_code )
+      return apply_filters( 'wpml_permalink', home_url()."/".$permalinks_customizer, $language_code );
+    else 
+      return apply_filters( 'wpml_permalink', home_url()."/".$permalinks_customizer );
   }
   
   return $permalink;
 }
 
+/**
+ * Action to redirect to the custom permalink
+ */
 function permalinks_customizer_redirect() {
   $url = parse_url(get_bloginfo('url')); 
   $url = isset($url['path']) ? $url['path'] : '';
   $request = ltrim(substr($_SERVER['REQUEST_URI'], strlen($url)),'/');
   if ( ($pos=strpos($request, "?")) ) $request = substr($request, 0, $pos);
+
+  $request = permalinks_customizer_check_conflicts($request);
   
   global $wp_query;
   
@@ -272,6 +293,9 @@ function permalinks_customizer_redirect() {
   } 
 }
 
+/**
+ * Filter to rewrite the query if we have a matching post
+ */
 function permalinks_customizer_request($query) {
   global $wpdb;
   global $_CPRegisteredURL;
@@ -280,8 +304,12 @@ function permalinks_customizer_request($query) {
   $url = isset($url['path']) ? $url['path'] : '';
   $request = ltrim(substr($_SERVER['REQUEST_URI'], strlen($url)),'/');
   $request = (($pos=strpos($request, '?')) ? substr($request, 0, $pos) : $request);
-  $request_noslash = preg_replace('@/+@','/', trim($request, '/'));
+  
   if ( !$request ) return $query;
+
+  $request = permalinks_customizer_check_conflicts($request); 
+  $request_noslash = preg_replace('@/+@','/', trim($request, '/'));
+
   $sql = $wpdb->prepare("SELECT $wpdb->posts.ID, $wpdb->postmeta.meta_value, $wpdb->posts.post_type, $wpdb->posts.post_status FROM $wpdb->posts  ".
            "LEFT JOIN $wpdb->postmeta ON ($wpdb->posts.ID = $wpdb->postmeta.post_id) WHERE ".
            "  meta_key = 'permalink_customizer' AND ".
@@ -432,12 +460,22 @@ function permalinks_customizer_original_category_link($category_id) {
   return $originalPermalink;
 }
 
+/**
+ * Filter to replace the term permalink with the custom one
+ */
 function permalinks_customizer_term_link($permalink, $term) {
   $table = get_option('permalinks_customizer_table');
   if ( is_object($term) ) $term = $term->term_id;
   $permalinks_customizer = permalinks_customizer_permalink_for_term($term);
   if ( $permalinks_customizer ) {
-    return apply_filters( 'wpml_permalink', home_url()."/".$permalinks_customizer );
+    $taxonomy = get_term($term);
+    if ( isset($taxonomy) && isset($taxonomy->term_taxonomy_id) ) {
+      $term_type = isset($taxonomy->taxonomy) ? $taxonomy->taxonomy : 'category';
+      $language_code = apply_filters( 'wpml_element_language_code', null, array( 'element_id' => $taxonomy->term_taxonomy_id, 'element_type' => $term_type ) );
+		  return apply_filters( 'wpml_permalink', home_url()."/".$permalinks_customizer, $language_code );
+    } else {
+      return apply_filters( 'wpml_permalink', home_url()."/".$permalinks_customizer );
+    }
   }
   return $permalink;
 }
@@ -522,7 +560,7 @@ function permalinks_customizer_trailingslash($string, $type) {
 }
 
 function permalinks_customizer_form($permalink, $original="", $renderContainers=true) {
-   ?>
+  ?>
   <input value="true" type="hidden" name="permalinks_customizer_edit" />
   <input value="<?php echo htmlspecialchars(urldecode($permalink)) ?>" type="hidden" name="permalinks_customizer" id="permalinks_customizer" />
   
@@ -531,7 +569,13 @@ function permalinks_customizer_form($permalink, $original="", $renderContainers=
     <tr>
       <th scope="row"><?php _e('Permalink', 'permalinks-customizer') ?></th>
       <td>
-        <?php endif; ?>
+  <?php endif; ?>
+
+  <?php 
+    if ($permalink == '') {
+      $original = permalinks_customizer_check_conflicts($original);
+    }
+  ?>
         <?php echo home_url() ?>/
         <span id="editable-post-name" title="Click to edit this part of the permalink">
           <input type="text" id="new-post-slug" class="text" value="<?php echo htmlspecialchars($permalink ? urldecode($permalink) : urldecode($original)) ?>"
@@ -778,6 +822,30 @@ function permalinks_customizer_convert_url() {
     echo '</form>';
   endif;
   echo '</div>';
+}
+
+/**
+ * Check Conflicts and resolve it (e.g: Polylang) 
+ */
+function permalinks_customizer_check_conflicts($requested_url = '') {
+  
+  if ($requested_url == '') return;
+  
+  // Check if the Polylang Plugin is installed so, make changes in the URL
+  if (defined( 'POLYLANG_VERSION' )) {
+    $polylang_config = get_option('polylang');
+    if ($polylang_config['force_lang'] == 1) {
+
+      if(strpos($requested_url, 'language/') !== false)
+        $requested_url = str_replace("language/", "", $requested_url);
+      
+      $remove_lang = ltrim(strstr($requested_url, '/'), '/');
+      if ($remove_lang != '')
+        return $remove_lang;
+    }
+  }
+
+  return $requested_url;
 }
 
 if (function_exists("add_action") && function_exists("add_filter")) {
