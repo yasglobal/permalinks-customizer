@@ -155,7 +155,7 @@ class Permalinks_Customizer_Admin {
 	 * This Function Calls the another which provide the functionality to convert Custom Permalink URLs to Permalinks Customizer
 	 */
 	public function permalinks_customizer_convert_url() {
-		require_once(PERMALINKS_CUSTOMIZER__PLUGIN_DIR.'admin/class.permalinks-customizer-batch-script.php');
+		require_once(PERMALINKS_CUSTOMIZER_PATH.'admin/class.permalinks-customizer-batch-script.php');
 		new Permalinks_Customizer_Batch_Script();
 	}
 }
