@@ -3,16 +3,14 @@ Contributors: aliya-yasir, sasiddiqui, yasglobal
 Donate link: https://www.paypal.me/yasglobal
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
-Tags: address, category, custom, custom permalink, custom post permalinks, link, permalink, rewrite slug, redirects, slug, tags, url
+Tags: address, category, custom, custom permalink, custom post permalinks, link, permalink, rewrite slug, redirects, slug, tags, url, custom taxonomy
 Requires at least: 3.5
 Tested up to: 4.8
-Stable tag: 0.4
+Stable tag: 1.0
 
 Set permalinks for default post-type and custom post-type which can be changed from the single post edit page.
 
 == Description ==
-
-> This plugin is a fork of [Custom Permalinks](https://wordpress.org/plugins/custom-permalinks/). It contains the enhancement of the Permalinks Functionality. You can set different permalinks for your post types and use symbols in your Permalinks.
 
 Customize your URL and set the slug. You can use basic keywords which is defined by the wordpress for defining the permalinks as well as some new keywords which is defined by this plugin. All the keywords is defined on the Tags page under Permalinks Customizer.
 
@@ -75,7 +73,7 @@ If you leave the some post-type fields empty. So, <strong>Permalinks Customizer<
 
 * Permalinks can easily be changed for the single post from its post edit page.
 
-* You can easily convert the custom permalink to permalink customizer by going on [permalinks settings page](http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-convert-url)
+* You can easily convert the custom permalink URLs to permalink customizer URLs by going on [permalinks settings page](http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-convert-url)
 
 * Permalink conversion varies from servr to server. So, make sure to convert the url at a time on depending on your server capability. 
 
@@ -91,6 +89,10 @@ A. Yes, you can use all the tags as defined on the [Permalinks Customizer page](
 A. No, This plugin does not work with [custom permalinks](https://wordpress.org/plugins/custom-permalinks/).
 
 == Changelog ==
+
+= 1.0 =
+
+  * Fixed Quick Edit Bug, HomePage does not load Bug, Remoed some Deprecated Filters/Actions and Added Permalinks for Custom Taxonomy
 
 = 0.4 =
 
