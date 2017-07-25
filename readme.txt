@@ -92,7 +92,7 @@ A. No, This plugin does not work with [custom permalinks](https://wordpress.org/
 
 = 1.0 =
 
-  * Fixed Quick Edit Bug, HomePage does not load Bug, Remoed some Deprecated Filters/Actions and Added Permalinks for Custom Taxonomy
+  * Fixed Quick Edit Bug, HomePage does not load Bug, Removed some Deprecated Filters/Actions and Added Permalinks for Custom Taxonomy
 
 = 0.4 =
 
