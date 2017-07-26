@@ -68,7 +68,7 @@ class Permalinks_Customizer_Form {
 						function focusPermalinkField() {
 							console.log("a");
 							if (!newPostSlug) return;
-							if ( newPostSlug.style.color = "#ddd" ) { newPostSlug.style.color = "#000"; }
+							if ( newPostSlug.style.color == "#ddd" ) { newPostSlug.style.color = "#000"; }
 						}
 
 						function blurPermalinkField() {
@@ -129,11 +129,12 @@ class Permalinks_Customizer_Form {
 			$permalinks_customizer_frontend_object = new Permalinks_Customizer_Frontend;
 			$permalink = $permalinks_customizer_frontend_object->permalinks_customizer_permalink_for_term($object->term_id);
 
+			$original_permalink = '';
 			if ( $object->term_id ) {
-				$originalPermalink = $permalinks_customizer_frontend_object->permalinks_customizer_original_taxonomy_link($object->term_id);
+				$original_permalink = $permalinks_customizer_frontend_object->permalinks_customizer_original_taxonomy_link($object->term_id);
 			}
 
-			$this->permalinks_customizer_get_form($permalink, $originalPermalink);
+			$this->permalinks_customizer_get_form($permalink, $original_permalink);
 
 			wp_enqueue_script('jquery');
 			?>
