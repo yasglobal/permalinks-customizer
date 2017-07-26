@@ -29,13 +29,14 @@ class Permalinks_Customizer_Frontend {
 	public function permalinks_customizer_request($query) {
 		global $wpdb;
 		global $_CPRegisteredURL;
-		$originalUrl = NULL;
+		$original_url = NULL;
 		$url = parse_url(get_bloginfo('url'));
 		$url = isset($url['path']) ? $url['path'] : '';
 		$request = ltrim(substr($_SERVER['REQUEST_URI'], strlen($url)),'/');
 		$request = (($pos=strpos($request, '?')) ? substr($request, 0, $pos) : $request);
 		
-		if ( !$request ) return $query;
+		if ( !$request ) 
+			return $query;
 		
 		if (defined( 'POLYLANG_VERSION' )) {
 			require_once(PERMALINKS_CUSTOMIZER_PATH.'frontend/class.permalinks-customizer-conflicts.php');
@@ -67,27 +68,28 @@ class Permalinks_Customizer_Frontend {
 				
 			if ( $posts[0]->post_status == 'draft' ) {
 				if ( $posts[0]->post_type == 'page' ) {
-					$originalUrl = "?page_id=" . $posts[0]->ID;
+					$original_url = "?page_id=" . $posts[0]->ID;
 				} else {
-					$originalUrl = "?p=" . $posts[0]->ID;
+					$original_url = "?p=" . $posts[0]->ID;
 				}
 			} else {
-				$originalUrl = preg_replace( '@/+@', '/', str_replace( trim( strtolower($posts[0]->meta_value),'/' ),
+				$original_url = preg_replace( '@/+@', '/', str_replace( trim( strtolower($posts[0]->meta_value),'/' ),
 											( $posts[0]->post_type == 'page' ? $this->permalinks_customizer_original_page_link($posts[0]->ID) : $this->permalinks_customizer_original_post_link($posts[0]->ID) ), strtolower($request_noslash) ) );
 			}
 		}
-		if ($originalUrl === NULL) {
+		if ($original_url === NULL) {
 			$sql = "SELECT * FROM $wpdb->termmeta WHERE meta_key = 'permalink_customizer' AND meta_value = '".$request_noslash."' OR meta_key = 'permalink_customizer' AND meta_value = '".$request_noslash."/' LIMIT 1";
 			
 			$taxonomy_term_data = $wpdb->get_results($sql);
-
+			
+			$get_term_permalink = NULL;
 			if (is_array($taxonomy_term_data) && isset($taxonomy_term_data[0]->term_id)) {
 				$get_term_permalink = $this->permalinks_customizer_original_taxonomy_link($taxonomy_term_data[0]->term_id);
 				if ($get_term_permalink && $get_term_permalink != '')	
-					$originalUrl = str_replace(trim(strtolower($taxonomy_term_data[0]->meta_value),'/'), $get_term_permalink, strtolower($request_noslash));
+					$original_url = str_replace(trim(strtolower($taxonomy_term_data[0]->meta_value),'/'), $get_term_permalink, strtolower($request_noslash));
 			}
 
-			if ( $originalUrl === NULL && !$get_term_permalink) {
+			if ( $original_url === NULL && $get_term_permalink === NULL) {
 				$table = get_option('permalinks_customizer_table');
 				if (!$table) 
 					return $query;
@@ -98,22 +100,22 @@ class Permalinks_Customizer_Frontend {
 						if ( $request_noslash == trim($permalink,'/') ) 
 							$_CPRegisteredURL = $request;
 						
-						$originalUrl = str_replace(trim($permalink,'/'), $this->permalinks_customizer_original_taxonomy_link($term['id']), trim($request,'/'));
+						$original_url = str_replace(trim($permalink,'/'), $this->permalinks_customizer_original_taxonomy_link($term['id']), trim($request,'/'));
 					}
 				}
 			}
 		}
 
-		if ( $originalUrl !== NULL ) {
-			$originalUrl = str_replace('//', '/', $originalUrl);
+		if ( $original_url !== null ) {
+			$original_url = str_replace('//', '/', $original_url);
 			
 			if ( ($pos=strpos($_SERVER['REQUEST_URI'], '?')) !== false ) {
 				$queryVars = substr($_SERVER['REQUEST_URI'], $pos+1);
-				$originalUrl .= (strpos($originalUrl, '?') === false ? '?' : '&') . $queryVars;
+				$original_url .= (strpos($original_url, '?') === false ? '?' : '&') . $queryVars;
 			}
 			$oldRequestUri = $_SERVER['REQUEST_URI']; $oldQueryString = $_SERVER['QUERY_STRING'];
-			$_SERVER['REQUEST_URI'] = '/'.ltrim($originalUrl,'/');
-			$_SERVER['QUERY_STRING'] = (($pos=strpos($originalUrl, '?')) !== false ? substr($originalUrl, $pos+1) : '');
+			$_SERVER['REQUEST_URI'] = '/'.ltrim($original_url,'/');
+			$_SERVER['QUERY_STRING'] = (($pos=strpos($original_url, '?')) !== false ? substr($original_url, $pos+1) : '');
 			parse_str($_SERVER['QUERY_STRING'], $queryArray);
 			$oldValues = array();
 			if ( is_array($queryArray) )
@@ -263,10 +265,10 @@ class Permalinks_Customizer_Frontend {
 	public function permalinks_customizer_original_post_link($post_id) {
 		remove_filter( 'post_link', array($this, 'permalinks_customizer_post_link'), 10, 2 );
 		remove_filter( 'post_type_link', array($this, 'permalinks_customizer_post_link'), 10, 2 );
-		$originalPermalink = ltrim(str_replace(home_url(), '', get_permalink( $post_id )), '/');
+		$original_permalink = ltrim(str_replace(home_url(), '', get_permalink( $post_id )), '/');
 		add_filter( 'post_link', array($this, 'permalinks_customizer_post_link'), 10, 2 );
 		add_filter( 'post_type_link', array($this, 'permalinks_customizer_post_link'), 10, 2 );
-		return $originalPermalink;
+		return $original_permalink;
 	}
 
 	/**
@@ -274,9 +276,9 @@ class Permalinks_Customizer_Frontend {
 	 */
 	public function permalinks_customizer_original_page_link($post_id) {
 		remove_filter( 'page_link', array($this, 'permalinks_customizer_page_link'), 10, 2 );
-		$originalPermalink = ltrim(str_replace(home_url(), '', get_permalink( $post_id )), '/');
+		$original_permalink = ltrim(str_replace(home_url(), '', get_permalink( $post_id )), '/');
 		add_filter( 'page_link', array($this, 'permalinks_customizer_page_link'), 10, 2 );
-		return $originalPermalink;
+		return $original_permalink;
 	}
 
 	/**
@@ -293,11 +295,12 @@ class Permalinks_Customizer_Frontend {
 		add_filter( 'user_trailingslashit', array($this, 'permalinks_customizer_trailingslash'), 10, 2 );
 		add_filter( 'term_link', array($this, 'permalinks_customizer_term_link'), 10, 2 );
 
-		if (is_wp_error($term_link)) return '';
+		if (is_wp_error($term_link)) 
+			return '';
 
-		$originalPermalink = ltrim(str_replace(home_url(), '', $term_link), '/');
+		$original_permalink = ltrim(str_replace(home_url(), '', $term_link), '/');
 
-		return $originalPermalink;
+		return $original_permalink;
 	}
 
 	/**
