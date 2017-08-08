@@ -410,12 +410,19 @@ class Permalinks_Customizer_Form {
 	public function permalinks_customizer_create_term($id) {
 		$new_permalink = ltrim(stripcslashes($_REQUEST['permalinks_customizer']),"/");
 
-		if ($new_permalink == '')
-			return;
-		
 		$term = get_term($id);
-		$permalinks_customizer_frontend_object = new Permalinks_Customizer_Frontend;
+		if (empty($new_permalink)) {
+			$permalinks_customizer_settings = unserialize( get_option('permalinks_customizer_taxonomy_settings') );
+			if (isset($permalinks_customizer_settings[$term->taxonomy.'_settings']) && isset($permalinks_customizer_settings[$term->taxonomy.'_settings']['structure']) && !empty($permalinks_customizer_settings[$term->taxonomy.'_settings']['structure'])) {
+				$new_permalink = $this->permalinks_customizer_replace_taxes_tags($term, $permalinks_customizer_settings[$term->taxonomy.'_settings']['structure']);
+			}
+		}
+		
+		if (empty($new_permalink) || $new_permalink == '') {
+			return;
+		}
 
+		$permalinks_customizer_frontend_object = new Permalinks_Customizer_Frontend;
 		$old_permalink = $permalinks_customizer_frontend_object->permalinks_customizer_original_taxonomy_link($id);
 
 		if ( $new_permalink == $old_permalink )
@@ -424,6 +431,71 @@ class Permalinks_Customizer_Form {
 		$this->permalinks_customizer_save_term($term, str_replace('%2F', '/', urlencode($new_permalink)));
 	}
 	
+	/**
+	 * Replace the tags with the respective value on generating the Permalink for the Taxonmoies
+	 */
+	private function permalinks_customizer_replace_taxes_tags($term, $replace_tag) {
+				
+		if (strpos($replace_tag, "%name%") !== false ) {
+			$name = sanitize_title($term->name);
+			$replace_tag = str_replace('%name%', $name, $replace_tag);
+		}
+		
+		if (strpos($replace_tag, "%term_id%") !== false ) {
+			$replace_tag = str_replace('%term_id%', $term->term_id, $replace_tag);
+		}
+
+		if (strpos($replace_tag, "%slug%") !== false ) {
+			if (!empty($term->slug)) {
+         $replace_tag = str_replace('%slug%', $term->slug, $replace_tag);
+      } else {
+         $name = sanitize_title($term->name);
+         $replace_tag = str_replace('%slug%', $name, $replace_tag);
+      }
+		}
+
+		if (strpos($replace_tag, "%parent_slug%") !== false ) {
+			$parents = get_ancestors($term->term_id, $term->taxonomy, 'taxonomy');
+			$term_names = '';
+			if ($parents && !empty($parents) && count($parents) >= 1) {
+				$parent = get_term($parents[0]);
+				$term_names = $parent->slug.'/';
+			}
+			
+			if (!empty($term->slug)) {
+         $term_names .= $term->slug;
+      } else {
+         $title = sanitize_title($term->name);
+				 $term_names .=  $title;
+      }
+			
+			$replace_tag = str_replace('%parent_slug%', $term_names, $replace_tag);
+		}
+
+		if (strpos($replace_tag, "%all_parents_slug%") !== false ) {
+			$parents = get_ancestors($term->term_id, $term->taxonomy, 'taxonomy');
+			$term_names = '';
+			if ($parents && !empty($parents) && count($parents) >= 1) {
+				$i = count($parents) - 1;
+				for ($i; $i >= 0; $i--) {
+					$parent = get_term($parents[$i]);
+					$term_names .= $parent->slug.'/';
+				}
+			}
+
+			if (!empty($term->slug)) {
+         $term_names .= $term->slug;
+      } else {
+         $title = sanitize_title($term->name);
+				 $term_names .=  $title;
+      }
+
+			$replace_tag = str_replace('%all_parents_slug%', $term_names, $replace_tag);
+		}
+		
+		return $replace_tag;
+	}
+
 	/**
 	 * Save Permalink for the Term
 	 */

@@ -2,8 +2,6 @@
 
 ## Description
 
-This plugin is a fork of [Custom Permalink](https://wordpress.org/plugins/custom-permalinks/). It has some expanded bug patches and some features which were not in the [Custom Permalink](https://wordpress.org/plugins/custom-permalinks/).
-
 Customize your URL and set the slug. You can use basic keywords which is defined by the wordpress for defining the permalinks as well as someother new keywords which is defined by this plugin. All the keywords is defined on the Tags page under Permalinks Customizer.
 
 By using **Permalinks Customizer** you can set the permalinks for each post-type seperately. 
@@ -25,9 +23,11 @@ If you leave the some post-type fields empty. So, **Permalinks Customizer** woul
 
 ### How to Configure Permalinks Customizer
 
-> You can configure the plugin by going to the menu `Permalinks Customizer` that appears in your admin menu.<br><br>**OR**<br><br> You can directly access it from: http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-settings
+> You can configure the plugin by going to the menu `Permalinks Customizer` that appears in your admin menu.<br><br>**OR**<br><br> You can directly access it from: http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-posts-settings
 
 ## Structure Tags
+
+### Structure Tags for PostTypes
 
 * **%title%** : Title of the post. let's say the title is "This Is A Great Post!" so, it becomes this-is-a-great-post in the URI.
 * **%year%** : The year of the post, four digits, for example 2004.
@@ -38,11 +38,26 @@ If you leave the some post-type fields empty. So, **Permalinks Customizer** woul
 * **%second%** : Second of the minute, for example 33.
 * **%post_id%** : The unique ID # of the post, for example 423.
 * **%postname%** : A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So "This Is A Great Post!" becomes this-is-a-great-post in the URI.
+* **%postname%** : A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So "This Is A Great Post!" becomes this-is-a-great-post in the URI.
+* **%parent_postname%** : A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So "This Is A Great Post!" becomes this-is-a-great-post in the URI. This <strong>Tag</strong> contains Immediate <strong>Parent Page Slug</strong> if any parent page is selected before publishing.
 * **%category%** : A sanitized version of the category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI.
+* **%child-category%** : A sanitized version of the category name (category slug field on New/Edit Category panel).
 * **%product_cat%** : A sanitized version of the product category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI. <i>This <strong>tag</strong> is specially used for WooCommerce Products.</i>
 * **%author%** : A sanitized version of the author name.
+* **%author_firstname%** : A sanitized version of the author first name. If author first name is not available so, it uses the author\'s username.
+* **%author_lastname%** : A sanitized version of the author last name. If author last name is not available so, it uses the author\'s username.
+
 
 **Note**: *%postname%* is similar as of the *%title%* tag but the difference is that *%postname%* can only be set once whereas *%title%* can be changed. let's say the title is "This Is A Great Post!" so, it becomes "this-is-a-great-post" in the URI(At the first time, *%postname%* and *%title%* works same) but if you edit and change title let's say "This Is A WordPress Post!" so, *%postname%* in the URI remains same "this-is-a-great-post" whereas *%title%* in the URI becomes "this-is-a-wordpress-post"
+
+
+### Structure Tags for Taxonomies
+
+* **%name%** : Name of the Term/Category. let's say the name is "External API" so, it becomes external-api in the URI.
+* **%term_id%** : The unique ID # of the Term/Category, for example 423
+* **%slug%** : A sanitized version of the name of the Term/Category. So "External API" becomes external-api in the URI.
+* **%parent_slug%** : A sanitized version of the name of the Term/Category. So "External API" becomes external-api in the URI. This Tag contains Immediate Parent Term/Category Slug if any parent Term/Category is selected before adding it.
+* **%all_parents_slug%** : A sanitized version of the name of the Term/Category. So "External API" becomes external-api in the URI. This Tag contains all the Parent Term/Category Slug if any parent Term/Category is selected before adding it.
 
 **Be warned**: *This plugin is not a replacement for WordPress's built-in permalink system*. Check your WordPress administration's "Permalinks" settings page first, to make sure that this doesn't already meet your needs.
 

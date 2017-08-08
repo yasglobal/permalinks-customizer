@@ -46,8 +46,9 @@ class Permalinks_Customizer_Frontend {
 		}
 
 		$request_noslash = preg_replace('@/+@','/', trim($request, '/'));
-
-		$sql = $wpdb->prepare("SELECT $wpdb->posts.ID, $wpdb->postmeta.meta_value, $wpdb->posts.post_type, $wpdb->posts.post_status FROM $wpdb->posts  ".
+    
+    /** Deprecated Query **/
+    /* $sql = $wpdb->prepare("SELECT $wpdb->posts.ID, $wpdb->postmeta.meta_value, $wpdb->posts.post_type, $wpdb->posts.post_status FROM $wpdb->posts  ".
 						 "LEFT JOIN $wpdb->postmeta ON ($wpdb->posts.ID = $wpdb->postmeta.post_id) WHERE ".
 						 "  meta_key = 'permalink_customizer' AND ".
 						 "  meta_value != '' AND ".
@@ -60,7 +61,10 @@ class Permalinks_Customizer_Frontend {
 						 "$wpdb->posts.ID ASC  LIMIT 1",
 						 $request_noslash,
 						 $request_noslash."/"
-					 );
+					 ); */
+    /** Deprecated Query **/
+
+    $sql = $wpdb->prepare("SELECT p.ID as ID, pm.meta_value as meta_value, p.post_type as post_type, p.post_status as post_status FROM $wpdb->posts AS p, $wpdb->postmeta AS pm WHERE p.ID = pm.post_id AND pm.meta_key = 'permalink_customizer' AND (pm.meta_value = '%s' OR pm.meta_value = '%s') AND p.post_status != 'trash' AND p.post_type != 'nav_menu_item' LIMIT 1", $request_noslash, $request_noslash."/");
 		$posts = $wpdb->get_results($sql);
 		if ( $posts ) {
 			if ( $request_noslash == trim($posts[0]->meta_value,'/') ) 
@@ -85,9 +89,13 @@ class Permalinks_Customizer_Frontend {
 			$get_term_permalink = NULL;
 			if (is_array($taxonomy_term_data) && isset($taxonomy_term_data[0]->term_id)) {
 				$get_term_permalink = $this->permalinks_customizer_original_taxonomy_link($taxonomy_term_data[0]->term_id);
-				if ($get_term_permalink && $get_term_permalink != '')	
-					$original_url = str_replace(trim(strtolower($taxonomy_term_data[0]->meta_value),'/'), $get_term_permalink, strtolower($request_noslash));
-			}
+				if ($get_term_permalink && $get_term_permalink != '')	{
+          if ( $request_noslash == trim($taxonomy_term_data[0]->meta_value,'/') ) 
+                $_CPRegisteredURL = $request;
+
+          $original_url = str_replace(trim(strtolower($taxonomy_term_data[0]->meta_value),'/'), $get_term_permalink, trim(strtolower($request)));
+        }
+			} 
 
 			if ( $original_url === NULL && $get_term_permalink === NULL) {
 				$table = get_option('permalinks_customizer_table');

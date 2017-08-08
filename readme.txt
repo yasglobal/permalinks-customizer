@@ -6,7 +6,7 @@ License URI: http://www.gnu.org/licenses/gpl.html
 Tags: address, category, custom, custom permalink, custom post permalinks, link, permalink, rewrite slug, redirects, slug, tags, url, custom taxonomy
 Requires at least: 3.5
 Tested up to: 4.8
-Stable tag: 1.0.2
+Stable tag: 1.1
 
 Set permalinks for default post-type and custom post-type which can be changed from the single post edit page.
 
@@ -33,9 +33,9 @@ If you leave the some post-type fields empty. So, <strong>Permalinks Customizer<
 
 > <strong>How to Configure Permalinks Customizer</strong>
 > 
-> You can configure the plugin by going to the menu `Permalinks Customizer` that appears in your admin menu.<br><br><strong>                                   OR</strong><br><br> http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-settings
+> You can configure the plugin by going to the menu `Permalinks Customizer` that appears in your admin menu.<br><br><strong>                                   OR</strong><br><br> http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-posts-settings
 
-= Structure Tags =
+= Structure Tags for PostTypes =
 
 * <strong>%title%</strong> : Title of the post. let's say the title is "This Is A Great Post!" so, it becomes this-is-a-great-post in the URI.
 * <strong>%year%</strong> : The year of the post, four digits, for example 2004
@@ -57,6 +57,14 @@ If you leave the some post-type fields empty. So, <strong>Permalinks Customizer<
 
 <strong>Note</strong>: *%postname%* is similar as of the *%title%* tag but the difference is that *%postname%* can only be set once whereas *%title%* can be changed. let's say the title is "This Is A Great Post!" so, it becomes "this-is-a-great-post" in the URI(At the first time, *%postname%* and *%title%* works same) but if you edit and change title let's say "This Is A WordPress Post!" so, *%postname%* in the URI remains same "this-is-a-great-post" whereas *%title%* in the URI becomes "this-is-a-wordpress-post"
 
+= Structure Tags for Taxonomies =
+
+* <strong>%name%</strong> : Name of the Term/Category. let's say the name is "External API" so, it becomes external-api in the URI.
+* <strong>%term_id%</strong> : The unique ID # of the Term/Category, for example 423
+* <strong>%slug%</strong> : A sanitized version of the name of the Term/Category. So "External API" becomes external-api in the URI.
+* <strong>%parent_slug%</strong> : A sanitized version of the name of the Term/Category. So "External API" becomes external-api in the URI. This Tag contains Immediate Parent Term/Category Slug if any parent Term/Category is selected before adding it.
+* <strong>%all_parents_slug%</strong> : A sanitized version of the name of the Term/Category. So "External API" becomes external-api in the URI. This Tag contains all the Parent Term/Category Slug if any parent Term/Category is selected before adding it.
+
 <strong>Be warned:</strong> *This plugin is not a replacement for WordPress's built-in permalink system*. Check your WordPress administration's "Permalinks" settings page first, to make sure that this doesn't already meet your needs.
 
 == Installation ==
@@ -67,11 +75,17 @@ If you leave the some post-type fields empty. So, <strong>Permalinks Customizer<
 
 == Screenshots ==
 
-* Permalinks can be set for each and every post type from [here](http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-settings). The empty permalink field for the post-type will use the Wordpress Permalink Settings.
+* Permalinks can be set for each and every PostType from [here](http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-posts-settings). The empty permalink field for the PostType will use the Wordpress Permalink Settings.
 
-* All the available tags which can be used for defining the permalinks are listed here. Some of the tags are defined here may only be use with [Permalinks Customizer](https://wordpress.org/plugins/permalinks-customizer/) plugin only. 
+* All the available tags which can be used for defining the permalinks for PostTypes are listed [here](http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-post-tags). Some of the tags are defined here may only be use with [Permalinks Customizer](https://wordpress.org/plugins/permalinks-customizer/) plugin only. 
 
 * Permalinks can easily be changed for the single post from its post edit page.
+
+* Permalinks can be set for each and every Taxonomies from [here](http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-taxonomies-settings). The empty permalink field for the taxonomy would not create teh permalink for it.
+
+* All the available tags which can be used for defining the permalinks for Taxonomies are listed [here](http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-taxonomy-tags). These tags may work with this Plugin Only.
+
+* Permalinks can easily be changed for the single Term from its Term edit page.
 
 * You can easily convert the custom permalink URLs to permalink customizer URLs by going on [permalinks settings page](http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-convert-url)
 
@@ -89,6 +103,10 @@ A. Yes, you can use all the tags as defined on the [Permalinks Customizer page](
 A. No, This plugin does not work with [custom permalinks](https://wordpress.org/plugins/custom-permalinks/).
 
 == Changelog ==
+
+= 1.1
+
+  * Added Functionality to create Permalinks automtically on Creating the Term (Default + Custom Taxonomies) and updated DB Query for PostTypes
 
 = 1.0.2
 
