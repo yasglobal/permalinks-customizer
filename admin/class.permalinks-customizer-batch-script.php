@@ -30,7 +30,7 @@ class Permalinks_Customizer_Batch_Script {
 				?>
 				<script type="text/javascript">
 					jQuery(document).ready(function($) {
-						$.post( ajaxurl, { action: 'permalinks-customizer-convert-url', processing: '<?php echo $step; ?>', limit: '<?php echo absint( $_GET["limit"] ); ?>'}, function(res){
+						$.post( ajaxurl, { action: 'permalinks-customizer-convert-url', processing: '<?php echo $step; ?>', limit: '<?php echo absint( $_GET["limit"] ); ?>'}, function(res) {
 							var step = '<?php echo $step; ?>';
 							var total = '<?php echo $steps; ?>';
 							if ( step == total ) {
@@ -51,16 +51,16 @@ class Permalinks_Customizer_Batch_Script {
 				</script>
 			<?php } 
 		} else { 
-			if( $_GET["no-permalink"] == 1 ) {
+			if ( $_GET["no-permalink"] == 1 ) {
 				$completed = $_GET["processed"] - 1;
 				$cat_data = $wpdb->get_row( "SELECT option_id from $wpdb->options where option_name LIKE '%custom_permalink_table%' " );
-				if( isset($cat_data) && !empty($cat_data)) {
+				if ( isset($cat_data) && !empty($cat_data)) {
 					$wpdb->query( $wpdb->prepare( "UPDATE $wpdb->options SET option_name = 'permalinks_customizer_table' where option_id = %d ", $cat_data->option_id) );
 				}
 				echo '<div class="updated"><p>'. $completed .' <strong>Custom Permalink</strong> have been converted to <strong>Permalink Customizer</strong> successfully.</p></div>';
-			} elseif( $_GET["processed"] > 0 ) {
+			} else if ( $_GET["processed"] > 0 ) {
 				$cat_data = $wpdb->get_row( "SELECT option_id from $wpdb->options where option_name LIKE '%custom_permalink_table%' " );
-				if( isset($cat_data) && !empty($cat_data)) {
+				if ( isset($cat_data) && !empty($cat_data)) {
 					$wpdb->query( $wpdb->prepare( "UPDATE $wpdb->options SET option_name = 'permalinks_customizer_table' where option_id = %d ", $cat_data->option_id) );
 				}
 				echo '<div class="updated"><p>'. $_GET["processed"] .' <strong>Custom Permalink</strong> have been converted to <strong>Permalink Customizer</strong> successfully.</p></div>';

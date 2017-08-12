@@ -49,15 +49,12 @@ class Permalinks_Customizer_Form {
 		}
 		
 		$permalink_edit_value = htmlspecialchars($permalink ? urldecode($permalink) : urldecode($original));
-		$permalink_edit_color = "";
-		if ( !$permalink )
-			$permalink_edit_color = "color: #ddd;";
 
 		$original_permalink = htmlspecialchars(urldecode($original));
 
 		$permalink_edit_field = home_url() .'/
 														<span id="editable-post-name" title="Click to edit this part of the permalink">
-															<input type="text" id="new-post-slug" class="text" value="'. $permalink_edit_value .'" style="width: 250px; '. $permalink_edit_color  .'" onfocus="focusPermalinkField()" onblur="blurPermalinkField()"/>
+															<input type="text" id="new-post-slug" class="text" value="'. $permalink_edit_value .'" style="width: 250px; color: #ddd;" onfocus="focusPermalinkField()" onblur="blurPermalinkField()"/>
 															<input type="hidden" value="'. $original_permalink .'" id="original_permalink"/>
 														</span>';
 		echo apply_filters('edit_permalink_field', $permalink_edit_field);
@@ -66,13 +63,12 @@ class Permalinks_Customizer_Form {
 						var newPostSlug = document.getElementById("new-post-slug"),
 								originalPermalink = document.getElementById("original_permalink");
 						function focusPermalinkField() {
-							console.log("a");
 							if (!newPostSlug) return;
-							if ( newPostSlug.style.color == "#ddd" ) { newPostSlug.style.color = "#000"; }
+							newPostSlug.style.color = "#000";
 						}
 
 						function blurPermalinkField() {
-							if (!newPostSlug) return;							
+							if (!newPostSlug) return;					
 							document.getElementById("permalinks_customizer").value = newPostSlug.value;
 							if ( newPostSlug.value == "" || newPostSlug.value == originalPermalink.value ) {
 								newPostSlug.value = originalPermalink.value;
@@ -101,7 +97,7 @@ class Permalinks_Customizer_Form {
 		<?php
 		$content = ob_get_contents();
 		ob_end_clean();
-		if( $post->post_type == 'attachment' || $post->ID == get_option('page_on_front') ){
+		if ( $post->post_type == 'attachment' || $post->ID == get_option('page_on_front') ) {
 			return $html;
 		}
 		if ( 'publish' == $post->post_status ) {
@@ -153,7 +149,7 @@ class Permalinks_Customizer_Form {
 	 */
 	public function permalinks_customizer_customization($post_id, $post, $update) {
 
-		if(!$_REQUEST['permalinks_customizer_edit'] || $_REQUEST['permalinks_customizer_edit'] != true) 
+		if (!$_REQUEST['permalinks_customizer_edit'] || $_REQUEST['permalinks_customizer_edit'] != true) 
 			return;
 
 		if ( $post_id == get_option('page_on_front') ) {
@@ -162,125 +158,151 @@ class Permalinks_Customizer_Form {
 		}
 
 		$get_permalink = esc_attr( get_option('permalinks_customizer_'.$post->post_type) );
-		if(empty($get_permalink)) 
+		if (empty($get_permalink)) 
 			$get_permalink = esc_attr( get_option('permalink_structure') );
 		
-		if ($post->post_status == 'publish') {
-			$url = get_post_meta($post_id, 'permalink_customizer');
-			if (empty($url)) {
-				$set_permalink = $this->permalinks_customizer_replace_tags($post_id, $post, $get_permalink);
-				global $wpdb;
-				$permalink = $set_permalink;
-				$trailing_slash = substr($permalink, -1);
-				if ($trailing_slash == '/') {
-					$permalink = rtrim($permalink, '/');
-					$set_permalink = rtrim($set_permalink, '/');
-				}
-				$qry = "SELECT * FROM $wpdb->postmeta WHERE meta_key = 'permalink_customizer' AND meta_value = '".$permalink."' AND post_id != ".$post_id." OR meta_key = 'permalink_customizer' AND meta_value = '".$permalink."/' AND post_id != ".$post_id." LIMIT 1";
-				$check_exist_url = $wpdb->get_results($qry);
-				if (!empty($check_exist_url)) {
-					$i = 2;
-					while (1) {
-						$permalink = $set_permalink.'-'.$i;
-						$qry = "SELECT * FROM $wpdb->postmeta WHERE meta_key = 'permalink_customizer' AND meta_value = '".$permalink."' AND post_id != ".$post_id." OR meta_key = 'permalink_customizer' AND meta_value = '".$permalink."/' AND post_id != ".$post_id." LIMIT 1";
-						$check_exist_url = $wpdb->get_results($qry);
-						if(empty($check_exist_url)) break;
-						$i++;
-					}
-				}
-				
-				if ($trailing_slash == '/') 
-					$permalink = $permalink.'/';
-				
-				if(strpos($permalink, "/") == 0)
-					$permalink = substr($permalink, 1);
+    $url = get_post_meta($post_id, 'permalink_customizer', true);
+		$permalink_status = get_post_meta($post_id, 'permalink_customizer_regenerate_status', true);
 
-				update_post_meta($post_id, 'permalink_customizer', $permalink);
+    if ( (empty($url) && $post->post_status != 'trash' && $post->post_status != 'inherit') || 
+         (!empty($url) && $url == $_REQUEST['permalinks_customizer'] && isset($permalink_status) && $permalink_status == 0 && $post->post_status != 'trash' && $post->post_status != 'inherit') ) {
+
+      $set_permalink = $this->permalinks_customizer_replace_tags($post_id, $post, $get_permalink);
+      
+			global $wpdb;
+      $permalink = $set_permalink;
+      $trailing_slash = substr($permalink, -1);
+      if ($trailing_slash == '/') {
+        $permalink = rtrim($permalink, '/');
+        $set_permalink = rtrim($set_permalink, '/');
+      }
+      $qry = "SELECT * FROM $wpdb->postmeta WHERE meta_key = 'permalink_customizer' AND meta_value = '".$permalink."' AND post_id != ".$post_id." OR meta_key = 'permalink_customizer' AND meta_value = '".$permalink."/' AND post_id != ".$post_id." LIMIT 1";
+      $check_exist_url = $wpdb->get_results($qry);
+      if (!empty($check_exist_url)) {
+        $i = 2;
+        while (1) {
+          $permalink = $set_permalink.'-'.$i;
+          $qry = "SELECT * FROM $wpdb->postmeta WHERE meta_key = 'permalink_customizer' AND meta_value = '".$permalink."' AND post_id != ".$post_id." OR meta_key = 'permalink_customizer' AND meta_value = '".$permalink."/' AND post_id != ".$post_id." LIMIT 1";
+          $check_exist_url = $wpdb->get_results($qry);
+          if (empty($check_exist_url)) break;
+          $i++;
+        }
+      }
+      
+      if ($trailing_slash == '/') 
+        $permalink = $permalink.'/';
+      
+      if (strpos($permalink, "/") == 0)
+        $permalink = substr($permalink, 1);
+			
+			$permalink = preg_replace("/(\/+)/", "/", $permalink);
+			$permalink = preg_replace("/(\-+)/", "-", $permalink);
+      update_post_meta($post_id, 'permalink_customizer', $permalink);
+			if ($post->post_status == 'publish') {
+        // permalink_customizer_regenerate_status = 1 means Permalink won't be generated again on updating the post
+				update_post_meta($post_id, 'permalink_customizer_regenerate_status', 1); 
 			} else {
-				update_post_meta($post_id, 'permalink_customizer', $_REQUEST['permalinks_customizer']);
+        // permalink_customizer_regenerate_status = 0 means Permalink will be generated again on updating the post
+				update_post_meta($post_id, 'permalink_customizer_regenerate_status', 0); 
 			}
-		} else {
-			$this->permalinks_customizer_delete_permalink($post_id);
-		}
+    } else if (isset($_REQUEST['permalinks_customizer']) && !empty($_REQUEST['permalinks_customizer']) && $url != $_REQUEST['permalinks_customizer'] && $post->post_status != 'inherit') {
+			$permalink = $_REQUEST['permalinks_customizer'];
+			$permalink = preg_replace("/(\/+)/", "/", $permalink);
+			$permalink = preg_replace("/(\-+)/", "-", $permalink);
+      update_post_meta($post_id, 'permalink_customizer', $permalink);
+      // permalink_customizer_regenerate_status = 1 means Permalink won't be generated again on updating the post (Once, user changed it)
+      update_post_meta($post_id, 'permalink_customizer_regenerate_status', 1); 
+    }
 	}
 
 	/**
 	 * Replace the tags with the respective value on generating the Permalink for the Post types
 	 */
 	private function permalinks_customizer_replace_tags($post_id, $post, $replace_tag) {
-		
+
 		$date = new DateTime($post->post_date);
-		
+
+		// Replace %title% with the respective Sanitize Value of the Title
 		if (strpos($replace_tag, "%title%") !== false ) {
 			$title = sanitize_title($post->post_title);
 			$replace_tag = str_replace('%title%', $title, $replace_tag);
 		}
-		
+
+		// Replace %year% with the respective post publish date year
 		if (strpos($replace_tag, "%year%") !== false ) {
 			$year = $date->format('Y');
 			$replace_tag = str_replace('%year%', $year, $replace_tag);
 		}
-		
+
+		// Replace %monthnum% with the respective post publish date month number
 		if (strpos($replace_tag, "%monthnum%") !== false ) {
 			$month = $date->format('m');
 			$replace_tag = str_replace('%monthnum%', $month, $replace_tag);
 		}
-		
+
+		// Replace %day% with the respective post publish date day
 		if (strpos($replace_tag, "%day%") !== false ) {
 			$day = $date->format('d');
 			$replace_tag = str_replace('%day%', $day, $replace_tag);
 		}
-		
+
+		// Replace %hour% with the respective post publish date hour
 		if (strpos($replace_tag, "%hour%") !== false ) {
 			$hour = $date->format('H');
 			$replace_tag = str_replace('%hour%', $hour, $replace_tag);
 		}
-		
+
+		// Replace %minute% with the respective post publish date minute
 		if (strpos($replace_tag, "%minute%") !== false ) {
 			$minute = $date->format('i');
 			$replace_tag = str_replace('%minute%', $minute, $replace_tag);
 		}
-		
+
+		// Replace %second% with the respective post publish date second
 		if (strpos($replace_tag, "%second%") !== false ) {
 			$second = $date->format('s');
 			$replace_tag = str_replace('%second%', $second, $replace_tag);
 		}
-		
+
+		// Replace %post_id% with the respective post id
 		if (strpos($replace_tag, "%post_id%") !== false ) {
 			$replace_tag = str_replace('%post_id%', $post_id, $replace_tag);
 		}
 
+		// Replace %postname% with the respective post name
 		if (strpos($replace_tag, "%postname%") !== false ) {
 			if (!empty($post->post_name)) {
-         $replace_tag = str_replace('%postname%', $post->post_name, $replace_tag);
-      } else {
-         $title = sanitize_title($post->post_title);
-         $replace_tag = str_replace('%postname%', $title, $replace_tag);
-      }
+				 $replace_tag = str_replace('%postname%', $post->post_name, $replace_tag);
+			} else {
+				 $title = sanitize_title($post->post_title);
+				 $replace_tag = str_replace('%postname%', $title, $replace_tag);
+			}
 		}
 
+		// Replace %parent_postname% with the respective post name with the parent post name if parent post is selected
 		if (strpos($replace_tag, "%parent_postname%") !== false ) {
 			$parents = get_ancestors($post_id, $post->post_type, 'post_type');
 			$postnames = '';
-			if ($parents && !empty($parents) && count($parents) >= 1) {
+			if ($parents && is_array($parents) && !empty($parents) && count($parents) >= 1) {
 				$parent = get_post($parents[0]);
 				$postnames = $parent->post_name.'/';
 			}
 			
 			if (!empty($post->post_name)) {
-         $postnames .= $post->post_name;
-      } else {
-         $title = sanitize_title($post->post_title);
+				 $postnames .= $post->post_name;
+			} else {
+				 $title = sanitize_title($post->post_title);
 				 $postnames .=  $title;
-      }
+			}
 			
 			$replace_tag = str_replace('%parent_postname%', $postnames, $replace_tag);
 		}
 
+		// Replace %all_parents_postname% with the respective post name with the parents post name if parent post is selected 
 		if (strpos($replace_tag, "%all_parents_postname%") !== false ) {
 			$parents = get_ancestors($post_id, $post->post_type, 'post_type');
 			$postnames = '';
-			if ($parents && !empty($parents) && count($parents) >= 1) {
+			if ($parents && is_array($parents) && !empty($parents) && count($parents) >= 1) {
 				$i = count($parents) - 1;
 				for ($i; $i >= 0; $i--) {
 					$parent = get_post($parents[$i]);
@@ -289,61 +311,65 @@ class Permalinks_Customizer_Form {
 			}
 
 			if (!empty($post->post_name)) {
-         $postnames .= $post->post_name;
-      } else {
-         $title = sanitize_title($post->post_title);
+				 $postnames .= $post->post_name;
+			} else {
+				 $title = sanitize_title($post->post_title);
 				 $postnames .=  $title;
-      }
+			}
 
 			$replace_tag = str_replace('%all_parents_postname%', $postnames, $replace_tag);
 		}
 
+		// Replace %category% with the respective post category with their parent categories
 		if (strpos($replace_tag, "%category%") !== false ) {
 			$categories = get_the_category($post_id);
 			$total_cat = count($categories);
 			$tid = 1;
-			if ($total_cat > 0) {
+			if ($total_cat > 0 && is_array($categories)) {
 				 $tid = '';
 				 foreach ($categories as $cat) {
-						if($cat->term_id < $tid || empty($tid)) {
+						if ($cat->term_id < $tid || empty($tid)) {
 							 $tid = $cat->term_id;
 							 $pid = '';
-							 if(!empty($cat->parent)) {
+							 if (!empty($cat->parent)) {
 									$pid = $cat->parent;
 							 }
 						}
 				 }
 			}
 			$term_category = get_term($tid);
-			$category = $term_category->slug;
+			$category = is_object($term_category) ? $term_category->slug : '';
 			if (!empty($pid)) {
 				 $parent_category = get_term($pid);
-				 $category = $parent_category->slug.'/'.$category;
+				 $category = is_object($parent_category) ? $parent_category->slug.'/'.$category : '';
 			}
 			$replace_tag = str_replace('%category%', $category, $replace_tag);
 		}
+
+		// Replace %child-category% with the respective post category
 		if (strpos($replace_tag, "%child-category%") !== false ) {
 			$categories = get_the_category($post_id);
 			$total_cat = count($categories);
 			$tid = 1;
-			if ($total_cat > 0){
+			if ($total_cat > 0 && is_array($categories)) {
 				 $tid = '';
 				 foreach($categories as $cat) {
-						if($cat->term_id < $tid || empty($tid)) {
+						if ($cat->term_id < $tid || empty($tid)) {
 							 $tid = $cat->term_id;
 						}
 				 }
 			}
 			$term_category = get_term($tid);
-			$category = $term_category->slug;
+			$category = is_object($term_category) ? $term_category->slug : '';
 			$replace_tag = str_replace('%child-category%', $category, $replace_tag);
 		}
 
+		// Replace %product_cat% with the respective post (Product Category). Used with WooCommerce
 		if (strpos($replace_tag, "%product_cat%") !== false ) {
 			$categories = get_the_terms($post_id, 'product_cat');
 			$total_cat = count($categories);
 			$tid = 1;
-			if ($total_cat > 0){
+			if ($total_cat > 0 && is_array($categories)) {
 				 $tid = '';
 				 foreach ($categories as $cat) {
 						if ($cat->term_id < $tid || empty($tid)) {
@@ -356,19 +382,21 @@ class Permalinks_Customizer_Form {
 				 }         
 			}
 			$term_category = get_term($tid);
-			$category = $term_category->slug;
+			$category = is_object($term_category) ? $term_category->slug : '';
 			if (!empty($pid)) {
 				 $parent_category = get_term($pid);
-				 $category = $parent_category->slug.'/'.$category;
+				 $category = is_object($parent_category) ? $parent_category->slug.'/'.$category : $category;
 			}
 			$replace_tag = str_replace('%product_cat%', $category, $replace_tag);
 		}
-		
+
+		// Replace %author% with the author of the respective post
 		if (strpos($replace_tag, "%author%") !== false ) {
 			$author = get_the_author_meta( 'user_login', $post->post_author );
 			$replace_tag = str_replace('%author%', $author, $replace_tag);
 		}
-		
+
+		// Replace %author_firstname% with the first name of author of the respective post
 		if (strpos($replace_tag, "%author_firstname%") !== false ) {
 			$author_firstname = get_the_author_meta( 'first_name', $post->post_author );
 			if ($author_firstname && !empty($author_firstname)) {
@@ -380,7 +408,8 @@ class Permalinks_Customizer_Form {
 				$replace_tag = str_replace('%author_firstname%', $author, $replace_tag); 
 			}
 		}
-		
+
+		// Replace %author_lastname% with the lastname of author of the respective post
 		if (strpos($replace_tag, "%author_lastname%") !== false ) {
 			$author_lastname = get_the_author_meta( 'last_name', $post->post_author );
 			if ($author_lastname && !empty($author_lastname)) {
@@ -392,7 +421,7 @@ class Permalinks_Customizer_Form {
 				$replace_tag = str_replace('%author_lastname%', $author, $replace_tag); 
 			}
 		}
-		
+
 		return $replace_tag;
 	}
 	
@@ -516,7 +545,7 @@ class Permalinks_Customizer_Form {
 						$permalink = $set_permalink.'-'.$i;
 						$qry = "SELECT * FROM $wpdb->termmeta WHERE meta_key = 'permalink_customizer' AND meta_value = '".$permalink."' AND term_id != ".$term->term_id." OR meta_key = 'permalink_customizer' AND meta_value = '".$permalink."/' AND term_id != ".$term->term_id." LIMIT 1";
 						$check_exist_url = $wpdb->get_results($qry);
-						if(empty($check_exist_url)) break;
+						if (empty($check_exist_url)) break;
 						$i++;
 					}
 				}
@@ -524,7 +553,7 @@ class Permalinks_Customizer_Form {
 				if ($trailing_slash == '/') 
 					$permalink = $permalink.'/';
 				
-				if(strpos($permalink, "/") == 0)
+				if (strpos($permalink, "/") == 0)
 					$permalink = substr($permalink, 1);				
 			} 
 			update_term_meta($term->term_id, 'permalink_customizer', $permalink);

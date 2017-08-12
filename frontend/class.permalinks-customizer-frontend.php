@@ -47,24 +47,8 @@ class Permalinks_Customizer_Frontend {
 
 		$request_noslash = preg_replace('@/+@','/', trim($request, '/'));
     
-    /** Deprecated Query **/
-    /* $sql = $wpdb->prepare("SELECT $wpdb->posts.ID, $wpdb->postmeta.meta_value, $wpdb->posts.post_type, $wpdb->posts.post_status FROM $wpdb->posts  ".
-						 "LEFT JOIN $wpdb->postmeta ON ($wpdb->posts.ID = $wpdb->postmeta.post_id) WHERE ".
-						 "  meta_key = 'permalink_customizer' AND ".
-						 "  meta_value != '' AND ".
-						 "  ( LOWER(meta_value) = LEFT(LOWER('%s'), LENGTH(meta_value)) OR ".
-						 "    LOWER(meta_value) = LEFT(LOWER('%s'), LENGTH(meta_value)) ) ".
-						 "  AND post_status != 'trash' AND post_type != 'nav_menu_item'".
-						 " ORDER BY LENGTH(meta_value) DESC, ".
-						 " FIELD(post_status,'publish','private','draft','auto-draft','inherit'),".
-						 " FIELD(post_type,'post','page'),".
-						 "$wpdb->posts.ID ASC  LIMIT 1",
-						 $request_noslash,
-						 $request_noslash."/"
-					 ); */
-    /** Deprecated Query **/
+    $sql = $wpdb->prepare("SELECT p.ID as ID, pm.meta_value as meta_value, p.post_type as post_type, p.post_status as post_status FROM $wpdb->posts AS p, $wpdb->postmeta AS pm WHERE p.ID = pm.post_id AND pm.meta_key = 'permalink_customizer' AND ( LOWER(meta_value) = LEFT(LOWER('%s'), LENGTH(meta_value)) OR LOWER(meta_value) = LEFT(LOWER('%s'), LENGTH(meta_value)) ) AND p.post_status != 'trash' AND p.post_type != 'nav_menu_item' LIMIT 1", $request_noslash, $request_noslash."/");
 
-    $sql = $wpdb->prepare("SELECT p.ID as ID, pm.meta_value as meta_value, p.post_type as post_type, p.post_status as post_status FROM $wpdb->posts AS p, $wpdb->postmeta AS pm WHERE p.ID = pm.post_id AND pm.meta_key = 'permalink_customizer' AND (pm.meta_value = '%s' OR pm.meta_value = '%s') AND p.post_status != 'trash' AND p.post_type != 'nav_menu_item' LIMIT 1", $request_noslash, $request_noslash."/");
 		$posts = $wpdb->get_results($sql);
 		if ( $posts ) {
 			if ( $request_noslash == trim($posts[0]->meta_value,'/') ) 
@@ -326,7 +310,7 @@ class Permalinks_Customizer_Frontend {
 			return $string;
 
 		if ( trim($_CPRegisteredURL,'/') == trim($request,'/') ) {
-			if ( isset($url['path']) ){
+			if ( isset($url['path']) ) {
 				return ($string{0} == '/' ? '/' : '') . trailingslashit($url['path']) . $_CPRegisteredURL;
 			} else {
 				return ($string{0} == '/' ? '/' : '') . $_CPRegisteredURL;

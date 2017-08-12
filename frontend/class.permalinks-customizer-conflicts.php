@@ -18,7 +18,7 @@ class Permalinks_Customizer_Conflicts {
       $polylang_config = get_option('polylang');
       if ($polylang_config['force_lang'] == 1) {
 
-        if(strpos($requested_url, 'language/') !== false)
+        if (strpos($requested_url, 'language/') !== false)
           $requested_url = str_replace("language/", "", $requested_url);
         
         $remove_lang = ltrim(strstr($requested_url, '/'), '/');

@@ -1,12 +1,12 @@
 === Permalinks Customizer ===
-Contributors: aliya-yasir, sasiddiqui, yasglobal
+Contributors: aliya-yasir, sasiddiqui
 Donate link: https://www.paypal.me/yasglobal
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: address, category, custom, custom permalink, custom post permalinks, link, permalink, rewrite slug, redirects, slug, tags, url, custom taxonomy
 Requires at least: 3.5
 Tested up to: 4.8
-Stable tag: 1.1
+Stable tag: 1.2
 
 Set permalinks for default post-type and custom post-type which can be changed from the single post edit page.
 
@@ -35,7 +35,9 @@ If you leave the some post-type fields empty. So, <strong>Permalinks Customizer<
 > 
 > You can configure the plugin by going to the menu `Permalinks Customizer` that appears in your admin menu.<br><br><strong>                                   OR</strong><br><br> http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-posts-settings
 
-= Structure Tags for PostTypes =
+== Structure Tags ==
+
+=== Tags for PostTypes ===
 
 * <strong>%title%</strong> : Title of the post. let's say the title is "This Is A Great Post!" so, it becomes this-is-a-great-post in the URI.
 * <strong>%year%</strong> : The year of the post, four digits, for example 2004
@@ -57,7 +59,7 @@ If you leave the some post-type fields empty. So, <strong>Permalinks Customizer<
 
 <strong>Note</strong>: *%postname%* is similar as of the *%title%* tag but the difference is that *%postname%* can only be set once whereas *%title%* can be changed. let's say the title is "This Is A Great Post!" so, it becomes "this-is-a-great-post" in the URI(At the first time, *%postname%* and *%title%* works same) but if you edit and change title let's say "This Is A WordPress Post!" so, *%postname%* in the URI remains same "this-is-a-great-post" whereas *%title%* in the URI becomes "this-is-a-wordpress-post"
 
-= Structure Tags for Taxonomies =
+=== Tags for Taxonomies ===
 
 * <strong>%name%</strong> : Name of the Term/Category. let's say the name is "External API" so, it becomes external-api in the URI.
 * <strong>%term_id%</strong> : The unique ID # of the Term/Category, for example 423
@@ -103,6 +105,10 @@ A. Yes, you can use all the tags as defined on the [Permalinks Customizer page](
 A. No, This plugin does not work with [custom permalinks](https://wordpress.org/plugins/custom-permalinks/).
 
 == Changelog ==
+
+= 1.2
+  
+  * Resolved issues with AMP Pages and Added Functionality to regenerate the Permalinks until you publish the post/page or updated the permalink manually
 
 = 1.1
 

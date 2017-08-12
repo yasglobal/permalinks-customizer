@@ -32,7 +32,7 @@ class Permalinks_Customizer_Admin {
 	public function register_permalinks_customizer_settings() {
 		$post_types = get_post_types( '', 'names' );
 		foreach ( $post_types as $post_type ) {
-			if( $post_type == 'revision' || $post_type == 'nav_menu_item' || $post_type == 'attachment' ){
+			if ( $post_type == 'revision' || $post_type == 'nav_menu_item' || $post_type == 'attachment' ) {
 				continue;
 			}
 			register_setting( 'permalinks-customizer-settings-group', 'permalinks_customizer_'.$post_type);
@@ -55,7 +55,7 @@ class Permalinks_Customizer_Admin {
 		do_settings_sections( 'permalinks-customizer-settings-group' );
 		echo '<table class="form-table">';
 		foreach ( $post_types as $post_type ) {
-			if( $post_type->name == 'revision' || $post_type->name == 'nav_menu_item' || $post_type->name == 'attachment' ){
+			if ( $post_type->name == 'revision' || $post_type->name == 'nav_menu_item' || $post_type->name == 'attachment' ) {
 				continue;
 			}
 			$perm_struct = 'permalinks_customizer_'.$post_type->name;
