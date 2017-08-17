@@ -50,6 +50,7 @@ class Permalinks_Customizer_Frontend {
     $sql = $wpdb->prepare("SELECT p.ID as ID, pm.meta_value as meta_value, p.post_type as post_type, p.post_status as post_status FROM $wpdb->posts AS p, $wpdb->postmeta AS pm WHERE p.ID = pm.post_id AND pm.meta_key = 'permalink_customizer' AND meta_value != '' AND ( LOWER(meta_value) = LEFT(LOWER('%s'), LENGTH(meta_value)) OR LOWER(meta_value) = LEFT(LOWER('%s'), LENGTH(meta_value)) ) AND p.post_status != 'trash' AND p.post_type != 'nav_menu_item' ORDER BY LENGTH(meta_value) DESC, p.ID LIMIT 1", $request_noslash, $request_noslash."/");
 
 		$posts = $wpdb->get_results($sql);
+
 		if ( $posts ) {
 			if ( $request_noslash == trim($posts[0]->meta_value,'/') ) 
 				$_CPRegisteredURL = $request;
@@ -57,9 +58,11 @@ class Permalinks_Customizer_Frontend {
 			if ( $posts[0]->post_status == 'draft' ) {
 				if ( $posts[0]->post_type == 'page' ) {
 					$original_url = "?page_id=" . $posts[0]->ID;
-				} else {
+				} else if ( $posts[0]->post_type == 'post' ) {
 					$original_url = "?p=" . $posts[0]->ID;
-				}
+				} else {
+          $original_url = "?post_type=" . $posts[0]->post_type . "&p=" . $posts[0]->ID;
+        }
 			} else {
 				$original_url = preg_replace( '@/+@', '/', str_replace( trim( strtolower($posts[0]->meta_value),'/' ),
 											( $posts[0]->post_type == 'page' ? $this->permalinks_customizer_original_page_link($posts[0]->ID) : $this->permalinks_customizer_original_post_link($posts[0]->ID) ), strtolower($request_noslash) ) );
@@ -73,7 +76,7 @@ class Permalinks_Customizer_Frontend {
 			$get_term_permalink = NULL;
 			if (is_array($taxonomy_term_data) && isset($taxonomy_term_data[0]->term_id)) {
 				$get_term_permalink = $this->permalinks_customizer_original_taxonomy_link($taxonomy_term_data[0]->term_id);
-				if ($get_term_permalink && $get_term_permalink != '')	{
+				if (isset($get_term_permalink) && $get_term_permalink != '')	{
           if ( $request_noslash == trim($taxonomy_term_data[0]->meta_value,'/') ) 
                 $_CPRegisteredURL = $request;
 

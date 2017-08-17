@@ -149,7 +149,7 @@ class Permalinks_Customizer_Form {
 	 */
 	public function permalinks_customizer_customization($post_id, $post, $update) {
 
-		if (!$_REQUEST['permalinks_customizer_edit'] || $_REQUEST['permalinks_customizer_edit'] != true) 
+		if (!isset($_REQUEST['permalinks_customizer_edit']) || $_REQUEST['permalinks_customizer_edit'] != true) 
 			return;
 
 		if ( $post_id == get_option('page_on_front') ) {

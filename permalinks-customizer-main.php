@@ -16,7 +16,7 @@ if ( !function_exists("add_action") || !function_exists("add_filter") ) {
 	exit();
 }
 
-define('PERMALINKS_CUSTOMIZER_PLUGIN_VERSION', '1.2.1');
+define('PERMALINKS_CUSTOMIZER_PLUGIN_VERSION', '1.2.2');
 
 if ( !defined('PERMALINKS_CUSTOMIZER_PATH') ) {
 	define('PERMALINKS_CUSTOMIZER_PATH', plugin_dir_path( __FILE__ ));
@@ -44,7 +44,7 @@ if ( is_admin() ) {
  * Plugin Settings Page Link on the Plugin Page under the Plugin Name
  */
 function permalinks_customizer_settings_link($links) { 
-	$settings_link = '<a href="admin.php?page=permalinks-customizer-settings">Settings</a>'; 
+	$settings_link = '<a href="admin.php?page=permalinks-customizer-posts-settings">Settings</a>'; 
 	array_unshift($links, $settings_link); 
 	return $links; 
 }
