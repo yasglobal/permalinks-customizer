@@ -25,7 +25,7 @@ class Permalinks_Customizer_Form {
 
 		add_action( 'update_option_page_on_front', array($this, 'permalinks_customizer_static_page'), 10, 2 );
 	}
-	
+
 	/**
 	 * Generate Form for editing the Permalinks for Post/Pages/Categories
 	 */
@@ -116,7 +116,7 @@ class Permalinks_Customizer_Form {
 		return '<strong>' . __('Permalink:', 'permalinks-customizer') . "</strong>\n" . $content .
 				 ( isset($view_post) ? "<span id='view-post-btn'><a href='$permalink' class='button button-small' target='_blank'>$view_post</a></span>\n" : "" );
 	}
-	
+
 	/**
 	 *
 	 */
@@ -157,62 +157,68 @@ class Permalinks_Customizer_Form {
 			return;
 		}
 
-		$get_permalink = esc_attr( get_option('permalinks_customizer_'.$post->post_type) );
-		if (empty($get_permalink)) 
-			$get_permalink = esc_attr( get_option('permalink_structure') );
-		
-    $url = get_post_meta($post_id, 'permalink_customizer', true);
+		$post_status = $post->post_status;
+		if ($post_status == 'inherit') {
+			$post_id = $post->post_parent;			
+			$post = '';
+			$post = get_post($post_id);
+		} 
+
+		$url = get_post_meta($post_id, 'permalink_customizer', true);
 		$permalink_status = get_post_meta($post_id, 'permalink_customizer_regenerate_status', true);
 
-    if ( (empty($url) && $post->post_status != 'trash' && $post->post_status != 'inherit') || 
-         (!empty($url) && $url == $_REQUEST['permalinks_customizer'] && isset($permalink_status) && $permalink_status == 0 && $post->post_status != 'trash' && $post->post_status != 'inherit') ) {
+		if ( (empty($url) && $post_status != 'trash') || (!empty($url) && $url == $_REQUEST['permalinks_customizer'] && isset($permalink_status) && $permalink_status != '' && $permalink_status != 1 && $post_status != 'trash') ) {
 
-      $set_permalink = $this->permalinks_customizer_replace_tags($post_id, $post, $get_permalink);
-      
+			$get_permalink = esc_attr( get_option('permalinks_customizer_'.$post->post_type) );
+			if (empty($get_permalink)) {
+				$get_permalink = esc_attr( get_option('permalink_structure') );
+			}
+			$set_permalink = $this->permalinks_customizer_replace_tags($post_id, $post, $get_permalink);
+			
 			global $wpdb;
-      $permalink = $set_permalink;
-      $trailing_slash = substr($permalink, -1);
-      if ($trailing_slash == '/') {
-        $permalink = rtrim($permalink, '/');
-        $set_permalink = rtrim($set_permalink, '/');
-      }
-      $qry = "SELECT * FROM $wpdb->postmeta WHERE meta_key = 'permalink_customizer' AND meta_value = '".$permalink."' AND post_id != ".$post_id." OR meta_key = 'permalink_customizer' AND meta_value = '".$permalink."/' AND post_id != ".$post_id." LIMIT 1";
-      $check_exist_url = $wpdb->get_results($qry);
-      if (!empty($check_exist_url)) {
-        $i = 2;
-        while (1) {
-          $permalink = $set_permalink.'-'.$i;
-          $qry = "SELECT * FROM $wpdb->postmeta WHERE meta_key = 'permalink_customizer' AND meta_value = '".$permalink."' AND post_id != ".$post_id." OR meta_key = 'permalink_customizer' AND meta_value = '".$permalink."/' AND post_id != ".$post_id." LIMIT 1";
-          $check_exist_url = $wpdb->get_results($qry);
-          if (empty($check_exist_url)) break;
-          $i++;
-        }
-      }
-      
-      if ($trailing_slash == '/') 
-        $permalink = $permalink.'/';
-      
-      if (strpos($permalink, "/") == 0)
-        $permalink = substr($permalink, 1);
+			$permalink = $set_permalink;
+			$trailing_slash = substr($permalink, -1);
+			if ($trailing_slash == '/') {
+				$permalink = rtrim($permalink, '/');
+				$set_permalink = rtrim($set_permalink, '/');
+			}
+			$qry = "SELECT * FROM $wpdb->postmeta WHERE meta_key = 'permalink_customizer' AND meta_value = '".$permalink."' AND post_id != ".$post_id." OR meta_key = 'permalink_customizer' AND meta_value = '".$permalink."/' AND post_id != ".$post_id." LIMIT 1";
+			$check_exist_url = $wpdb->get_results($qry);
+			if (!empty($check_exist_url)) {
+				$i = 2;
+				while (1) {
+					$permalink = $set_permalink.'-'.$i;
+					$qry = "SELECT * FROM $wpdb->postmeta WHERE meta_key = 'permalink_customizer' AND meta_value = '".$permalink."' AND post_id != ".$post_id." OR meta_key = 'permalink_customizer' AND meta_value = '".$permalink."/' AND post_id != ".$post_id." LIMIT 1";
+					$check_exist_url = $wpdb->get_results($qry);
+					if (empty($check_exist_url)) break;
+					$i++;
+				}
+			}
+			
+			if ($trailing_slash == '/') 
+				$permalink = $permalink.'/';
+			
+			if (strpos($permalink, "/") == 0)
+				$permalink = substr($permalink, 1);
 			
 			$permalink = preg_replace("/(\/+)/", "/", $permalink);
 			$permalink = preg_replace("/(\-+)/", "-", $permalink);
-      update_post_meta($post_id, 'permalink_customizer', $permalink);
-			if ($post->post_status == 'publish') {
-        // permalink_customizer_regenerate_status = 1 means Permalink won't be generated again on updating the post
+			update_post_meta($post_id, 'permalink_customizer', $permalink);
+			if ($post_status == 'publish') {
+				// permalink_customizer_regenerate_status = 1 means Permalink won't be generated again on updating the post
 				update_post_meta($post_id, 'permalink_customizer_regenerate_status', 1); 
 			} else {
-        // permalink_customizer_regenerate_status = 0 means Permalink will be generated again on updating the post
+				// permalink_customizer_regenerate_status = 0 means Permalink will be generated again on updating the post
 				update_post_meta($post_id, 'permalink_customizer_regenerate_status', 0); 
 			}
-    } else if (isset($_REQUEST['permalinks_customizer']) && !empty($_REQUEST['permalinks_customizer']) && $url != $_REQUEST['permalinks_customizer'] && $post->post_status != 'inherit') {
+		} else if (isset($_REQUEST['permalinks_customizer']) && !empty($_REQUEST['permalinks_customizer']) && $url != $_REQUEST['permalinks_customizer']) {
 			$permalink = $_REQUEST['permalinks_customizer'];
 			$permalink = preg_replace("/(\/+)/", "/", $permalink);
 			$permalink = preg_replace("/(\-+)/", "-", $permalink);
-      update_post_meta($post_id, 'permalink_customizer', $permalink);
-      // permalink_customizer_regenerate_status = 1 means Permalink won't be generated again on updating the post (Once, user changed it)
-      update_post_meta($post_id, 'permalink_customizer_regenerate_status', 1); 
-    }
+			update_post_meta($post_id, 'permalink_customizer', $permalink);
+			// permalink_customizer_regenerate_status = 1 means Permalink won't be generated again on updating the post (Once, user changed it)
+			update_post_meta($post_id, 'permalink_customizer_regenerate_status', 1); 
+		}
 	}
 
 	/**
@@ -424,7 +430,7 @@ class Permalinks_Customizer_Form {
 
 		return $replace_tag;
 	}
-	
+
 	/**
 	 * Delete Permalink when the Post is deleted or when the saving Post is selected as Front Page
 	 */
@@ -432,7 +438,7 @@ class Permalinks_Customizer_Form {
 		global $wpdb;
 		$wpdb->query($wpdb->prepare("DELETE FROM $wpdb->postmeta WHERE meta_key = 'permalink_customizer' AND post_id = %d", $id));
 	}
-	
+
 	/**
 	 * Check and Call the Function which saves the Permalink for Taxonomy
 	 */
@@ -459,7 +465,7 @@ class Permalinks_Customizer_Form {
 		
 		$this->permalinks_customizer_save_term($term, str_replace('%2F', '/', urlencode($new_permalink)));
 	}
-	
+
 	/**
 	 * Replace the tags with the respective value on generating the Permalink for the Taxonmoies
 	 */
@@ -476,11 +482,11 @@ class Permalinks_Customizer_Form {
 
 		if (strpos($replace_tag, "%slug%") !== false ) {
 			if (!empty($term->slug)) {
-         $replace_tag = str_replace('%slug%', $term->slug, $replace_tag);
-      } else {
-         $name = sanitize_title($term->name);
-         $replace_tag = str_replace('%slug%', $name, $replace_tag);
-      }
+				 $replace_tag = str_replace('%slug%', $term->slug, $replace_tag);
+			} else {
+				 $name = sanitize_title($term->name);
+				 $replace_tag = str_replace('%slug%', $name, $replace_tag);
+			}
 		}
 
 		if (strpos($replace_tag, "%parent_slug%") !== false ) {
@@ -492,11 +498,11 @@ class Permalinks_Customizer_Form {
 			}
 			
 			if (!empty($term->slug)) {
-         $term_names .= $term->slug;
-      } else {
-         $title = sanitize_title($term->name);
+				 $term_names .= $term->slug;
+			} else {
+				 $title = sanitize_title($term->name);
 				 $term_names .=  $title;
-      }
+			}
 			
 			$replace_tag = str_replace('%parent_slug%', $term_names, $replace_tag);
 		}
@@ -513,11 +519,11 @@ class Permalinks_Customizer_Form {
 			}
 
 			if (!empty($term->slug)) {
-         $term_names .= $term->slug;
-      } else {
-         $title = sanitize_title($term->name);
+				 $term_names .= $term->slug;
+			} else {
+				 $title = sanitize_title($term->name);
 				 $term_names .=  $title;
-      }
+			}
 
 			$replace_tag = str_replace('%all_parents_slug%', $term_names, $replace_tag);
 		}
@@ -577,7 +583,7 @@ class Permalinks_Customizer_Form {
 		
 		update_option('permalinks_customizer_table', $table);
 	}
-	
+
 	/**
 	 * This Function Just deletes the Permalink for the Page selected as the Front Page
 	 */
