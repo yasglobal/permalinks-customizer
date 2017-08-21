@@ -198,7 +198,7 @@ class Permalinks_Customizer_Form {
 			if ($trailing_slash == '/') 
 				$permalink = $permalink.'/';
 			
-			if (strpos($permalink, "/") == 0)
+			if (strpos($permalink, '/') === 0)
 				$permalink = substr($permalink, 1);
 			
 			$permalink = preg_replace("/(\/+)/", "/", $permalink);
