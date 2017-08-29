@@ -32,12 +32,13 @@ class Permalinks_Customizer_Form {
 	private function permalinks_customizer_get_form($permalink, $original="", $renderContainers=true) {
 		$encoded_permalink = htmlspecialchars(urldecode($permalink));
 		echo '<input value="true" type="hidden" name="permalinks_customizer_edit" />';
+    echo '<input value="false" type="hidden" name="permalinks_customizer_regenerate_permalink" id="permalinks_customizer_regenerate_permalink" />';
 		echo '<input value="'.$encoded_permalink.'" type="hidden" name="permalinks_customizer" id="permalinks_customizer" />';
 		
 		if ( $renderContainers ) {
 			echo '<table class="form-table" id="permalinks_customizer_form">
 							<tr>
-								<th scope="row">'. _e('Permalink', 'permalinks-customizer') .'</th>
+								<th scope="row">'. __('Permalink', 'permalinks-customizer') .'</th>
 								<td>';
 		}
 
@@ -78,8 +79,13 @@ class Permalinks_Customizer_Form {
 					</script>';
 
 		if ( $renderContainers ) {
-			echo '<br /><small>'. _e('Leave blank to disable', 'permalinks-customizer') .'</small></td>
-						</tr></table>';
+			if (isset($permalink) && !empty($permalink)) {
+				wp_enqueue_script( 'permalink-customizer-admin', plugins_url( '/js/script-form.js', __FILE__ ), array(), false, true );
+				echo '<span id="view-post-btn"><a href="/'.$permalink.'" class="button button-small" target="_blank">View</a></span><span id="regenerate_permalink"><a href="javascript:void(0);" class="button button-small">Regenerate Permalink</a></span>';
+			} else {
+				echo '<span id="view-post-btn"><a href="/'.$original_permalink.'" class="button button-small" target="_blank">View</a></span>';
+			}
+			echo '</td></tr></table>';
 		}
 	}
 
@@ -92,18 +98,30 @@ class Permalinks_Customizer_Form {
 		
 		ob_start();
 		$permalinks_customizer_frontend_object = new Permalinks_Customizer_Frontend;
-		?>
-		<?php $this->permalinks_customizer_get_form($permalink, ($post->post_type == "page" ? $permalinks_customizer_frontend_object->permalinks_customizer_original_page_link($id) : $permalinks_customizer_frontend_object->permalinks_customizer_original_post_link($id)), false); ?>
-		<?php
+		
+		if ($post->post_type == "page") {
+			$original_permalink = $permalinks_customizer_frontend_object->permalinks_customizer_original_page_link($id);
+			$view_post = __('View Page', 'permalinks-customizer');
+		} else {
+			$original_permalink = $permalinks_customizer_frontend_object->permalinks_customizer_original_post_link($id);
+			$view_post = __('View '.ucfirst($post->post_type), 'permalinks-customizer');
+		}
+		$this->permalinks_customizer_get_form($permalink, $original_permalink, false); 
+
 		$content = ob_get_contents();
 		ob_end_clean();
 		if ( $post->post_type == 'attachment' || $post->ID == get_option('page_on_front') ) {
 			return $html;
 		}
-		if ( 'publish' == $post->post_status ) {
-			$view_post = 'page' == $post->post_type ? __('View Page', 'permalinks-customizer') : __('View '.ucfirst($post->post_type), 'permalinks-customizer');
-		}
 		
+		if ($post->post_status != 'trash') {
+			wp_enqueue_script( 'permalink-customizer-admin', plugins_url( '/js/script-form.js', __FILE__ ), array(), false, true );
+			if (isset($permalink) && !empty($permalink)) {				
+				$content .= "<span id='view-post-btn'><a href='/$permalink' class='button button-small' target='_blank'>$view_post</a></span><span id='regenerate_permalink'><a href='javascript:void(0);' class='button button-small'>Regenerate Permalink</a></span>\n";
+			} else {
+				$content .= "<span id='view-post-btn'><a href='/$original_permalink' class='button button-small' target='_blank'>$view_post</a></span><span id='regenerate_permalink'><a href='javascript:void(0);' class='button button-small'>Regenerate Permalink</a></span>\n";
+			}
+		}
 		if ( preg_match("@view-post-btn.*?href='([^']+)'@s", $html, $matches) ) {
 			$permalink = $matches[1];
 		} else {
@@ -113,8 +131,7 @@ class Permalinks_Customizer_Form {
 			}
 		}
 
-		return '<strong>' . __('Permalink:', 'permalinks-customizer') . "</strong>\n" . $content .
-				 ( isset($view_post) ? "<span id='view-post-btn'><a href='$permalink' class='button button-small' target='_blank'>$view_post</a></span>\n" : "" );
+		return '<strong>' . __('Permalink:', 'permalinks-customizer') . "</strong>\n" . $content;
 	}
 
 	/**
@@ -167,7 +184,7 @@ class Permalinks_Customizer_Form {
 		$url = get_post_meta($post_id, 'permalink_customizer', true);
 		$permalink_status = get_post_meta($post_id, 'permalink_customizer_regenerate_status', true);
 
-		if ( (empty($url) && $post_status != 'trash') || (!empty($url) && $url == $_REQUEST['permalinks_customizer'] && isset($permalink_status) && $permalink_status != '' && $permalink_status != 1 && $post_status != 'trash') ) {
+		if ( (empty($url) && $post_status != 'trash') || (!empty($url) && $url == $_REQUEST['permalinks_customizer'] && isset($permalink_status) && $permalink_status != '' && $permalink_status != 1 && $post_status != 'trash') || (isset($_REQUEST['permalinks_customizer_regenerate_permalink']) && $_REQUEST['permalinks_customizer_regenerate_permalink'] === "true" && $post_status != 'trash') ) {
 
 			$get_permalink = esc_attr( get_option('permalinks_customizer_'.$post->post_type) );
 			if (empty($get_permalink)) {
@@ -446,7 +463,7 @@ class Permalinks_Customizer_Form {
 		$new_permalink = ltrim(stripcslashes($_REQUEST['permalinks_customizer']),"/");
 
 		$term = get_term($id);
-		if (empty($new_permalink)) {
+		if (empty($new_permalink) || (isset($_REQUEST['permalinks_customizer_regenerate_permalink']) && $_REQUEST['permalinks_customizer_regenerate_permalink'] === "true")) {
 			$permalinks_customizer_settings = unserialize( get_option('permalinks_customizer_taxonomy_settings') );
 			if (isset($permalinks_customizer_settings[$term->taxonomy.'_settings']) && isset($permalinks_customizer_settings[$term->taxonomy.'_settings']['structure']) && !empty($permalinks_customizer_settings[$term->taxonomy.'_settings']['structure'])) {
 				$new_permalink = $this->permalinks_customizer_replace_taxes_tags($term, $permalinks_customizer_settings[$term->taxonomy.'_settings']['structure']);

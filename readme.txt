@@ -6,7 +6,7 @@ License URI: http://www.gnu.org/licenses/gpl.html
 Tags: address, category, custom, custom permalink, custom post permalinks, link, permalink, rewrite slug, redirects, slug, tags, url, custom taxonomy
 Requires at least: 3.5
 Tested up to: 4.8
-Stable tag: 1.2.4
+Stable tag: 1.2.5
 
 Set permalinks for default post-type and custom post-type which can be changed from the single post edit page.
 
@@ -105,6 +105,10 @@ A. Yes, you can use all the tags as defined on the [Permalinks Customizer page](
 A. No, This plugin does not work with [custom permalinks](https://wordpress.org/plugins/custom-permalinks/).
 
 == Changelog ==
+
+= 1.2.5
+
+  * Added Regenerate Permalink Button
 
 = 1.2.4
 
