@@ -1,12 +1,11 @@
 <?php
-
 /**
  * @package PermalinksCustomizer
  */
 
 /**
  * Plugin Name: Permalinks Customizer
- * Version: 1.2.5
+ * Version: 1.3
  * Plugin URI: https://wordpress.org/plugins/permalinks-customizer/
  * Description: Set permalinks for default post-type and custom post-type which can be changed from the single post edit page.
  * Donate link: https://www.paypal.me/yasglobal
