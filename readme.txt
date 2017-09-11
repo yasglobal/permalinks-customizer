@@ -6,7 +6,7 @@ License URI: http://www.gnu.org/licenses/gpl.html
 Tags: address, category, custom, custom permalink, custom post permalinks, link, permalink, rewrite slug, redirects, slug, tags, url, custom taxonomy
 Requires at least: 3.5
 Tested up to: 4.8
-Stable tag: 1.3
+Stable tag: 1.3.1
 
 Set permalinks for default post-type and custom post-type which can be changed from the single post edit page.
 
@@ -106,7 +106,11 @@ A. No, This plugin does not work with [custom permalinks](https://wordpress.org/
 
 == Changelog ==
 
-= 1.3
+= 1.3.1 =
+
+  * Added Translaltion Capability
+
+= 1.3 =
 
   * Enhancements
     * Added PostTypes Permalinks Page
@@ -124,39 +128,39 @@ A. No, This plugin does not work with [custom permalinks](https://wordpress.org/
      * Replaced Deprecated Actions with the newer Actions
      * Breaking the tag permalinks
 
-= 1.2.5
+= 1.2.5 =
 
   * Added Regenerate Permalink Button
 
-= 1.2.4
+= 1.2.4 =
 
   * Resolves the Deletes first character of permalink issue using the use-case
 
-= 1.2.3
+= 1.2.3 =
 
   * Add Auto regenerate Permalink Functionality on Inherit and Add the Compatibility with the Previously (Old) Created Posts
 
-= 1.2.2
+= 1.2.2 =
 
   * Fixed Permalink Issue for Preview of Draft Post and PHP Notice
 
-= 1.2.1
+= 1.2.1 =
 
   * Resolved Issues of AMP Pages
 
-= 1.2
+= 1.2 =
   
   * Resolved issues with AMP Pages and Added Functionality to regenerate the Permalinks until you publish the post/page or updated the permalink manually
 
-= 1.1
+= 1.1 =
 
   * Added Functionality to create Permalinks automtically on Creating the Term (Default + Custom Taxonomies) and updated DB Query for PostTypes
 
-= 1.0.2
+= 1.0.2 =
 
   * Fixed PHP Warning of Undefined Variable
 
-= 1.0.1
+= 1.0.1 =
 
   * Fixed Convert Custom Permalink Empty Page Issue
 
