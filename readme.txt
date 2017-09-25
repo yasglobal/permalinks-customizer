@@ -6,7 +6,7 @@ License URI: http://www.gnu.org/licenses/gpl.html
 Tags: address, category, custom, custom permalink, custom post permalinks, link, permalink, rewrite slug, redirects, slug, tags, url, custom taxonomy
 Requires at least: 3.5
 Tested up to: 4.8
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 
 Set permalinks for default post-type and custom post-type which can be changed from the single post edit page.
 
@@ -69,6 +69,19 @@ If you leave the some post-type fields empty. So, <strong>Permalinks Customizer<
 
 <strong>Be warned:</strong> *This plugin is not a replacement for WordPress's built-in permalink system*. Check your WordPress administration's "Permalinks" settings page first, to make sure that this doesn't already meet your needs.
 
+=== Filter ===
+
+If you want to exclude some Permalink to processed with the plugin so, just add the filter looks like this:
+`
+function yasglobal_exclude_url( $permalink ) {
+  if ( strpos( $permalink, '/contact-us/' ) !== false ) {
+    return '__true';
+  }
+  return;
+}
+add_filter( 'permalinks_customizer_exclude_request', 'yasglobal_exclude_url' );
+`
+
 == Installation ==
 
 1. Upload the `permalinks-customizer` folder to the `/wp-content/plugins/` directory or Directly install the plugin through the WordPress plugins screen.
@@ -105,6 +118,13 @@ A. Yes, you can use all the tags as defined on the [Permalinks Customizer page](
 A. No, This plugin does not work with [custom permalinks](https://wordpress.org/plugins/custom-permalinks/).
 
 == Changelog ==
+
+= 1.3.3 =
+
+  * Enhancements
+    * Added Filter to Exclude/Ignore URL to be processed
+  * Bugs
+    * Fixed Vulnerability Issues
 
 = 1.3.2 =
 
