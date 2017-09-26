@@ -32,7 +32,7 @@ class Permalinks_Customizer_Update_Taxonomy {
 					unset( $taxonomy_table[$link] );
 				} else {
 					$check_update = update_term_meta( $info["id"], 'permalink_customizer', $link );
-					if ( ! is_wp_error( $check_update ) && $check_update !== true ) {
+					if ( ! is_wp_error( $check_update ) && true !== $check_update ) {
 						unset( $taxonomy_table[$link] );
 					}
         }

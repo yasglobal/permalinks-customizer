@@ -17,9 +17,9 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
 	 */
 	private function tax_permalinks() {
 		global $wpdb;
-		$filter_options = '';
+		$filter_options   = '';
 		$search_permalink = '';
-		$html = '';
+		$html             = '';
 
 		// Handle Bulk Operations
 		if ( ( isset( $_POST['action'] ) && $_POST['action'] == 'delete' )
@@ -41,30 +41,30 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
 
 		$search_value = '';
 		if ( isset( $_GET['s'] ) && ! empty( $_GET['s'] ) ) {
-			$search_value = htmlspecialchars( ltrim( $_GET['s'], '/' ) );
+			$search_value     = htmlspecialchars( ltrim( $_GET['s'], '/' ) );
 			$filter_permalink = 'AND tm.meta_value LIKE "%' . $search_value . '%"';
 			$search_permalink = '&s=' . $search_value . '';			
-			$html .= '<span class="subtitle">Search results for "' . $search_value . '"</span>';	
+			$html            .= '<span class="subtitle">Search results for "' . $search_value . '"</span>';	
 		}
 		$page_limit = 'LIMIT 0, 20';
 		if ( isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] ) && $_GET['paged'] > 1 ) {
-			$pager = 20 * ( $_GET['paged'] - 1 );
+			$pager      = 20 * ( $_GET['paged'] - 1 );
 			$page_limit = 'LIMIT ' . $pager . ', 20';
 		}
-		$sorting_by = 'ORDER By t.term_id DESC';
-		$order_by = 'asc';
+		$sorting_by     = 'ORDER By t.term_id DESC';
+		$order_by       = 'asc';
 		$order_by_class = 'desc';
 		if ( isset( $_GET['orderby'] ) && $_GET['orderby'] == 'title' ) {
 			$filter_options .= '<input type="hidden" name="orderby" value="title" />';           
 			if ( isset( $_GET['order'] ) && $_GET['order'] == 'desc' ) {
-				$sorting_by = 'ORDER By t.name DESC';
-				$order_by = 'asc';
-				$order_by_class = 'desc';
+				$sorting_by      = 'ORDER By t.name DESC';
+				$order_by        = 'asc';
+				$order_by_class  = 'desc';
 				$filter_options .= '<input type="hidden" name="order" value="desc" />';
 			} else {
-				$sorting_by = 'ORDER By t.name';
-				$order_by = 'desc';
-				$order_by_class = 'asc';
+				$sorting_by      = 'ORDER By t.name';
+				$order_by        = 'desc';
+				$order_by_class  = 'asc';
 				$filter_options .= '<input type="hidden" name="order" value="asc" />';
 			}
 		}
@@ -99,7 +99,7 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
 			$taxonomies = $wpdb->get_results( $query );
 
 			$pagination_html = '';
-			$total_pages = ceil( $count_tax->total_permalinks / 20 );
+			$total_pages     = ceil( $count_tax->total_permalinks / 20 );
 			if ( isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] ) && $_GET['paged'] > 0 ) {
 				$pagination_html = $common_functions->permalinks_customizer_pager( $count_tax->total_permalinks, $_GET['paged'], $total_pages );
 				if ( $_GET['paged'] > $total_pages ) {
@@ -107,7 +107,7 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
 					header( 'Location: ' . $redirect_uri[0], 301 );
 					exit();
 				}
-			} else if ( ! isset( $_GET['paged'] ) ) {
+			} elseif ( ! isset( $_GET['paged'] ) ) {
 				$pagination_html = $common_functions->permalinks_customizer_pager( $count_tax->total_permalinks, 1, $total_pages );
 			}
 

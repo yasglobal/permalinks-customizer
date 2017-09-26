@@ -15,7 +15,7 @@ if ( ! function_exists( "add_action" ) || ! function_exists( "add_filter" ) ) {
 	exit();
 }
 
-define( 'PERMALINKS_CUSTOMIZER_PLUGIN_VERSION', '1.3.3' );
+define( 'PERMALINKS_CUSTOMIZER_PLUGIN_VERSION', '1.3.4' );
 
 if ( ! defined( 'PERMALINKS_CUSTOMIZER_PATH' ) ) {
 	define( 'PERMALINKS_CUSTOMIZER_PATH', plugin_dir_path( __FILE__ ) );
