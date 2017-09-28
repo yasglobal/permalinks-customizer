@@ -2,13 +2,13 @@
 
 ## Description
 
-Customize your URL and set the slug. You can use basic keywords which is defined by the wordpress for defining the permalinks as well as someother new keywords which is defined by this plugin. All the keywords is defined on the Tags page under Permalinks Customizer.
+Customize your URL and set the slug. You can use basic keywords which is defined by the wordpress for defining the permalinks as well as someother new keywords which is defined by this plugin. All the keywords are defined on the Tags page under Permalinks Customizer.
 
-By using **Permalinks Customizer** you can set the permalinks for each post-type seperately. 
+By using **Permalinks Customizer** you can set the different permalink structure for each post-type and taxonomy.
 
-### How to set the Permalinks for the post-types seperately
+### How to set the Permalinks for the PostTypes seperately
 
-Let's assume that you have 6 <strong>post-types</strong> and they all have different style of <strong>permalinks</strong>. Like: 
+Let's assume that you have 6 <strong>PostTypes</strong> and they all have different style of <strong>permalinks</strong>. Like: 
 
 * **Blog** : For this post type you want to create a **permalink** which looks like this: http://www.example.com/blog/year-month-date-postname/
 * **Customers** : For this post type you want to create a **permalink** which looks like this: http://www.example.com/customers/postname/
@@ -27,7 +27,7 @@ If you leave the some post-type fields empty. So, **Permalinks Customizer** woul
 
 ## Structure Tags
 
-### Structure Tags for PostTypes
+### Tags for PostTypes
 
 * **%title%** : Title of the post. let's say the title is "This Is A Great Post!" so, it becomes this-is-a-great-post in the URI.
 * **%year%** : The year of the post, four digits, for example 2004.
@@ -51,7 +51,7 @@ If you leave the some post-type fields empty. So, **Permalinks Customizer** woul
 **Note**: *%postname%* is similar as of the *%title%* tag but the difference is that *%postname%* can only be set once whereas *%title%* can be changed. let's say the title is "This Is A Great Post!" so, it becomes "this-is-a-great-post" in the URI(At the first time, *%postname%* and *%title%* works same) but if you edit and change title let's say "This Is A WordPress Post!" so, *%postname%* in the URI remains same "this-is-a-great-post" whereas *%title%* in the URI becomes "this-is-a-wordpress-post"
 
 
-### Structure Tags for Taxonomies
+### Tags for Taxonomies
 
 * **%name%** : Name of the Term/Category. let's say the name is "External API" so, it becomes external-api in the URI.
 * **%term_id%** : The unique ID # of the Term/Category, for example 423
@@ -60,6 +60,19 @@ If you leave the some post-type fields empty. So, **Permalinks Customizer** woul
 * **%all_parents_slug%** : A sanitized version of the name of the Term/Category. So "External API" becomes external-api in the URI. This Tag contains all the Parent Term/Category Slug if any parent Term/Category is selected before adding it.
 
 **Be warned**: *This plugin is not a replacement for WordPress's built-in permalink system*. Check your WordPress administration's "Permalinks" settings page first, to make sure that this doesn't already meet your needs.
+
+## Filter
+
+If you want to exclude some Permalink to processed with the plugin so, just add the filter looks like this:
+`
+function yasglobal_exclude_url( $permalink ) {
+  if ( strpos( $permalink, '/contact-us/' ) !== false ) {
+    return '__true';
+  }
+  return;
+}
+add_filter( 'permalinks_customizer_exclude_request', 'yasglobal_exclude_url' );
+`
 
 ## Installation 
 

@@ -6,19 +6,19 @@ License URI: http://www.gnu.org/licenses/gpl.html
 Tags: address, category, custom, custom permalink, custom post permalinks, link, permalink, rewrite slug, redirects, slug, tags, url, custom taxonomy
 Requires at least: 3.5
 Tested up to: 4.8
-Stable tag: 1.3.4
+Stable tag: 1.3.5
 
-Set permalinks for default post-type and custom post-type which can be changed from the single post edit page.
+Set permalinks for default PostTypes, custom PostTypes, default Taxonomies (Category/Tags) and custom Taxonomies which can be changed from the edit page.
 
 == Description ==
 
-Customize your URL and set the slug. You can use basic keywords which is defined by the wordpress for defining the permalinks as well as some new keywords which is defined by this plugin. All the keywords is defined on the Tags page under Permalinks Customizer.
+Customize your URL and set the slug. You can use basic keywords which is defined by the wordpress for defining the permalinks as well as some new keywords which is defined by this plugin. All the keywords are defined on the Tags page under Permalinks Customizer.
 
-By using <strong>Permalinks Customizer</strong> you can set the permalinks for each post-type separately. 
+By using <strong>Permalinks Customizer</strong> you can set the different permalink structure for each post-type and taxonomy.
 
-= How to set the Permalinks for the post-types seperately =
+= How to set the Permalinks for the PostTypes seperately =
 
-Let's assume that you have 6 <strong>post-types</strong> and they all have different style of <strong>permalinks</strong>. Like: 
+Let's assume that you have 6 <strong>PostTypes</strong> and they all have different style of <strong>permalinks</strong>. Like: 
 
 1. <strong>Blog :</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/blog/year-month-date-postname/
 2. <strong>Customers :</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/customers/postname/
@@ -86,13 +86,13 @@ add_filter( 'permalinks_customizer_exclude_request', 'yasglobal_exclude_url' );
 
 1. Upload the `permalinks-customizer` folder to the `/wp-content/plugins/` directory or Directly install the plugin through the WordPress plugins screen.
 2. Activate the Permalinks Customizer plugin through the `Plugins` menu in WordPress.
-3. Configure the plugin by going to the menu `Permalinks Customizer` that appears in your admin menu
+3. Configure the plugin by going to the menu `Permalinks Customizer` that appears in your admin menu.
 
 == Screenshots ==
 
 * Permalinks can be set for each and every PostType from [here](http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-posts-settings). The empty permalink field for the PostType will use the Wordpress Permalink Settings.
 
-* All the available tags which can be used for defining the permalinks for PostTypes are listed [here](http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-post-tags). Some of the tags are defined here may only be use with [Permalinks Customizer](https://wordpress.org/plugins/permalinks-customizer/) plugin only. 
+* All the available tags which can be used for defining the permalinks for PostTypes are listed [here](http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-post-tags). Some of the tags are defined here may only be use with [Permalinks Customizer](https://wordpress.org/plugins/permalinks-customizer/) plugin only.
 
 * Permalinks can easily be changed for the single post from its post edit page.
 
@@ -118,6 +118,10 @@ A. Yes, you can use all the tags as defined on the [Permalinks Customizer page](
 A. No, This plugin does not work with [custom permalinks](https://wordpress.org/plugins/custom-permalinks/).
 
 == Changelog ==
+
+= 1.3.5 =
+
+  * Resolved the Pagination Issue for Taxonomies
 
 = 1.3.4 =
 

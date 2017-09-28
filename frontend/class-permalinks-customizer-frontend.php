@@ -85,7 +85,12 @@ class Permalinks_Customizer_Frontend {
 			}
 		}
 		if ( NULL === $original_url ) {
-			$sql = "SELECT * FROM $wpdb->termmeta WHERE meta_key = 'permalink_customizer' AND meta_value = '" . $request_noslash . "' OR meta_key = 'permalink_customizer' AND meta_value = '" . $request_noslash . "/' LIMIT 1";
+			$sql = $wpdb->prepare( "SELECT * FROM $wpdb->termmeta WHERE " .
+									" meta_key = 'permalink_customizer' AND meta_value != '' AND " .
+									" ( LOWER(meta_value) = LEFT(LOWER('%s'), LENGTH(meta_value)) OR " .
+									" LOWER(meta_value) = LEFT(LOWER('%s'), LENGTH(meta_value)) ) " .
+									" ORDER BY LENGTH(meta_value) DESC, $wpdb->termmeta.term_id ASC LIMIT 1",
+								$request_noslash, $request_noslash . "/" );
 
 			$taxonomy_term_data = $wpdb->get_results( $sql );
 
@@ -98,7 +103,7 @@ class Permalinks_Customizer_Frontend {
 					}
 
           $original_url = str_replace( trim( strtolower( $taxonomy_term_data[0]->meta_value ), '/' ), $get_term_permalink, trim( strtolower( $request ) ) );
-        }
+				}
 			}
 
 			if ( NULL === $original_url && NULL === $get_term_permalink ) {
