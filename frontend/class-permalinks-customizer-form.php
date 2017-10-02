@@ -50,13 +50,13 @@ class Permalinks_Customizer_Form {
 
 		$permalink_edit_field = home_url() . '/
 														<span id="editable-post-name" title="Click to edit this part of the permalink">
-															<input type="text" id="new-post-slug" class="text" value="' . $permalink_edit_value . '" style="width: 250px; color: #ddd;" onfocus="focusPermalinkField()" onblur="blurPermalinkField()"/>
+															<input type="text" id="permalinks-customizer-post-slug" class="text" value="' . $permalink_edit_value . '" style="width: 250px; color: #ddd;" onfocus="focusPermalinkField()" onblur="blurPermalinkField()"/>
 															<input type="hidden" value="' . $original_permalink . '" id="original_permalink"/>
 														</span>';
 		echo apply_filters( 'edit_permalink_field', $permalink_edit_field );
 
 		echo '<script type="text/javascript">
-						var newPostSlug = document.getElementById("new-post-slug"),
+						var newPostSlug = document.getElementById("permalinks-customizer-post-slug"),
 								originalPermalink = document.getElementById("original_permalink");
 						function focusPermalinkField() {
 							if (!newPostSlug) return;

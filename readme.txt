@@ -6,7 +6,7 @@ License URI: http://www.gnu.org/licenses/gpl.html
 Tags: address, category, custom, custom permalink, custom post permalinks, link, permalink, rewrite slug, redirects, slug, tags, url, custom taxonomy
 Requires at least: 3.5
 Tested up to: 4.8
-Stable tag: 1.3.5
+Stable tag: 1.3.6
 
 Set permalinks for default PostTypes, custom PostTypes, default Taxonomies (Category/Tags) and custom Taxonomies which can be changed from the edit page.
 
@@ -118,6 +118,10 @@ A. Yes, you can use all the tags as defined on the [Permalinks Customizer page](
 A. No, This plugin does not work with [custom permalinks](https://wordpress.org/plugins/custom-permalinks/).
 
 == Changelog ==
+
+= 1.3.6 =
+
+  * Resolved the Draft Permalink Issue on editing the description under the snippet of Yoast SEO
 
 = 1.3.5 =
 
