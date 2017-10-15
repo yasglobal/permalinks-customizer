@@ -306,10 +306,14 @@ class Permalinks_Customizer_Form {
 		// Replace %postname% with the respective post name
 		if ( false !== strpos( $replace_tag, "%postname%" ) ) {
 			if ( ! empty( $post->post_name ) ) {
-				 $replace_tag = str_replace( '%postname%', $post->post_name, $replace_tag );
+				$replace_tag = str_replace( '%postname%', $post->post_name, $replace_tag );
 			} else {
-				 $title       = sanitize_title( $post->post_title );
-				 $replace_tag = str_replace( '%postname%', $title, $replace_tag );
+				$title       = sanitize_title( $post->post_title );
+				$replace_tag = str_replace( '%postname%', $title, $replace_tag );
+				wp_update_post( array(
+					'ID'        => $post_id,
+					'post_name' => $title
+        ));
 			}
 		}
 
@@ -324,10 +328,14 @@ class Permalinks_Customizer_Form {
 			}
 
 			if ( ! empty( $post->post_name ) ) {
-				 $postnames .= $post->post_name;
+				$postnames .= $post->post_name;
 			} else {
-				 $title      = sanitize_title( $post->post_title );
-				 $postnames .=  $title;
+				$title      = sanitize_title( $post->post_title );
+				$postnames .=  $title;
+				wp_update_post( array(
+					'ID'        => $post_id,
+					'post_name' => $title
+        ));
 			}
 
 			$replace_tag = str_replace( '%parent_postname%', $postnames, $replace_tag );
@@ -347,10 +355,14 @@ class Permalinks_Customizer_Form {
 			}
 
 			if ( !empty( $post->post_name ) ) {
-				 $postnames .= $post->post_name;
+				$postnames .= $post->post_name;
 			} else {
-				 $title      = sanitize_title( $post->post_title );
-				 $postnames .=  $title;
+				$title      = sanitize_title( $post->post_title );
+				$postnames .=  $title;
+				wp_update_post( array(
+					'ID'        => $post_id,
+					'post_name' => $title
+        ));
 			}
 
 			$replace_tag = str_replace( '%all_parents_postname%', $postnames, $replace_tag );
@@ -362,22 +374,22 @@ class Permalinks_Customizer_Form {
 			$total_cat  = count( $categories );
 			$tid = 1;
 			if ( $total_cat > 0 && is_array( $categories ) ) {
-				 $tid = '';
-				 foreach ( $categories as $cat ) {
-						if ( $cat->term_id < $tid || empty( $tid ) ) {
-							 $tid = $cat->term_id;
-							 $pid = '';
-							 if ( ! empty( $cat->parent ) ) {
-									$pid = $cat->parent;
-							 }
+				$tid = '';
+				foreach ( $categories as $cat ) {
+					if ( $cat->term_id < $tid || empty( $tid ) ) {
+						$tid = $cat->term_id;
+						$pid = '';
+						if ( ! empty( $cat->parent ) ) {
+							$pid = $cat->parent;
 						}
-				 }
+					}
+				}
 			}
 			$term_category = get_term( $tid );
 			$category      = is_object( $term_category ) ? $term_category->slug : '';
 			if ( ! empty( $pid ) ) {
-				 $parent_category = get_term( $pid );
-				 $category        = is_object( $parent_category ) ? $parent_category->slug . '/' . $category : '';
+				$parent_category = get_term( $pid );
+				$category        = is_object( $parent_category ) ? $parent_category->slug . '/' . $category : '';
 			}
 			$replace_tag = str_replace( '%category%', $category, $replace_tag );
 		}
@@ -388,12 +400,12 @@ class Permalinks_Customizer_Form {
 			$total_cat  = count( $categories );
 			$tid        = 1;
 			if ( $total_cat > 0 && is_array( $categories ) ) {
-				 $tid = '';
-				 foreach( $categories as $cat ) {
-						if ( $cat->term_id < $tid || empty( $tid ) ) {
-							 $tid = $cat->term_id;
-						}
-				 }
+				$tid = '';
+				foreach( $categories as $cat ) {
+					if ( $cat->term_id < $tid || empty( $tid ) ) {
+						$tid = $cat->term_id;
+					}
+				}
 			}
 			$term_category = get_term( $tid );
 			$category      = is_object( $term_category ) ? $term_category->slug : '';
@@ -406,22 +418,22 @@ class Permalinks_Customizer_Form {
 			$total_cat  = count( $categories );
 			$tid = 1;
 			if ( $total_cat > 0 && is_array( $categories ) ) {
-				 $tid = '';
-				 foreach ( $categories as $cat ) {
-						if ( $cat->term_id < $tid || empty( $tid ) ) {
-							 $tid = $cat->term_id;
-							 $pid = '';
-							 if ( ! empty( $cat->parent ) ) {
-									$pid = $cat->parent;
-							 }
+				$tid = '';
+				foreach ( $categories as $cat ) {
+					if ( $cat->term_id < $tid || empty( $tid ) ) {
+						$tid = $cat->term_id;
+						$pid = '';
+						if ( ! empty( $cat->parent ) ) {
+							$pid = $cat->parent;
 						}
-				 }
+					}
+				}
 			}
 			$term_category = get_term( $tid );
 			$category      = is_object( $term_category ) ? $term_category->slug : '';
 			if ( ! empty( $pid ) ) {
-				 $parent_category = get_term( $pid );
-				 $category        = is_object( $parent_category ) ? $parent_category->slug . '/' . $category : $category;
+				$parent_category = get_term( $pid );
+				$category        = is_object( $parent_category ) ? $parent_category->slug . '/' . $category : $category;
 			}
 			$replace_tag = str_replace( '%product_cat%', $category, $replace_tag );
 		}
