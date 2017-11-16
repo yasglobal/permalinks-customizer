@@ -1,12 +1,12 @@
 === Permalinks Customizer ===
 Contributors: aliya-yasir, sasiddiqui
 Donate link: https://www.paypal.me/yasglobal
-License: GPLv3
-License URI: http://www.gnu.org/licenses/gpl.html
 Tags: address, category, custom, custom permalink, custom post permalinks, link, permalink, rewrite slug, redirects, slug, tags, url, custom taxonomy
 Requires at least: 3.5
 Tested up to: 4.8
 Stable tag: 1.3.8
+License: GPLv3
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Set permalinks for default PostTypes, custom PostTypes, default Taxonomies (Category/Tags) and custom Taxonomies which can be changed from the edit page.
 
