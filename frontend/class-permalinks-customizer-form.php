@@ -310,10 +310,12 @@ class Permalinks_Customizer_Form {
 			} else {
 				$title       = sanitize_title( $post->post_title );
 				$replace_tag = str_replace( '%postname%', $title, $replace_tag );
-				wp_update_post( array(
-					'ID'        => $post_id,
-					'post_name' => $title
-        ));
+				if ( ! empty( $title ) ) {
+					wp_update_post( array(
+						'ID'        => $post_id,
+						'post_name' => $title
+					));
+				}
 			}
 		}
 
@@ -332,10 +334,12 @@ class Permalinks_Customizer_Form {
 			} else {
 				$title      = sanitize_title( $post->post_title );
 				$postnames .=  $title;
-				wp_update_post( array(
-					'ID'        => $post_id,
-					'post_name' => $title
-        ));
+				if ( ! empty( $title ) ) {
+					wp_update_post( array(
+						'ID'        => $post_id,
+						'post_name' => $title
+					));
+				}
 			}
 
 			$replace_tag = str_replace( '%parent_postname%', $postnames, $replace_tag );
@@ -359,10 +363,12 @@ class Permalinks_Customizer_Form {
 			} else {
 				$title      = sanitize_title( $post->post_title );
 				$postnames .=  $title;
-				wp_update_post( array(
-					'ID'        => $post_id,
-					'post_name' => $title
-        ));
+				if ( ! empty( $title ) ) {
+					wp_update_post( array(
+						'ID'        => $post_id,
+						'post_name' => $title
+					));
+				}
 			}
 
 			$replace_tag = str_replace( '%all_parents_postname%', $postnames, $replace_tag );
