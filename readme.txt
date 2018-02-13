@@ -4,9 +4,9 @@ Donate link: https://www.paypal.me/yasglobal
 Tags: address, category, custom, custom permalink, custom post permalinks, link, permalink, rewrite slug, redirects, slug, tags, url, custom taxonomy
 Requires at least: 3.5
 Tested up to: 4.9
-Stable tag: 1.3.8
+Stable tag: 1.3.9
 License: GPLv3
-License URI: https://www.gnu.org/licenses/gpl-3.0.html
+License URI: https://www.gnu.org/licenses/gpl.html
 
 Set permalinks for default PostTypes, custom PostTypes, default Taxonomies (Category/Tags) and custom Taxonomies which can be changed from the edit page.
 
@@ -18,7 +18,7 @@ By using <strong>Permalinks Customizer</strong> you can set the different permal
 
 = How to set the Permalinks for the PostTypes seperately =
 
-Let's assume that you have 6 <strong>PostTypes</strong> and they all have different style of <strong>permalinks</strong>. Like: 
+Let's assume that you have 6 <strong>PostTypes</strong> and they all have different style of <strong>permalinks</strong>. Like:
 
 1. <strong>Blog :</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/blog/year-month-date-postname/
 2. <strong>Customers :</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/customers/postname/
@@ -27,12 +27,12 @@ Let's assume that you have 6 <strong>PostTypes</strong> and they all have differ
 5. <strong>News :</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/news/year/postname/
 6. <strong>Sponsors :</strong> For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/company/sponsor/post_title/
 
-This plugin allows you to do this very easily. You just need to go on <strong>Permalinks Customizer</strong> Settings Page. Where text fields are shown with post-type name. You can define your permalinks you want to create for each post type. 
+This plugin allows you to do this very easily. You just need to go on <strong>Permalinks Customizer</strong> Settings Page. Where text fields are shown with post-type name. You can define your permalinks you want to create for each post type.
 
 If you leave the some post-type fields empty. So, <strong>Permalinks Customizer</strong> would create a permalink for that post-type by using the default <strong>permalink</strong> settings.
 
 > <strong>How to Configure Permalinks Customizer</strong>
-> 
+>
 > You can configure the plugin by going to the menu `Permalinks Customizer` that appears in your admin menu.<br><br><strong>                                   OR</strong><br><br> http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-posts-settings
 
 == Structure Tags ==
@@ -81,12 +81,37 @@ function yasglobal_exclude_url( $permalink ) {
 }
 add_filter( 'permalinks_customizer_exclude_request', 'yasglobal_exclude_url' );
 `
+=== Thanks for the Support ===
+
+The support from the users that love Permalinks Customizer is huge. You can support Permalinks Customizer future development and help to make it even better by donating or even giving a 5 star rating with a nice message to me :)
+
+[Donate to Permalinks Customizer](https://www.paypal.me/yasglobal)
+
+=== Bug reports ===
+
+Bug reports for Permalinks Customizer are [welcomed on GitHub](https://github.com/yasglobal/permalinks-customizer). Please note GitHub is not a support forum, and issues that aren't properly qualified as bugs will be closed.
 
 == Installation ==
 
-1. Upload the `permalinks-customizer` folder to the `/wp-content/plugins/` directory or Directly install the plugin through the WordPress plugins screen.
-2. Activate the Permalinks Customizer plugin through the `Plugins` menu in WordPress.
-3. Configure the plugin by going to the menu `Permalinks Customizer` that appears in your admin menu.
+This process defines you the steps to follow either you are installing through WordPress or Manually from FTP.
+
+**From within WordPress**
+
+1. Visit 'Plugins > Add New'
+2. Search for Permalinks Customizer
+3. Activate Permalinks Customizer from your Plugins page.
+4. Go to "after activation" below.
+
+**Manually**
+
+1. Upload the `permalinks-customizer` folder to the `/wp-content/plugins/` directory
+2. Activate Permalinks Customizer through the 'Plugins' menu in WordPress
+3. Go to "after activation" below.
+
+**After activation**
+
+1. Go to the plugin settings page and set up the plugin for your site.
+2. You're done!
 
 == Screenshots ==
 
@@ -104,7 +129,7 @@ add_filter( 'permalinks_customizer_exclude_request', 'yasglobal_exclude_url' );
 
 * You can easily convert the custom permalink URLs to permalink customizer URLs by going on [permalinks settings page](http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-convert-url)
 
-* Permalink conversion varies from servr to server. So, make sure to convert the url at a time on depending on your server capability. 
+* Permalink conversion varies from servr to server. So, make sure to convert the url at a time on depending on your server capability.
 
 == Frequently Asked Questions ==
 
@@ -118,6 +143,14 @@ A. Yes, you can use all the tags as defined on the [Permalinks Customizer page](
 A. No, This plugin does not work with [custom permalinks](https://wordpress.org/plugins/custom-permalinks/).
 
 == Changelog ==
+
+= 1.3.9 =
+
+  * Enhancements
+    * Fixed Empty Title issue
+    * Added About Page
+  * Bugs
+    * Fixed PHP Notices
 
 = 1.3.8 =
 
@@ -172,98 +205,6 @@ A. No, This plugin does not work with [custom permalinks](https://wordpress.org/
      * Replaced Deprecated Actions with the newer Actions
      * Breaking the tag permalinks
 
-= 1.2.5 =
+= Earlier versions =
 
-  * Added Regenerate Permalink Button
-
-= 1.2.4 =
-
-  * Resolves the Deletes first character of permalink issue using the use-case
-
-= 1.2.3 =
-
-  * Add Auto regenerate Permalink Functionality on Inherit and Add the Compatibility with the Previously (Old) Created Posts
-
-= 1.2.2 =
-
-  * Fixed Permalink Issue for Preview of Draft Post and PHP Notice
-
-= 1.2.1 =
-
-  * Resolved Issues of AMP Pages
-
-= 1.2 =
-  
-  * Resolved issues with AMP Pages and Added Functionality to regenerate the Permalinks until you publish the post/page or updated the permalink manually
-
-= 1.1 =
-
-  * Added Functionality to create Permalinks automtically on Creating the Term (Default + Custom Taxonomies) and updated DB Query for PostTypes
-
-= 1.0.2 =
-
-  * Fixed PHP Warning of Undefined Variable
-
-= 1.0.1 =
-
-  * Fixed Convert Custom Permalink Empty Page Issue
-
-= 1.0 =
-
-  * Fixed Quick Edit Bug, HomePage does not load Bug, Removed some Deprecated Filters/Actions and Added Permalinks for Custom Taxonomy
-
-= 0.4 =
-
-  * Fixed PolyLang Conflicts 
-
-= 0.3.10 =
-
- * Fixed TrailingSlash Function Name
-
-= 0.3.9 =
-
- * Fixed WPML Conflicts
-
-= 0.3.8 =
-
- * Fixed post_status error under the request() function 
-
-= 0.3.7 =
-
- * Added 4 new Tags (author_firstname, author_lastname, parent_postname, all_parents_postname)
-
-= 0.3.6 =
-
- * Added 1 new Tag
-
-= 0.3.5 =
-
- * Fixed Table Prefix Issue and some PHP Warnings
-
-= 0.3.4 =
-
- * Fixed draft preview issue 
-
-= 0.3.3 =
-
- * Fixed PHP undefined index error
-
-= 0.3.2 =
-
- * Convert custom permalink to permalink customizer
-
-= 0.3.1 =
-
- * Add product_cat tag which is specially used for WooCommerce Products
-
-= 0.3 =
-
- * Add functionality to create a permalink for category and tag for default post type
-
-= 0.2 =
-
- * Front Page Displays as Static Page Functionality
-
-= 0.1 =
-
- * First release on wordpress.org
+  * For the changelog of earlier versions, please refer to the separate changelog.txt file.

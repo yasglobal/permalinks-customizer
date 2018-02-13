@@ -10,8 +10,8 @@ class Permalinks_Customizer_Batch_Script {
 	 */
 	function __construct() {
 		$this->permalink_conversion();
-  }
-	
+	}
+
 	/**
 	 * This Function converts the Custom Permalinks to Permalink Customizer using Batch Script
 	 */
@@ -21,12 +21,13 @@ class Permalinks_Customizer_Batch_Script {
 		$step        = isset( $_GET['processing'] ) ? absint( $_GET['processing'] ) : 1;
 		$steps       = isset( $_GET['limit'] ) ? $_GET['limit'] : 0;
 		$data        = $wpdb->get_row( "SELECT meta_id from $wpdb->postmeta where meta_key = 'custom_permalink' LIMIT 1" );
-		echo '<div class="wrap"><h1>' . esc_html__( get_admin_page_title(), 'permalinks-customizer' ) . '</h1>';
+		echo '<div class="wrap">
+				<h1>' . esc_html__( get_admin_page_title(), 'permalinks-customizer' ) . '</h1>';
 		if ( isset( $_GET['processing'] ) ) {
 			if ( isset( $data ) && ! empty( $data ) ) {
 				$wpdb->query( $wpdb->prepare( "UPDATE $wpdb->postmeta SET meta_key = 'permalink_customizer' WHERE meta_id = %d ", $data->meta_id ) );
 				echo '<p>The batch update routine has started. Please be patient as this may take some time to complete <img class="conversion-in-process" src="' . includes_url( 'images/spinner-2x.gif' ) . '" alt="Loading..." ) width="20px" height="20px" style="vertical-align:bottom" /></p>';
-				echo '<p class="processing"><strong>Converting ' . (int) $step . ' out of ' . (int) $steps . ' custom permalinks</strong></p>'; 
+				echo '<p class="processing"><strong>Converting ' . (int) $step . ' out of ' . (int) $steps . ' custom permalinks</strong></p>';
 				?>
 				<script type="text/javascript">
 					jQuery(document).ready(function($) {
@@ -51,14 +52,14 @@ class Permalinks_Customizer_Batch_Script {
 				</script>
 			<?php }
 		} else {
-			if ( $_GET["no-permalink"] == 1 ) {
+			if ( isset( $_GET['no-permalink'] ) && $_GET['no-permalink'] == 1 ) {
 				$completed = $_GET["processed"] - 1;
 				$cat_data  = $wpdb->get_row( "SELECT option_id from $wpdb->options where option_name LIKE '%custom_permalink_table%'" );
 				if ( isset( $cat_data ) && ! empty( $cat_data ) ) {
 					$wpdb->query( $wpdb->prepare( "UPDATE $wpdb->options SET option_name = 'permalinks_customizer_table' where option_id = %d", $cat_data->option_id ) );
 				}
 				echo '<div class="updated"><p>' . $completed . ' <strong>Custom Permalink</strong> have been converted to <strong>Permalink Customizer</strong> successfully.</p></div>';
-			} elseif ( $_GET["processed"] > 0 ) {
+			} elseif ( isset( $_GET['processed'] ) && $_GET['processed'] > 0 ) {
 				$cat_data = $wpdb->get_row( "SELECT option_id from $wpdb->options where option_name LIKE '%custom_permalink_table%'" );
 				if ( isset( $cat_data ) && ! empty( $cat_data ) ) {
 					$wpdb->query( $wpdb->prepare( "UPDATE $wpdb->options SET option_name = 'permalinks_customizer_table' where option_id = %d ", $cat_data->option_id) );
@@ -66,7 +67,7 @@ class Permalinks_Customizer_Batch_Script {
 				echo '<div class="updated"><p>' . $_GET["processed"] . ' <strong>Custom Permalink</strong> have been converted to <strong>Permalink Customizer</strong> successfully.</p></div>';
 			}
       ?>
-			<p><?php _e( 'Click on the &quot;Convert Permalink&quot; button to convert custom permalink to Permalink Customizer. By doing this, all of your previous permalink which was created by custom permalink plugin would be converted to Permalink Customizer.', 'permalinks-customizer' ) ?> </p> 
+			<p><?php _e( 'Click on the &quot;Convert Permalink&quot; button to convert custom permalink to Permalink Customizer. By doing this, all of your previous permalink which was created by custom permalink plugin would be converted to Permalink Customizer.', 'permalinks-customizer' ) ?> </p>
 			<form id="permalinks-customizer-convert-url" method="get" action="<?php echo add_query_arg( 'page', 'permalinks-customizer-convert-url' ); ?>">
 			    <input type="hidden" name="page" value="<?php echo $plugin_slug; ?>" />
 			    <input type="hidden" name="processing" value="1" />

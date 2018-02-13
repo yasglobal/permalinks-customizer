@@ -7,18 +7,18 @@ var regeneratePermalink = document.getElementById( 'regenerate_permalink' ),
 
 function regenratePermalinkOption() {
     if ( savePost ) {
-        var confirmBox = confirm( "Are you sure, you want to regenerete Permalink?" );
+        var confirmBox = confirm( 'Are you sure, you want to regenerete Permalink?' );
         if (confirmBox) {
-            regenerateValue.value = "true";
+            regenerateValue.value = 'true';
             savePost.click();
         }
     } else {
         var bodyClasses = document.querySelector( 'body' );
         if ( bodyClasses && bodyClasses.classList.contains( 'term-php' ) ) {
             var saveTax = document.querySelector( 'body .edit-tag-actions input[type="submit"]' );
-            var confirmBox = confirm( "Are you sure, you want to regenerete Permalink?" );
+            var confirmBox = confirm( 'Are you sure, you want to regenerete Permalink?' );
             if ( confirmBox ) {
-                regenerateValue.value = "true";
+                regenerateValue.value = 'true';
                 saveTax.click();
             }
         }
@@ -42,7 +42,7 @@ function changeSEOLinkOnBlur () {
             i++;
             snippetCiteBase.innerHTML = getHomeURL.value + '/' + getPermalink.value;
             if (i === 5) {
-                clearInterval(urlChanged);                
+                clearInterval(urlChanged);
             }
         }, 1000);
     }
@@ -50,7 +50,7 @@ function changeSEOLinkOnBlur () {
 
 function changeSEOLink () {
     var snippetCiteBase = document.getElementById( 'snippet_citeBase' );
-    if ( snippetCiteBase && getHomeURL && getHomeURL.value != "" && getPermalink && getPermalink.value ) {
+    if ( snippetCiteBase && getHomeURL && getHomeURL.value != '' && getPermalink && getPermalink.value ) {
         var i = 0;
         var urlChanged = setInterval( function() {
             i++;
@@ -64,13 +64,13 @@ function changeSEOLink () {
             snippetEditorDesc  = document.getElementById( 'snippet-editor-meta-description' ),
             snippetCite        = document.getElementById( 'snippet_cite' );
         if ( snippetEditorTitle ) {
-            snippetEditorTitle.addEventListener("blur", changeSEOLinkOnBlur, false);
+            snippetEditorTitle.addEventListener('blur', changeSEOLinkOnBlur, false);
         }
         if ( snippetEditorSlug ) {
-            snippetEditorSlug.addEventListener("blur", changeSEOLinkOnBlur, false);
+            snippetEditorSlug.addEventListener('blur', changeSEOLinkOnBlur, false);
         }
         if ( snippetEditorDesc ) {
-            snippetEditorDesc.addEventListener("blur", changeSEOLinkOnBlur, false);
+            snippetEditorDesc.addEventListener('blur', changeSEOLinkOnBlur, false);
         }
         if ( snippetCite ) {
             snippetCite.style.display = 'none';
@@ -79,5 +79,5 @@ function changeSEOLink () {
 }
 
 if ( checkYoastSEO ) {
-    window.addEventListener("load", changeSEOLink, false);
+    window.addEventListener('load', changeSEOLink, false);
 }

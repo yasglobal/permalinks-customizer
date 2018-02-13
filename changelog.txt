@@ -1,0 +1,99 @@
+== Changelog ==
+
+This file contains only old changelog. See readme.txt for newer versions.
+
+= 1.2.5 =
+
+  * Added Regenerate Permalink Button
+
+= 1.2.4 =
+
+  * Resolves the Deletes first character of permalink issue using the use-case
+
+= 1.2.3 =
+
+  * Add Auto regenerate Permalink Functionality on Inherit and Add the Compatibility with the Previously (Old) Created Posts
+
+= 1.2.2 =
+
+  * Fixed Permalink Issue for Preview of Draft Post and PHP Notice
+
+= 1.2.1 =
+
+  * Resolved Issues of AMP Pages
+
+= 1.2 =
+
+  * Resolved issues with AMP Pages and Added Functionality to regenerate the Permalinks until you publish the post/page or updated the permalink manually
+
+= 1.1 =
+
+  * Added Functionality to create Permalinks automtically on Creating the Term (Default + Custom Taxonomies) and updated DB Query for PostTypes
+
+= 1.0.2 =
+
+  * Fixed PHP Warning of Undefined Variable
+
+= 1.0.1 =
+
+  * Fixed Convert Custom Permalink Empty Page Issue
+
+= 1.0 =
+
+  * Fixed Quick Edit Bug, HomePage does not load Bug, Removed some Deprecated Filters/Actions and Added Permalinks for Custom Taxonomy
+
+= 0.4 =
+
+  * Fixed PolyLang Conflicts
+
+= 0.3.10 =
+
+ * Fixed TrailingSlash Function Name
+
+= 0.3.9 =
+
+ * Fixed WPML Conflicts
+
+= 0.3.8 =
+
+ * Fixed post_status error under the request() function
+
+= 0.3.7 =
+
+ * Added 4 new Tags (author_firstname, author_lastname, parent_postname, all_parents_postname)
+
+= 0.3.6 =
+
+ * Added 1 new Tag
+
+= 0.3.5 =
+
+ * Fixed Table Prefix Issue and some PHP Warnings
+
+= 0.3.4 =
+
+ * Fixed draft preview issue
+
+= 0.3.3 =
+
+ * Fixed PHP undefined index error
+
+= 0.3.2 =
+
+ * Convert custom permalink to permalink customizer
+
+= 0.3.1 =
+
+ * Add product_cat tag which is specially used for WooCommerce Products
+
+= 0.3 =
+
+ * Add functionality to create a permalink for category and tag for default post type
+
+= 0.2 =
+
+ * Front Page Displays as Static Page Functionality
+
+= 0.1 =
+
+ * First release on wordpress.org

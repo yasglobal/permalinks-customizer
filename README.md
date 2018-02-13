@@ -8,7 +8,7 @@ By using **Permalinks Customizer** you can set the different permalink structure
 
 ### How to set the Permalinks for the PostTypes seperately
 
-Let's assume that you have 6 <strong>PostTypes</strong> and they all have different style of <strong>permalinks</strong>. Like: 
+Let's assume that you have 6 <strong>PostTypes</strong> and they all have different style of <strong>permalinks</strong>. Like:
 
 * **Blog** : For this post type you want to create a **permalink** which looks like this: http://www.example.com/blog/year-month-date-postname/
 * **Customers** : For this post type you want to create a **permalink** which looks like this: http://www.example.com/customers/postname/
@@ -17,7 +17,7 @@ Let's assume that you have 6 <strong>PostTypes</strong> and they all have differ
 * **News** : For this post type you want to create a **permalink** which looks like this: http://www.example.com/news/year/postname/
 * **Sponsors** : For this post type you want to create a **permalink** which looks like this: http://www.example.com/company/sponsor/post_title/
 
-This plugin allows you to do this very easily. You just need to go on **Permalinks Customizer** Settings Page. Where text fields are shown with post-type name. You can define your permalinks you want to create for each post type. 
+This plugin allows you to do this very easily. You just need to go on **Permalinks Customizer** Settings Page. Where text fields are shown with post-type name. You can define your permalinks you want to create for each post type.
 
 If you leave the some post-type fields empty. So, **Permalinks Customizer** would create a permalink for that post-type by using the default **permalink** settings.
 
@@ -64,7 +64,7 @@ If you leave the some post-type fields empty. So, **Permalinks Customizer** woul
 ## Filter
 
 If you want to exclude some Permalink to processed with the plugin so, just add the filter looks like this:
-`
+```
 function yasglobal_exclude_url( $permalink ) {
   if ( strpos( $permalink, '/contact-us/' ) !== false ) {
     return '__true';
@@ -72,13 +72,35 @@ function yasglobal_exclude_url( $permalink ) {
   return;
 }
 add_filter( 'permalinks_customizer_exclude_request', 'yasglobal_exclude_url' );
-`
+```
 
-## Installation 
+### Thanks for the Support
 
-1. Upload the `permalinks-customizer` folder to the `/wp-content/plugins/` directory or Directly install the plugin through the WordPress plugins screen.
-2. Activate the Permalinks Customizer plugin through the `Plugins` menu in WordPress.
-3. Configure the plugin by going to the menu `Permalinks Customizer` that appears in your admin menu
+The support from the users that love Permalinks Customizer is huge. You can support Permalinks Customizer future development and help to make it even better by donating or even giving a [5 star rating with a nice message](https://wordpress.org/support/plugin/permalinks-customizer/reviews/?rate=5#new-post) to me :)
+
+[Donate to Permalinks Customizer](https://www.paypal.me/yasglobal)
+
+## Installation
+
+This process defines you the steps to follow either you are installing through WordPress or Manually from FTP.
+
+## From within WordPress
+
+1. Visit 'Plugins > Add New'
+2. Search for Permalinks Customizer
+3. Activate Permalinks Customizer from your Plugins page.
+4. Go to "after activation" below.
+
+## Manually
+
+1. Upload the `permalinks-customizer` folder to the `/wp-content/plugins/` directory
+2. Activate Permalinks Customizer through the 'Plugins' menu in WordPress
+3. Go to "after activation" below.
+
+### After activation
+
+1. Go to the plugin settings page and set up the plugin for your site.
+2. You're done!
 
 ## Frequently Asked Questions
 
