@@ -35,14 +35,14 @@
 
 // Make sure we don't expose any info if called directly
 if ( ! defined( 'ABSPATH' ) ) {
-	echo 'Hi there!  I\'m just a plugin, not much I can do when called directly.';
-	exit;
+  echo 'Hi there!  I\'m just a plugin, not much I can do when called directly.';
+  exit;
 }
 
 if ( ! defined( 'PERMALINKS_CUSTOMIZER_FILE' ) ) {
-	define( 'PERMALINKS_CUSTOMIZER_FILE', __FILE__ );
+  define( 'PERMALINKS_CUSTOMIZER_FILE', __FILE__ );
 }
 
 require_once(
-	dirname( PERMALINKS_CUSTOMIZER_FILE ) . '/permalinks-customizer-main.php'
+  dirname( PERMALINKS_CUSTOMIZER_FILE ) . '/permalinks-customizer-main.php'
 );
