@@ -3,33 +3,21 @@
  * @package PermalinksCustomizer\Frontend
  */
 
-class Permalinks_Customizer_Frontend {
+final class Permalinks_Customizer_Frontend {
 
   /**
    * Initialize WordPress Hooks
    */
   public function init() {
-    add_filter( 'request',
-      array( $this, 'make_request' ), 10, 1
-    );
+    add_filter( 'request', array( $this, 'make_request' ), 10, 1 );
 
-    add_action( 'template_redirect',
-      array( $this, 'make_redirect' ), 5
-    );
+    add_action( 'template_redirect', array( $this, 'make_redirect' ), 5 );
 
-    add_filter( 'post_link',
-      array( $this, 'permalinks_customizer_post_link' ), 10, 2
-    );
-    add_filter( 'post_type_link',
-      array( $this, 'permalinks_customizer_post_link' ), 10, 2
-    );
-    add_filter( 'page_link',
-      array( $this, 'permalinks_customizer_page_link' ), 10, 2
-    );
+    add_filter( 'post_link', array( $this, 'customized_post_link' ), 10, 2 );
+    add_filter( 'post_type_link', array( $this, 'customized_post_link' ), 10, 2 );
+    add_filter( 'page_link', array( $this, 'customized_page_link' ), 10, 2 );
 
-    add_filter( 'term_link',
-      array( $this, 'permalinks_customizer_term_link' ), 10, 3
-    );
+    add_filter( 'term_link', array( $this, 'customized_term_link' ), 10, 3 );
 
     add_filter( 'user_trailingslashit',
       array( $this, 'apply_trailingslash' ), 10, 2
@@ -99,7 +87,7 @@ class Permalinks_Customizer_Frontend {
         }
       } else {
         $original_url = preg_replace( '@/+@', '/', str_replace( trim( strtolower( $posts[0]->meta_value ), '/' ),
-                  ( $posts[0]->post_type == 'page' ? $this->permalinks_customizer_original_page_link( $posts[0]->ID ) : $this->permalinks_customizer_original_post_link( $posts[0]->ID ) ), strtolower( $request_noslash ) ) );
+                  ( $posts[0]->post_type == 'page' ? $this->original_page_link( $posts[0]->ID ) : $this->original_post_link( $posts[0]->ID ) ), strtolower( $request_noslash ) ) );
       }
     }
     if ( NULL === $original_url ) {
@@ -114,7 +102,7 @@ class Permalinks_Customizer_Frontend {
 
       $get_term_permalink = NULL;
       if ( is_array( $taxonomy_term_data ) && isset( $taxonomy_term_data[0]->term_id ) ) {
-        $get_term_permalink = $this->permalinks_customizer_original_taxonomy_link( $taxonomy_term_data[0]->term_id );
+        $get_term_permalink = $this->original_taxonomy_link( $taxonomy_term_data[0]->term_id );
         if ( isset( $get_term_permalink ) && '' != $get_term_permalink ) {
           if ( $request_noslash == trim( $taxonomy_term_data[0]->meta_value, '/' ) ) {
             $_CPRegisteredURL = $request;
@@ -143,7 +131,7 @@ class Permalinks_Customizer_Frontend {
 
             $original_url = str_replace(
               trim( $permalink, '/' ),
-              $this->permalinks_customizer_original_taxonomy_link( $term['id'] ),
+              $this->original_taxonomy_link( $term['id'] ),
               trim( $request, '/' )
             );
           }
@@ -217,11 +205,11 @@ class Permalinks_Customizer_Frontend {
     if ( is_single() || is_page() ) {
       $post = $wp_query->post;
       $permalinks_customizer = get_post_meta( $post->ID, 'permalink_customizer', true );
-      $original_permalink    = ( $post->post_type == 'page' ? $this->permalinks_customizer_original_page_link( $post->ID ) : $this->permalinks_customizer_original_post_link( $post->ID ) );
+      $original_permalink    = ( $post->post_type == 'page' ? $this->original_page_link( $post->ID ) : $this->original_post_link( $post->ID ) );
     } else if ( is_tag() || is_category() || is_tax() ) {
       $theTerm                = $wp_query->get_queried_object();
-      $permalinks_customizer  = $this->permalinks_customizer_permalink_for_term( $theTerm->term_id );
-      $original_permalink     = $this->permalinks_customizer_original_taxonomy_link( $theTerm->term_id );
+      $permalinks_customizer  = $this->find_permalink_by_id( $theTerm->term_id );
+      $original_permalink     = $this->original_taxonomy_link( $theTerm->term_id );
     }
     if ( $permalinks_customizer
       && ( substr( $request, 0, strlen( $permalinks_customizer ) ) != $permalinks_customizer
@@ -244,7 +232,7 @@ class Permalinks_Customizer_Frontend {
   /**
    * Filter to replace the post permalink with the custom one
    */
-  public function permalinks_customizer_post_link( $permalink, $post ) {
+  public function customized_post_link( $permalink, $post ) {
     $permalinks_customizer = get_post_meta( $post->ID, 'permalink_customizer', true );
     if ( $permalinks_customizer ) {
       $post_type = isset( $post->post_type ) ? $post->post_type : 'post';
@@ -267,7 +255,7 @@ class Permalinks_Customizer_Frontend {
   /**
    * Filter to replace the page permalink with the custom one
    */
-  public function permalinks_customizer_page_link( $permalink, $page ) {
+  public function customized_page_link( $permalink, $page ) {
     $permalinks_customizer = get_post_meta( $page, 'permalink_customizer', true );
     if ( $permalinks_customizer ) {
       $language_code = apply_filters(
@@ -289,11 +277,11 @@ class Permalinks_Customizer_Frontend {
   /**
    * Filter to replace the term permalink with the custom one
    */
-  public function permalinks_customizer_term_link( $permalink, $term ) {
+  public function customized_term_link( $permalink, $term ) {
     if ( is_object( $term ) ) {
       $term = $term->term_id;
     }
-    $permalinks_customizer = $this->permalinks_customizer_permalink_for_term( $term );
+    $permalinks_customizer = $this->find_permalink_by_id( $term );
 
     if ( $permalinks_customizer ) {
       $taxonomy = get_term( $term );
@@ -318,7 +306,7 @@ class Permalinks_Customizer_Frontend {
   /**
    * Find the Permalink for the provided term id
    */
-  public function permalinks_customizer_permalink_for_term( $id ) {
+  public function find_permalink_by_id( $id ) {
 
     $term_link = get_term_meta( $id, 'permalink_customizer', true );
 
@@ -340,21 +328,21 @@ class Permalinks_Customizer_Frontend {
   /**
    * Remove the post_link and post_type_link Filter for getting the original Permalink of the Posts and set it back.
    */
-  public function permalinks_customizer_original_post_link( $post_id ) {
+  public function original_post_link( $post_id ) {
     remove_filter( 'post_link',
-      array( $this, 'permalinks_customizer_post_link' ), 10, 2
+      array( $this, 'customized_post_link' ), 10, 2
     );
     remove_filter( 'post_type_link',
-      array( $this, 'permalinks_customizer_post_link' ), 10, 2
+      array( $this, 'customized_post_link' ), 10, 2
     );
     $original_permalink = ltrim(
       str_replace( home_url(), '', get_permalink( $post_id ) ), '/'
     );
     add_filter( 'post_link',
-      array( $this, 'permalinks_customizer_post_link' ), 10, 2
+      array( $this, 'customized_post_link' ), 10, 2
     );
     add_filter( 'post_type_link',
-      array( $this, 'permalinks_customizer_post_link' ), 10, 2
+      array( $this, 'customized_post_link' ), 10, 2
     );
     return $original_permalink;
   }
@@ -362,15 +350,15 @@ class Permalinks_Customizer_Frontend {
   /**
    * Remove the page_link Filter for getting the original Permalink of the Page and set it back.
    */
-  public function permalinks_customizer_original_page_link( $post_id ) {
+  public function original_page_link( $post_id ) {
     remove_filter( 'page_link',
-      array( $this, 'permalinks_customizer_page_link' ), 10, 2
+      array( $this, 'customized_page_link' ), 10, 2
     );
     $original_permalink = ltrim(
       str_replace( home_url(), '', get_permalink( $post_id ) ), '/'
     );
     add_filter( 'page_link',
-      array( $this, 'permalinks_customizer_page_link' ), 10, 2
+      array( $this, 'customized_page_link' ), 10, 2
     );
     return $original_permalink;
   }
@@ -378,10 +366,10 @@ class Permalinks_Customizer_Frontend {
   /**
    * Remove the term_link and user_trailingslashit Filter for getting the original Permalink of the Term and set it back.
    */
-  public function permalinks_customizer_original_taxonomy_link( $term_id ) {
+  public function original_taxonomy_link( $term_id ) {
 
     remove_filter( 'term_link',
-      array( $this, 'permalinks_customizer_term_link' ), 10, 2
+      array( $this, 'customized_term_link' ), 10, 2
     );
     remove_filter( 'user_trailingslashit',
       array( $this, 'apply_trailingslash' ), 10, 2
@@ -394,7 +382,7 @@ class Permalinks_Customizer_Frontend {
       array( $this, 'apply_trailingslash' ), 10, 2
     );
     add_filter( 'term_link',
-      array( $this, 'permalinks_customizer_term_link' ), 10, 2
+      array( $this, 'customized_term_link' ), 10, 2
     );
 
     if ( is_wp_error( $term_link ) ) {

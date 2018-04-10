@@ -3,35 +3,35 @@
  * @package PermalinksCustomizer\Frontend\Form
  */
 
-class Permalinks_Customizer_Form {
+final class Permalinks_Customizer_Form {
 
   /**
    * Initialize WordPress Hooks
    */
   public function init() {
     add_filter( 'get_sample_permalink_html',
-      array( $this, 'pc_get_sample_permalink_html' ), 10, 4
+      array( $this, 'post_edit_form' ), 10, 4
     );
 
     add_action( 'save_post',
-      array( $this, 'permalinks_customizer_customization' ), 10, 3
+      array( $this, 'save_post_permalink' ), 10, 3
     );
     add_action( 'delete_post',
-      array( $this, 'permalinks_customizer_delete_permalink' ), 10
+      array( $this, 'delete_post_permalink' ), 10
     );
 
     add_action( 'created_term',
-      array( $this, 'permalinks_customizer_create_term' ), 10, 3
+      array( $this, 'generate_term_permalink' ), 10, 3
     );
     add_action( 'edited_term',
-      array( $this, 'permalinks_customizer_create_term' ), 10, 3
+      array( $this, 'generate_term_permalink' ), 10, 3
     );
     add_action( 'delete_term',
-      array( $this, 'permalinks_customizer_delete_term' ), 10, 3
+      array( $this, 'delete_term_permalink' ), 10, 3
     );
 
     add_action( 'update_option_page_on_front',
-      array( $this, 'permalinks_customizer_static_page' ), 10, 2
+      array( $this, 'static_front_page' ), 10, 2
     );
     add_action( 'init', array( $this, 'register_taxonomies_form' ) );
   }
@@ -108,27 +108,29 @@ class Permalinks_Customizer_Form {
   }
 
   /**
-   * This is the Main Function which gets the Permalink Edit form for the user with validating the Post Types
+   * This is the Main Function which gets the Permalink Edit form for the user
+   * with validating the Post Types
    */
-  public function pc_get_sample_permalink_html( $html, $id, $new_title, $new_slug ) {
+  public function post_edit_form( $html, $id, $new_title, $new_slug ) {
     $permalink = get_post_meta( $id, 'permalink_customizer', true );
     $post      = get_post( $id );
 
     ob_start();
-    $permalinks_customizer_frontend_object = new Permalinks_Customizer_Frontend;
+    $pc_frontend = new Permalinks_Customizer_Frontend;
 
     if ( 'page' == $post->post_type ) {
-      $original_permalink = $permalinks_customizer_frontend_object->permalinks_customizer_original_page_link( $id );
+      $original_permalink = $pc_frontend->original_page_link( $id );
       $view_post = __( 'View Page', 'permalinks-customizer' );
     } else {
-      $original_permalink = $permalinks_customizer_frontend_object->permalinks_customizer_original_post_link( $id );
+      $original_permalink = $pc_frontend->original_post_link( $id );
       $view_post = __( 'View ' . ucfirst( $post->post_type ), 'permalinks-customizer' );
     }
     $this->get_form( $permalink, $original_permalink, false, $post->post_name );
 
     $content = ob_get_contents();
     ob_end_clean();
-    if ( 'attachment' == $post->post_type || $post->ID == get_option( 'page_on_front' ) ) {
+    if ( 'attachment' == $post->post_type
+      || $post->ID == get_option( 'page_on_front' ) ) {
       return $html;
     }
 
@@ -142,14 +144,14 @@ class Permalinks_Customizer_Form {
                     </span>
                     <span id="regenerate_permalink">
                       <a href="javascript:void(0);" class="button button-small">Regenerate Permalink</a>
-                    </span>\n';
+                    </span><br>';
       } else {
         $content .= '<span id="view-post-btn">
                       <a href="/' . $original_permalink . '" class="button button-small" target="_blank">$view_post</a>
                     </span>
                     <span id="regenerate_permalink">
                       <a href="javascript:void(0);" class="button button-small">Regenerate Permalink</a>
-                    </span>\n';
+                    </span><br>';
       }
     }
     if ( preg_match( "@view-post-btn.*?href='([^']+)'@s", $html, $matches ) ) {
@@ -162,21 +164,22 @@ class Permalinks_Customizer_Form {
       }
     }
 
-    return '<strong>' . __( 'Permalink:', 'permalinks-customizer' ) . "</strong>\n" . $content;
+    return '<strong>' . __( 'Permalink:', 'permalinks-customizer' ) . '</strong>' . $content;
   }
 
   /**
-   *
+   * This is the Main Function which gets the Permalink Edit form for the user
+   * with validating the Taxonomy
    */
-  public function permalinks_customizer_term_options( $object ) {
+  public function term_edit_form( $object ) {
     $permalink = '';
     $original_permalink = '';
     if ( isset( $object ) && isset( $object->term_id ) ) {
-      $permalinks_customizer_frontend_object = new Permalinks_Customizer_Frontend;
-      $permalink = $permalinks_customizer_frontend_object->permalinks_customizer_permalink_for_term( $object->term_id );
+      $pc_frontend = new Permalinks_Customizer_Frontend;
+      $permalink = $pc_frontend->find_permalink_by_id( $object->term_id );
 
       if ( $object->term_id ) {
-        $original_permalink = $permalinks_customizer_frontend_object->permalinks_customizer_original_taxonomy_link( $object->term_id );
+        $original_permalink = $pc_frontend->original_taxonomy_link( $object->term_id );
       }
     }
 
@@ -194,9 +197,11 @@ class Permalinks_Customizer_Form {
   }
 
   /**
-   * This Function call when the Post/Page has been Saved
+   * This Function call when the Post/Page has been Saved. This function
+   * generates the Permalink according the PostType Permalink Structure and
+   * also saves the permalink if it is updated manually by user.
    */
-  public function permalinks_customizer_customization( $post_id, $post, $update ) {
+  public function save_post_permalink( $post_id, $post, $update ) {
 
     if ( ! isset( $_REQUEST['permalinks_customizer_edit'] )
       || $_REQUEST['permalinks_customizer_edit'] != true ) {
@@ -204,7 +209,7 @@ class Permalinks_Customizer_Form {
     }
 
     if ( $post_id == get_option( 'page_on_front' ) ) {
-      $this->permalinks_customizer_delete_permalink( $post_id );
+      $this->delete_post_permalink( $post_id );
       return;
     }
 
@@ -232,7 +237,7 @@ class Permalinks_Customizer_Form {
       if ( empty( $get_permalink ) ) {
         $get_permalink = esc_attr( get_option('permalink_structure' ) );
       }
-      $set_permalink = $this->permalinks_customizer_replace_tags(
+      $set_permalink = $this->replace_posttype_tags(
         $post_id, $post, $get_permalink
       );
 
@@ -291,7 +296,7 @@ class Permalinks_Customizer_Form {
   /**
    * Replace the tags with the respective value on generating the Permalink for the Post types
    */
-  private function permalinks_customizer_replace_tags( $post_id, $post, $replace_tag ) {
+  private function replace_posttype_tags( $post_id, $post, $replace_tag ) {
 
     $date = new DateTime( $post->post_date );
 
@@ -521,15 +526,17 @@ class Permalinks_Customizer_Form {
   /**
    * Delete Permalink when the Post is deleted or when the saving Post is selected as Front Page
    */
-  public function permalinks_customizer_delete_permalink( $id ) {
+  public function delete_post_permalink( $id ) {
     global $wpdb;
     $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->postmeta WHERE meta_key = 'permalink_customizer' AND post_id = %d", $id ) );
   }
 
   /**
-   * Check and Call the Function which saves the Permalink for Taxonomy
+   * Check and Call the Function which saves the Permalink for Taxonomy.
+   * This function generates the Permalink according to the Taxonomy settings and
+   * also saves the permalink if it is updated manually by user.
    */
-  public function permalinks_customizer_create_term( $id ) {
+  public function generate_term_permalink( $id ) {
     $new_permalink = ltrim( stripcslashes( $_REQUEST['permalinks_customizer'] ), '/' );
 
     $term = get_term( $id );
@@ -540,7 +547,7 @@ class Permalinks_Customizer_Form {
       if ( isset( $permalinks_customizer_settings[$term->taxonomy . '_settings'] )
         && isset( $permalinks_customizer_settings[$term->taxonomy . '_settings']['structure'] )
         && ! empty( $permalinks_customizer_settings[$term->taxonomy . '_settings']['structure'] ) ) {
-        $new_permalink = $this->permalinks_customizer_replace_taxes_tags( $term, $permalinks_customizer_settings[$term->taxonomy . '_settings']['structure'] );
+        $new_permalink = $this->replace_term_tags( $term, $permalinks_customizer_settings[$term->taxonomy . '_settings']['structure'] );
       }
     }
 
@@ -548,20 +555,20 @@ class Permalinks_Customizer_Form {
       return;
     }
 
-    $permalinks_customizer_frontend_object = new Permalinks_Customizer_Frontend;
-    $old_permalink = $permalinks_customizer_frontend_object->permalinks_customizer_original_taxonomy_link( $id );
+    $pc_frontend = new Permalinks_Customizer_Frontend;
+    $old_permalink = $pc_frontend->original_taxonomy_link( $id );
 
     if ( $new_permalink == $old_permalink ) {
       return;
     }
 
-    $this->permalinks_customizer_save_term( $term, str_replace( '%2F', '/', urlencode( $new_permalink ) ) );
+    $this->save_term_permalink( $term, str_replace( '%2F', '/', urlencode( $new_permalink ) ) );
   }
 
   /**
    * Replace the tags with the respective value on generating the Permalink for the Taxonmoies
    */
-  private function permalinks_customizer_replace_taxes_tags( $term, $replace_tag ) {
+  private function replace_term_tags( $term, $replace_tag ) {
 
     if ( false !== strpos( $replace_tag, '%name%' ) ) {
       $name        = sanitize_title( $term->name );
@@ -626,7 +633,7 @@ class Permalinks_Customizer_Form {
   /**
    * Save Permalink for the Term
    */
-  private function permalinks_customizer_save_term( $term, $permalink ) {
+  private function save_term_permalink( $term, $permalink ) {
     $url = get_term_meta( $term->term_id, 'permalink_customizer' );
     if ( empty( $url ) ) {
       global $wpdb;
@@ -662,7 +669,7 @@ class Permalinks_Customizer_Form {
   /**
    * Delete Permalink when the Term is deleted
    */
-  public function permalinks_customizer_delete_term( $id ) {
+  public function delete_term_permalink( $id ) {
     global $wpdb;
     $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->termmeta WHERE meta_key = 'permalink_customizer' AND term_id = %d", $id ) );
 
@@ -682,8 +689,8 @@ class Permalinks_Customizer_Form {
   /**
    * This Function Just deletes the Permalink for the Page selected as the Front Page
    */
-  public function permalinks_customizer_static_page( $prev_front_page_id, $new_front_page_id ) {
-    $this->permalinks_customizer_delete_permalink( $new_front_page_id );
+  public function static_front_page( $prev_front_page_id, $new_front_page_id ) {
+    $this->delete_post_permalink( $new_front_page_id );
   }
 
   /**
@@ -695,8 +702,8 @@ class Permalinks_Customizer_Form {
       if ( 'nav_menu' == $taxonomy ) {
         continue;
       }
-      add_action( $taxonomy . '_add_form', array( $this, 'permalinks_customizer_term_options' ) );
-      add_action( $taxonomy . '_edit_form', array( $this, 'permalinks_customizer_term_options' ) );
+      add_action( $taxonomy . '_add_form', array( $this, 'term_edit_form' ) );
+      add_action( $taxonomy . '_edit_form', array( $this, 'term_edit_form' ) );
     }
   }
 }
