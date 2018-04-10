@@ -39,10 +39,104 @@ if ( ! defined( 'ABSPATH' ) ) {
   exit;
 }
 
-if ( ! defined( 'PERMALINKS_CUSTOMIZER_FILE' ) ) {
-  define( 'PERMALINKS_CUSTOMIZER_FILE', __FILE__ );
+final class Permalinks_Customizer {
+
+  /**
+   * Class constructor.
+   */
+  public function __construct() {
+    $this->setup_constants();
+    $this->includes();
+
+    add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
+  }
+
+  /**
+   * Setup plugin constants
+   *
+   * @access private
+   * @since 2.0.0
+   * @return void
+   */
+  private function setup_constants() {
+    if ( ! defined( 'PERMALINKS_CUSTOMIZER_FILE' ) ) {
+      define( 'PERMALINKS_CUSTOMIZER_FILE', __FILE__ );
+    }
+
+    if ( ! defined( 'PERMALINKS_CUSTOMIZER_PLUGIN_VERSION' ) ) {
+      define( 'PERMALINKS_CUSTOMIZER_PLUGIN_VERSION', '1.3.9' );
+    }
+
+    if ( ! defined( 'PERMALINKS_CUSTOMIZER_PATH' ) ) {
+      define( 'PERMALINKS_CUSTOMIZER_PATH', plugin_dir_path( PERMALINKS_CUSTOMIZER_FILE ) );
+    }
+
+    if ( ! defined( 'PERMALINKS_CUSTOMIZER_BASENAME' ) ) {
+      define( 'PERMALINKS_CUSTOMIZER_BASENAME', plugin_basename( PERMALINKS_CUSTOMIZER_FILE ) );
+    }
+  }
+
+  /**
+   * Include required files
+   *
+   * @access private
+   * @since 2.0.0
+   * @return void
+   */
+  private function includes() {
+    require_once(
+      PERMALINKS_CUSTOMIZER_PATH . 'frontend/class-permalinks-customizer-frontend.php'
+    );
+
+    $permalinks_customizer_frontend = new Permalinks_Customizer_Frontend();
+    $permalinks_customizer_frontend->init();
+
+    require_once(
+      PERMALINKS_CUSTOMIZER_PATH . 'frontend/class-permalinks-customizer-form.php'
+    );
+
+    $permalinks_customizer_form = new Permalinks_Customizer_Form();
+    $permalinks_customizer_form->init();
+
+    if ( is_admin() ) {
+      require_once(
+        PERMALINKS_CUSTOMIZER_PATH . 'admin/class-permalinks-customizer-admin.php'
+      );
+      new Permalinks_Customizer_Admin();
+    }
+  }
+
+  /**
+   * Loads the plugin language files
+   *
+   * @access public
+   * @since 2.0.0
+   * @return void
+   */
+  public function load_textdomain() {
+    load_plugin_textdomain( 'permalinks-customizer', FALSE,
+      basename( dirname( PERMALINKS_CUSTOMIZER_FILE ) ) . '/languages/'
+    );
+    $this->update_taxonomy_table();
+  }
+
+  /**
+   * Check Version if the version is not defined or less than to the current
+   * plugin function then update the permalinks_customizer_table
+   *
+   * @access private
+   * @since 2.0.0
+   * @return void
+   */
+  private function update_taxonomy_table() {
+    $current_version = get_option( 'permalinks_customizer_plugin_version', -1 );
+    if ( -1 === $current_version || PERMALINKS_CUSTOMIZER_PLUGIN_VERSION < $current_version ) {
+      require_once(
+        PERMALINKS_CUSTOMIZER_PATH . 'admin/class-permalinks-customizer-update-taxonomy-table.php'
+      );
+      new Permalinks_Customizer_Update_Taxonomy();
+    }
+  }
 }
 
-require_once(
-  dirname( PERMALINKS_CUSTOMIZER_FILE ) . '/permalinks-customizer-main.php'
-);
+new Permalinks_Customizer();

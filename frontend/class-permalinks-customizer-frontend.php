@@ -155,34 +155,33 @@ class Permalinks_Customizer_Frontend {
       $original_url = str_replace( '//', '/', $original_url );
 
       if ( false !== ( $pos = strpos( $_SERVER['REQUEST_URI'], '?' ) ) ) {
-        $queryVars     = substr( $_SERVER['REQUEST_URI'], $pos + 1 );
-        $original_url .= ( strpos( $original_url, '?' ) === false ? '?' : '&' ) . $queryVars;
+        $query_vars     = substr( $_SERVER['REQUEST_URI'], $pos + 1 );
+        $original_url .= ( strpos( $original_url, '?' ) === false ? '?' : '&' ) . $query_vars;
       }
-      $oldRequestUri           = $_SERVER['REQUEST_URI'];
-      $oldQueryString          = $_SERVER['QUERY_STRING'];
-      $_SERVER['REQUEST_URI']  = '/' . ltrim( $original_url, '/' );
+      $old_request_uri        = $_SERVER['REQUEST_URI'];
+      $old_query_string       = $_SERVER['QUERY_STRING'];
+      $_SERVER['REQUEST_URI'] = '/' . ltrim( $original_url, '/' );
       $pos = strpos( $original_url, '?' );
       $_SERVER['QUERY_STRING'] = ( ( $pos ) !== false ? substr( $original_url, $pos + 1 ) : '' );
-      parse_str( $_SERVER['QUERY_STRING'], $queryArray );
-      $oldValues = array();
-      if ( is_array( $queryArray ) ) {
-        foreach ( $queryArray as $key => $value ) {
-          $oldValues[$key] = $_REQUEST[$key];
-          $_REQUEST[$key]  = $_GET[$key] = $value;
+      parse_str( $_SERVER['QUERY_STRING'], $query_array );
+      $old_values = array();
+      if ( is_array( $query_array ) ) {
+        foreach ( $query_array as $key => $value ) {
+          $old_values[$key] = '';
+          if ( isset( $_REQUEST[$key] ) ) {
+            $old_values[$key] = $_REQUEST[$key];
+          }
+          $_REQUEST[$key] = $_GET[$key] = $value;
         }
       }
-      remove_filter( 'request',
-        array( $this, 'make_request' ), 10, 1
-      );
+      remove_filter( 'request', array( $this, 'make_request' ), 10, 1 );
       global $wp;
       $wp->parse_request();
       $query = $wp->query_vars;
-      add_filter(
-        'request', array( $this, 'make_request' ), 10, 1
-      );
-      $_SERVER['REQUEST_URI']  = $oldRequestUri;
-      $_SERVER['QUERY_STRING'] = $oldQueryString;
-      foreach ( $oldValues as $key => $value ) {
+      add_filter( 'request', array( $this, 'make_request' ), 10, 1 );
+      $_SERVER['REQUEST_URI']  = $old_request_uri;
+      $_SERVER['QUERY_STRING'] = $old_query_string;
+      foreach ( $old_values as $key => $value ) {
         $_REQUEST[$key] = $value;
       }
     }
