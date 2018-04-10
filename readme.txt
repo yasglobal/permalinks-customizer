@@ -144,7 +144,7 @@ A. No, This plugin does not work with [custom permalinks](https://wordpress.org/
 
 == Changelog ==
 
-= 1.3.9 =
+= 1.3.9 - Feb 13, 2018 =
 
   * Enhancements
     * Fixed Empty Title issue
@@ -152,42 +152,42 @@ A. No, This plugin does not work with [custom permalinks](https://wordpress.org/
   * Bugs
     * Fixed PHP Notices
 
-= 1.3.8 =
+= 1.3.8 - Oct 15, 2017 =
 
   * Updated Postname if it's not available at the Created Post time
 
-= 1.3.7 =
+= 1.3.7 - Oct 06, 2017 =
 
   * Resolved the Yoast SEO Slug Issue
 
-= 1.3.6 =
+= 1.3.6 - Oct 02, 2017 =
 
   * Resolved the Draft Permalink Issue on editing the description under the snippet of Yoast SEO
 
-= 1.3.5 =
+= 1.3.5 - Sept 28, 2017 =
 
   * Resolved the Pagination Issue for Taxonomies
 
-= 1.3.4 =
+= 1.3.4 - Sept 27, 2017 =
 
   * Applied PHP Coding Standards on WordPress
 
-= 1.3.3 =
+= 1.3.3 - Sept 26, 2017 =
 
   * Enhancements
     * Added Filter to Exclude/Ignore URL to be processed
   * Bugs
     * Fixed Vulnerability Issues
 
-= 1.3.2 =
+= 1.3.2 - Sept 12, 2017 =
 
   * Fixed Setting Custom Post Type Permalink doesn't work and redirects to /wp-admin/option
 
-= 1.3.1 =
+= 1.3.1 - Sept 11, 2017 =
 
   * Added Translation Capability
 
-= 1.3 =
+= 1.3 - Sept 08, 2017 =
 
   * Enhancements
     * Added PostTypes Permalinks Page
