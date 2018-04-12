@@ -6,14 +6,19 @@
 class Permalinks_Customizer_Taxonomy_Permalinks {
 
   /**
-   * Call Taxonomy Permalinks Function
+   * Call Taxonomy Permalinks Function.
    */
   function __construct() {
     $this->tax_permalinks();
   }
 
   /**
-   * Shows all the Permalinks created by using this Plugin with Pager and Search Functionality of Taxonomies
+   * Shows all the Permalinks created by using this Plugin with Pager
+   * and Search Functionality of Taxonomies.
+   *
+   * @access private
+   * @since 1.3
+   * @return void
    */
   private function tax_permalinks() {
     global $wpdb;
@@ -22,8 +27,8 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
     $html             = '';
 
     // Handle Bulk Operations
-    if ( ( isset( $_POST['action'] ) && $_POST['action'] == 'delete' )
-      || ( isset( $_POST['action2'] ) && $_POST['action2'] == 'delete' )
+    if ( ( isset( $_POST['action'] ) && 'delete' == $_POST['action'] )
+      || ( isset( $_POST['action2'] ) && 'delete' == $_POST['action2'] )
       && isset( $_POST['permalink'] ) && ! empty( $_POST['permalink'] ) ) {
       $taxonomy_ids =  implode( ',', $_POST['permalink'] );
       if ( preg_match( '/^\d+(?:,\d+)*$/', $taxonomy_ids ) ) {
@@ -39,7 +44,7 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
     $common_functions = new Permalinks_Customizer_Common_Functions();
 
     $html .= '<div class="wrap">
-          <h1 class="wp-heading-inline">' . __( 'Taxonomy Permalinks', 'permalinks-customizer' ) . '</h1>';
+                <h1 class="wp-heading-inline">' . __( 'Taxonomy Permalinks', 'permalinks-customizer' ) . '</h1>';
 
     $search_value     = '';
     $filter_permalink = '';
@@ -50,7 +55,8 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
       $html            .= '<span class="subtitle">Search results for "' . $search_value . '"</span>';
     }
     $page_limit = 'LIMIT 0, 20';
-    if ( isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] ) && $_GET['paged'] > 1 ) {
+    if ( isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] )
+      && $_GET['paged'] > 1 ) {
       $pager      = 20 * ( $_GET['paged'] - 1 );
       $page_limit = 'LIMIT ' . $pager . ', 20';
     }
@@ -85,13 +91,13 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
     $html .= '<form action="' . $_SERVER["REQUEST_URI"] . '" method="post">';
     $html .= '<div class="tablenav top">';
     $html .= '<div class="alignleft actions bulkactions">
-          <label for="bulk-action-selector-top" class="screen-reader-text">' . __( "Select bulk action", "permalinks-customizer" ) . '</label>
-          <select name="action" id="bulk-action-selector-top">
-              <option value="-1">' . __( "Bulk Actions", "permalinks-customizer" ) . '</option>
-              <option value="delete">' . __( "Delete Permalinks", "permalinks-customizer" ) . '</option>
-          </select>
-          <input type="submit" id="doaction" class="button action" value="Apply">
-        </div>';
+                <label for="bulk-action-selector-top" class="screen-reader-text">' . __( "Select bulk action", "permalinks-customizer" ) . '</label>
+                <select name="action" id="bulk-action-selector-top">
+                    <option value="-1">' . __( "Bulk Actions", "permalinks-customizer" ) . '</option>
+                    <option value="delete">' . __( "Delete Permalinks", "permalinks-customizer" ) . '</option>
+                </select>
+                <input type="submit" id="doaction" class="button action" value="Apply">
+              </div>';
 
     $taxonomies = 0;
     if ( isset( $count_tax->total_permalinks )
@@ -105,7 +111,7 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
       $total_pages     = ceil( $count_tax->total_permalinks / 20 );
       if ( isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] )
         && $_GET['paged'] > 0 ) {
-        $pagination_html = $common_functions->permalinks_customizer_pager(
+        $pagination_html = $common_functions->get_pager(
           $count_tax->total_permalinks, $_GET['paged'], $total_pages
         );
         if ( $_GET['paged'] > $total_pages ) {
@@ -116,22 +122,22 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
           exit();
         }
       } elseif ( ! isset( $_GET['paged'] ) ) {
-        $pagination_html = $common_functions->permalinks_customizer_pager(
+        $pagination_html = $common_functions->get_pager(
           $count_tax->total_permalinks, 1, $total_pages
         );
       }
 
       $html .= $pagination_html;
     }
-    $table_navigation = $common_functions->permalinks_customizer_tablenav(
+    $table_navigation = $common_functions->get_tablenav(
       $order_by_class, $order_by, $search_permalink, $_GET['page']
     );
 
     $html .= '</div>';
     $html .= '<table class="wp-list-table widefat fixed striped posts">
-          <thead>' . $table_navigation . '</thead>
-          <tbody>';
-    if ( $taxonomies != 0 && ! empty( $taxonomies ) ) {
+                <thead>' . $table_navigation . '</thead>
+                <tbody>';
+    if ( 0 != $taxonomies && ! empty( $taxonomies ) ) {
       foreach ( $taxonomies as $taxonomy ) {
         $html .= '<tr valign="top">';
         $html .= '<th scope="row" class="check-column"><input type="checkbox" name="permalink[]" value="' . $taxonomy->term_id . '" /></th>';
@@ -143,20 +149,20 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
       $html .= '<tr class="no-items"><td class="colspanchange" colspan="10">No permalinks found.</td></tr>';
     }
     $html .= '</tbody>
-          <tfoot>' . $table_navigation . '</tfoot>
-          </table>';
+              <tfoot>' . $table_navigation . '</tfoot>
+              </table>';
 
     $html .= '<div class="tablenav bottom">
-          <div class="alignleft actions bulkactions">
-            <label for="bulk-action-selector-bottom" class="screen-reader-text">' .  __( "Select bulk action", "permalinks-customizer" ) . '</label>
-            <select name="action2" id="bulk-action-selector-bottom">
-              <option value="-1">' .  __( "Bulk Actions", "permalinks-customizer" ) . '</option>
-              <option value="delete">' .  __( "Delete Permalinks", "permalinks-customizer" ) . '</option>
-            </select>
-            <input type="submit" id="doaction2" class="button action" value="Apply">
-          </div>
-          ' . $pagination_html . '
-        </div>';
+                <div class="alignleft actions bulkactions">
+                  <label for="bulk-action-selector-bottom" class="screen-reader-text">' .  __( "Select bulk action", "permalinks-customizer" ) . '</label>
+                  <select name="action2" id="bulk-action-selector-bottom">
+                    <option value="-1">' .  __( "Bulk Actions", "permalinks-customizer" ) . '</option>
+                    <option value="delete">' .  __( "Delete Permalinks", "permalinks-customizer" ) . '</option>
+                  </select>
+                  <input type="submit" id="doaction2" class="button action" value="Apply">
+                </div>
+                ' . $pagination_html . '
+              </div>';
     $html .= '</form></div>';
     echo $html;
   }

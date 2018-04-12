@@ -6,21 +6,27 @@
 class Permalinks_Customizer_PostTypes_Settings {
 
   /**
-   * Call Post Settings Function
+   * Call Post Settings Function.
    */
   function __construct() {
     $this->post_settings();
   }
 
   /**
-   * Shows the main Settings Page Where user can provide different Permalink Structure for their PostTypes
+   * Shows the main Settings Page Where user can provide different
+   * Permalink Structure for their PostTypes.
+   *
+   * @access public
+   * @since 0.1
+   * @return void
    */
   private function post_settings() {
     $post_types = get_post_types( '', 'objects' );
     if ( isset( $_POST['submit'] ) ) {
       foreach ( $_POST as $key => $value ) {
-        if ( $key === 'submit' )
+        if ( 'submit' === $key ) {
           continue;
+        }
         update_option( $key, $value );
       }
     }
@@ -35,7 +41,9 @@ class Permalinks_Customizer_PostTypes_Settings {
         <table class="form-table">
           <?php
           foreach ( $post_types as $post_type ) {
-            if ( $post_type->name == 'revision' || $post_type->name == 'nav_menu_item' || $post_type->name == 'attachment' ) {
+            if ( 'revision' == $post_type->name
+              || 'nav_menu_item' == $post_type->name
+              || 'attachment' == $post_type->name ) {
               continue;
             }
             $perm_struct = 'permalinks_customizer_' . $post_type->name;

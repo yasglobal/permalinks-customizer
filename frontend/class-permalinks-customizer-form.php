@@ -37,7 +37,11 @@ final class Permalinks_Customizer_Form {
   }
 
   /**
-   * Generate Form for editing the Permalinks for Post/Pages/Categories
+   * Generate Form for editing the Permalinks for Post/Pages/Categories.
+   *
+   * @access private
+   * @since 0.1
+   * @return void
    */
   private function get_form( $permalink, $original = '', $renderContainers = true, $postname = '' ) {
     $encoded_permalink = htmlspecialchars( urldecode( $permalink ) );
@@ -109,7 +113,11 @@ final class Permalinks_Customizer_Form {
 
   /**
    * This is the Main Function which gets the Permalink Edit form for the user
-   * with validating the Post Types
+   * with validating the Post Types.
+   *
+   * @access public
+   * @since 0.1
+   * @return string
    */
   public function post_edit_form( $html, $id, $new_title, $new_slug ) {
     $permalink = get_post_meta( $id, 'permalink_customizer', true );
@@ -169,7 +177,11 @@ final class Permalinks_Customizer_Form {
 
   /**
    * This is the Main Function which gets the Permalink Edit form for the user
-   * with validating the Taxonomy
+   * with validating the Taxonomy.
+   *
+   * @access public
+   * @since 1.3
+   * @return void
    */
   public function term_edit_form( $object ) {
     $permalink = '';
@@ -200,6 +212,10 @@ final class Permalinks_Customizer_Form {
    * This Function call when the Post/Page has been Saved. This function
    * generates the Permalink according the PostType Permalink Structure and
    * also saves the permalink if it is updated manually by user.
+   *
+   * @access public
+   * @since 0.1
+   * @return void
    */
   public function save_post_permalink( $post_id, $post, $update ) {
 
@@ -274,10 +290,12 @@ final class Permalinks_Customizer_Form {
       $permalink = preg_replace( '/(\-+)/', '-', $permalink );
       update_post_meta( $post_id, 'permalink_customizer', $permalink );
       if ( 'publish' == $post_status ) {
-        // permalink_customizer_regenerate_status = 1 means Permalink won't be generated again on updating the post
+        // permalink_customizer_regenerate_status = 1 means Permalink won't be
+        // generated again on updating the post
         update_post_meta( $post_id, 'permalink_customizer_regenerate_status', 1 );
       } else {
-        // permalink_customizer_regenerate_status = 0 means Permalink will be generated again on updating the post
+        // permalink_customizer_regenerate_status = 0 means Permalink will be
+        // generated again on updating the post
         update_post_meta( $post_id, 'permalink_customizer_regenerate_status', 0 );
       }
     } elseif ( isset( $_REQUEST['permalinks_customizer'] )
@@ -288,13 +306,19 @@ final class Permalinks_Customizer_Form {
       $permalink = preg_replace( '/(\/+)/', '/', $permalink );
       $permalink = preg_replace( '/(\-+)/', '-', $permalink );
       update_post_meta( $post_id, 'permalink_customizer', $permalink );
-      // permalink_customizer_regenerate_status = 1 means Permalink won't be generated again on updating the post (Once, user changed it)
+      // Permalink_customizer_regenerate_status = 1 means Permalink won't be
+      // generated again on updating the post (Once, user changed it)
       update_post_meta( $post_id, 'permalink_customizer_regenerate_status', 1 );
     }
   }
 
   /**
-   * Replace the tags with the respective value on generating the Permalink for the Post types
+   * Replace the tags with the respective value on generating the Permalink
+   * for the Post types.
+   *
+   * @access private
+   * @since 0.1
+   * @return string
    */
   private function replace_posttype_tags( $post_id, $post, $replace_tag ) {
 
@@ -363,7 +387,8 @@ final class Permalinks_Customizer_Form {
       }
     }
 
-    // Replace %parent_postname% with the respective post name with the parent post name if parent post is selected
+    // Replace %parent_postname% with the respective post name with the
+    // parent post name if parent post is selected
     if ( false !== strpos( $replace_tag, '%parent_postname%' ) ) {
       $parents   = get_ancestors( $post_id, $post->post_type, 'post_type' );
       $postnames = '';
@@ -389,7 +414,8 @@ final class Permalinks_Customizer_Form {
       $replace_tag = str_replace( '%parent_postname%', $postnames, $replace_tag );
     }
 
-    // Replace %all_parents_postname% with the respective post name with the parents post name if parent post is selected
+    // Replace %all_parents_postname% with the respective post name with the
+    // parents post name if parent post is selected
     if ( false !== strpos( $replace_tag, '%all_parents_postname%' ) ) {
       $parents   = get_ancestors( $post_id, $post->post_type, 'post_type' );
       $postnames = '';
@@ -418,7 +444,8 @@ final class Permalinks_Customizer_Form {
       $replace_tag = str_replace( '%all_parents_postname%', $postnames, $replace_tag );
     }
 
-    // Replace %category% with the respective post category with their parent categories
+    // Replace %category% with the respective post category with their
+    // parent categories
     if (strpos( $replace_tag, '%category%' ) !== false ) {
       $categories = get_the_category( $post_id );
       $total_cat  = count( $categories );
@@ -462,7 +489,8 @@ final class Permalinks_Customizer_Form {
       $replace_tag   = str_replace( '%child-category%', $category, $replace_tag );
     }
 
-    // Replace %product_cat% with the respective post (Product Category). Used with WooCommerce
+    // Replace %product_cat% with the respective post (Product Category).
+    // Used with WooCommerce
     if ( false !== strpos( $replace_tag, '%product_cat%' ) ) {
       $categories = get_the_terms( $post_id, 'product_cat' );
       $total_cat  = count( $categories );
@@ -524,7 +552,12 @@ final class Permalinks_Customizer_Form {
   }
 
   /**
-   * Delete Permalink when the Post is deleted or when the saving Post is selected as Front Page
+   * Delete Permalink when the Post is deleted or when the saving Post is
+   * selected as Front Page.
+   *
+   * @access public
+   * @since 0.1
+   * @return void
    */
   public function delete_post_permalink( $id ) {
     global $wpdb;
@@ -533,8 +566,12 @@ final class Permalinks_Customizer_Form {
 
   /**
    * Check and Call the Function which saves the Permalink for Taxonomy.
-   * This function generates the Permalink according to the Taxonomy settings and
-   * also saves the permalink if it is updated manually by user.
+   * This function generates the Permalink according to the Taxonomy settings
+   * and also saves the permalink if it is updated manually by user.
+   *
+   * @access public
+   * @since 1.0
+   * @return void
    */
   public function generate_term_permalink( $id ) {
     $new_permalink = ltrim( stripcslashes( $_REQUEST['permalinks_customizer'] ), '/' );
@@ -566,7 +603,12 @@ final class Permalinks_Customizer_Form {
   }
 
   /**
-   * Replace the tags with the respective value on generating the Permalink for the Taxonmoies
+   * Replace the tags with the respective value on generating the Permalink
+   * for the Taxonmoies.
+   *
+   * @access private
+   * @since 1.0
+   * @return string
    */
   private function replace_term_tags( $term, $replace_tag ) {
 
@@ -631,7 +673,11 @@ final class Permalinks_Customizer_Form {
   }
 
   /**
-   * Save Permalink for the Term
+   * Save Permalink for the Term.
+   *
+   * @access private
+   * @since 1.3
+   * @return void
    */
   private function save_term_permalink( $term, $permalink ) {
     $url = get_term_meta( $term->term_id, 'permalink_customizer' );
@@ -668,6 +714,10 @@ final class Permalinks_Customizer_Form {
 
   /**
    * Delete Permalink when the Term is deleted
+   *
+   * @access public
+   * @since 1.0
+   * @return void
    */
   public function delete_term_permalink( $id ) {
     global $wpdb;
@@ -687,14 +737,22 @@ final class Permalinks_Customizer_Form {
   }
 
   /**
-   * This Function Just deletes the Permalink for the Page selected as the Front Page
+   * Delete the Permalink for the Page selected as the Front Page.
+   *
+   * @access public
+   * @since 1.0
+   * @return void
    */
   public function static_front_page( $prev_front_page_id, $new_front_page_id ) {
     $this->delete_post_permalink( $new_front_page_id );
   }
 
   /**
-   * Register Taxonomy to show Permalink Add/Edit Form
+   * Register Taxonomy to show Permalink Add/Edit Form.
+   *
+   * @access public
+   * @since 1.3
+   * @return void
    */
   public function register_taxonomies_form() {
     $taxonomies = get_taxonomies();

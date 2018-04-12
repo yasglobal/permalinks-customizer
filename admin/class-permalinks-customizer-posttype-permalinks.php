@@ -6,14 +6,19 @@
 class Permalinks_Customizer_PostType_Permalinks {
 
   /**
-   * Call Post Permalinks Function
+   * Call Post Permalinks Function.
    */
   function __construct() {
     $this->post_permalinks();
   }
 
   /**
-   * Shows all the Permalinks created by using this Plugin with Pager and Search Functionality of Posts/Pages
+   * Shows all the Permalinks created by using this Plugin with Pager
+   * and Search Functionality of Posts/Pages.
+   *
+   * @access private
+   * @since 1.3
+   * @return void
    */
   private function post_permalinks() {
     global $wpdb;
@@ -22,16 +27,16 @@ class Permalinks_Customizer_PostType_Permalinks {
     $html             = '';
 
     // Handle Bulk Operations
-    if ( ( isset( $_POST['action'] ) && $_POST['action'] == 'delete' )
-      || ( isset( $_POST['action2'] ) && $_POST['action2'] == 'delete' )
+    if ( ( isset( $_POST['action'] ) && 'delete' == $_POST['action'] )
+      || ( isset( $_POST['action2'] ) && 'delete' == $_POST['action2'] )
       && isset( $_POST['permalink'] ) && ! empty( $_POST['permalink'] ) ) {
       $post_ids =  implode( ',', $_POST['permalink'] );
       if ( preg_match( '/^\d+(?:,\d+)*$/', $post_ids ) ) {
         $wpdb->query( "DELETE FROM $wpdb->postmeta WHERE post_id IN ($post_ids) AND meta_key = 'permalink_customizer'" );
       } else {
         $error = '<div id="message" class="error">
-              <p>' . __( 'There is some error to proceed your request. Please retry with your request or contact to the plugin author.', 'permalinks-customizer' ) . '</p>
-             </div>';
+                    <p>' . __( 'There is some error to proceed your request. Please retry with your request or contact to the plugin author.', 'permalinks-customizer' ) . '</p>
+                 </div>';
       }
     }
 
@@ -41,7 +46,7 @@ class Permalinks_Customizer_PostType_Permalinks {
     $common_functions = new Permalinks_Customizer_Common_Functions();
 
     $html .= '<div class="wrap">
-          <h1 class="wp-heading-inline">' . __( 'PostTypes Permalinks', 'permalinks-customizer' ) . '</h1>';
+                <h1 class="wp-heading-inline">' . __( 'PostTypes Permalinks', 'permalinks-customizer' ) . '</h1>';
 
     $search_value     = '';
     $filter_permalink = '';
@@ -88,13 +93,13 @@ class Permalinks_Customizer_PostType_Permalinks {
     $html .= '<form action="' . $_SERVER["REQUEST_URI"] . '" method="post">';
     $html .= '<div class="tablenav top">';
     $html .= '<div class="alignleft actions bulkactions">
-          <label for="bulk-action-selector-top" class="screen-reader-text">Select bulk action</label>
-          <select name="action" id="bulk-action-selector-top">
-            <option value="-1">' . __( "Bulk Actions", "permalinks-customizer" ) . '</option>
-            <option value="delete">' . __( "Delete Permalinks", "permalinks-customizer" ) . '</option>
-          </select>
-          <input type="submit" id="doaction" class="button action" value="Apply">
-        </div>';
+                <label for="bulk-action-selector-top" class="screen-reader-text">Select bulk action</label>
+                <select name="action" id="bulk-action-selector-top">
+                  <option value="-1">' . __( "Bulk Actions", "permalinks-customizer" ) . '</option>
+                  <option value="delete">' . __( "Delete Permalinks", "permalinks-customizer" ) . '</option>
+                </select>
+                <input type="submit" id="doaction" class="button action" value="Apply">
+              </div>';
 
     $posts = 0;
     if ( isset( $count_posts->total_permalinks ) && $count_posts->total_permalinks > 0 ) {
@@ -106,29 +111,29 @@ class Permalinks_Customizer_PostType_Permalinks {
       $pagination_html = '';
       $total_pages     = ceil( $count_posts->total_permalinks / 20 );
       if ( isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] ) && $_GET['paged'] > 0 ) {
-        $pagination_html = $common_functions->permalinks_customizer_pager( $count_posts->total_permalinks, $_GET['paged'], $total_pages );
+        $pagination_html = $common_functions->get_pager( $count_posts->total_permalinks, $_GET['paged'], $total_pages );
         if ( $_GET['paged'] > $total_pages ) {
           $redirect_uri = explode( '&paged=' . $_GET['paged'] . '', $_SERVER['REQUEST_URI'] );
           header( 'Location: ' . $redirect_uri[0], 301 );
           exit();
         }
       } elseif ( ! isset( $_GET['paged'] ) ) {
-        $pagination_html = $common_functions->permalinks_customizer_pager(
+        $pagination_html = $common_functions->get_pager(
           $count_posts->total_permalinks, 1, $total_pages
         );
       }
 
       $html .= $pagination_html;
     }
-    $table_navigation = $common_functions->permalinks_customizer_tablenav(
+    $table_navigation = $common_functions->get_tablenav(
       $order_by_class, $order_by, $search_permalink, $_GET['page']
     );
 
     $html .= '</div>';
     $html .= '<table class="wp-list-table widefat fixed striped posts">
-          <thead>' . $table_navigation . '</thead>
-          <tbody>';
-    if ( $posts != 0 && ! empty( $posts ) ) {
+                <thead>' . $table_navigation . '</thead>
+                <tbody>';
+    if ( 0 != $posts && ! empty( $posts ) ) {
       foreach ( $posts as $post ) {
         $html .= '<tr valign="top">';
         $html .= '<th scope="row" class="check-column"><input type="checkbox" name="permalink[]" value="' . $post->ID . '" /></th>';
@@ -144,16 +149,16 @@ class Permalinks_Customizer_PostType_Permalinks {
          </table>';
 
     $html .= '<div class="tablenav bottom">
-          <div class="alignleft actions bulkactions">
-            <label for="bulk-action-selector-bottom" class="screen-reader-text">' . __( "Select bulk action", "permalinks-customizer" ) . '</label>
-            <select name="action2" id="bulk-action-selector-bottom">
-              <option value="-1">' . __( "Bulk Actions", "permalinks-customizer" ) . '</option>
-              <option value="delete">' . __( "Delete Permalinks", "permalinks-customizer" ) . '</option>
-            </select>
-            <input type="submit" id="doaction2" class="button action" value="Apply">
-          </div>
-          ' . $pagination_html . '
-        </div>';
+                <div class="alignleft actions bulkactions">
+                  <label for="bulk-action-selector-bottom" class="screen-reader-text">' . __( "Select bulk action", "permalinks-customizer" ) . '</label>
+                  <select name="action2" id="bulk-action-selector-bottom">
+                    <option value="-1">' . __( "Bulk Actions", "permalinks-customizer" ) . '</option>
+                    <option value="delete">' . __( "Delete Permalinks", "permalinks-customizer" ) . '</option>
+                  </select>
+                  <input type="submit" id="doaction2" class="button action" value="Apply">
+                </div>
+                ' . $pagination_html . '
+              </div>';
     $html .= '</form></div>';
     echo $html;
   }

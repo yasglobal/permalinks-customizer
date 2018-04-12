@@ -6,14 +6,18 @@
 class Permalinks_Customizer_Admin {
 
   /**
-   * Initializes WordPress hooks
+   * Initializes WordPress hooks.
    */
   function __construct() {
     add_action( 'admin_menu', array( $this, 'admin_menu' ) );
   }
 
   /**
-   * Added Pages in Menu for Settings
+   * Added Pages in Menu for Settings.
+   *
+   * @access public
+   * @since 0.1
+   * @return void
    */
   public function admin_menu() {
     add_menu_page( 'Set Your Permalinks', 'Permalinks Customizer',
@@ -65,7 +69,12 @@ class Permalinks_Customizer_Admin {
   }
 
   /**
-   * This Function Calls the another Function which shows the PostTypes Settings Page
+   * This Function Calls the another Function which shows
+   * the PostTypes Settings Page.
+   *
+   * @access public
+   * @since 0.1
+   * @return void
    */
   public function posts_settings_page() {
     require_once(
@@ -76,7 +85,12 @@ class Permalinks_Customizer_Admin {
   }
 
   /**
-   * This Function Calls the another Function which shows the PostTypes Tags Page
+   * This Function Calls the another Function which shows
+   * the PostTypes Tags Page.
+   *
+   * @access public
+   * @since 0.1
+   * @return void
    */
   public function post_tags_page() {
     require_once(
@@ -87,7 +101,12 @@ class Permalinks_Customizer_Admin {
   }
 
   /**
-   * This Function Calls the another Function which shows the PostTypes Permalinks Page
+   * This Function Calls the another Function which shows
+   * the PostTypes Permalinks Page.
+   *
+   * @access public
+   * @since 1.3
+   * @return void
    */
   public function post_permalinks_page() {
     require_once(
@@ -98,7 +117,12 @@ class Permalinks_Customizer_Admin {
   }
 
   /**
-   * This Function Calls the another Function which shows the Taxonomies Settings Page
+   * This Function Calls the another Function which shows
+   * the Taxonomies Settings Page.
+   *
+   * @access public
+   * @since 1.1
+   * @return void
    */
   public function taxonomies_settings_page() {
     require_once(
@@ -109,7 +133,12 @@ class Permalinks_Customizer_Admin {
   }
 
   /**
-   * This Function Calls the another Function which shows the Taxonomies Tags Page
+   * This Function Calls the another Function which shows
+   * the Taxonomies Tags Page.
+   *
+   * @access public
+   * @since 1.1
+   * @return void
    */
   public function taxonomy_tags_page() {
     require_once(
@@ -120,7 +149,12 @@ class Permalinks_Customizer_Admin {
   }
 
   /**
-   * This Function Calls the another Function which shows the Taxonomies Settings Page
+   * This Function Calls the another Function which shows
+   * the Taxonomies Settings Page.
+   *
+   * @access public
+   * @since 1.3
+   * @return void
    */
   public function taxonomy_permalinks_page() {
     require_once(
@@ -133,6 +167,10 @@ class Permalinks_Customizer_Admin {
   /**
    * This Function Calls the another Function which provide the functionality
    * to convert Custom Permalink URLs to Permalinks Customizer.
+   *
+   * @access public
+   * @since 1.0
+   * @return void
    */
   public function convert_url() {
     require_once(
@@ -143,7 +181,11 @@ class Permalinks_Customizer_Admin {
   }
 
   /**
-   * Add About Plugins Page
+   * Add About Plugins Page.
+   *
+   * @access public
+   * @since 1.3.9
+   * @return void
    */
   public function about_plugin() {
     require_once(
@@ -153,8 +195,12 @@ class Permalinks_Customizer_Admin {
     add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 1 );
   }
 
-    /**
-   * Add Plugin Support and Follow Message in the footer of Admin Pages
+  /**
+   * Add Plugin Support and Follow Message in the footer of Admin Pages.
+   *
+   * @access public
+   * @since 1.3.3
+   * @return string
    */
   public function admin_footer_text() {
     $footer_text = sprintf(
@@ -169,6 +215,10 @@ class Permalinks_Customizer_Admin {
   /**
    * Plugin About, Contact and Settings Link on the Plugin Page under
    * the Plugin Name.
+   *
+   * @access public
+   * @since 1.3.9
+   * @return array
    */
   public function settings_link( $links ) {
     $about = sprintf(

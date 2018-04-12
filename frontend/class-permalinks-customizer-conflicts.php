@@ -6,7 +6,11 @@
 class Permalinks_Customizer_Conflicts {
 
   /**
-   * Check Conflicts and resolve it (e.g: Polylang)
+   * Check Conflicts and resolve it (e.g: Polylang).
+   *
+   * @access public
+   * @since 1.3.3
+   * @return string
    */
   public function check_conflicts ( $requested_url = '' ) {
     if ( '' == $requested_url ) {

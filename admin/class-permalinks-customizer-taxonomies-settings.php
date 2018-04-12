@@ -6,22 +6,27 @@
 class Permalinks_Customizer_Taxonomies_Settings {
 
   /**
-   * Call Taxonomies Settings Function
+   * Call Taxonomies Settings Function.
    */
   function __construct() {
     $this->taxonomy_settings();
   }
 
   /**
-   * Shows the main Settings Page Where user can provide
-   * different Permalink Structure for their Taxonomies
+   * Shows the main Settings Page Where user can provide different
+   * Permalink Structure for their Taxonomies.
+   *
+   * @access private
+   * @since 1.1
+   * @return void
    */
   private function taxonomy_settings() {
     if ( isset( $_POST['submit'] ) ) {
       $permalinks_customizer_taxes = array();
       foreach ( $_POST as $key => $value ) {
-        if ( $key === 'submit' )
+        if ( 'submit' === $key ) {
           continue;
+        }
         $permalinks_customizer_taxes[$key . '_settings'] = array(
           'structure' => $value,
         );
@@ -47,7 +52,7 @@ class Permalinks_Customizer_Taxonomies_Settings {
           <?php
           $taxonomies = get_taxonomies();
           foreach ( $taxonomies as $taxonomy ) {
-            if ( $taxonomy == 'nav_menu' ) {
+            if ( 'nav_menu' == $taxonomy ) {
               continue;
             }
             $value = '';

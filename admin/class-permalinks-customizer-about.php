@@ -13,7 +13,11 @@ class Permalinks_Customizer_About {
   }
 
   /**
-   * More Plugins HTML
+   * More Plugins HTML.
+   *
+   * @access private
+   * @since 1.3.9
+   * @return void
    */
   private function more_plugins() {
     $plugin_url = plugins_url( '/admin', PERMALINKS_CUSTOMIZER_FILE );
@@ -21,28 +25,28 @@ class Permalinks_Customizer_About {
     wp_enqueue_style( 'style', $plugin_url . '/css/about-plugins.min.css' );
     $plugin_name = __( 'Permalinks Customizer', 'permalinks-customizer' );
     $button_text = __( 'Check it out', 'permalinks-customizer' );
-    $five_star = '<span class="star">
-              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 53.867 53.867" width="15" height="15">
-              <polygon points="26.934,1.318 35.256,18.182 53.867,20.887 40.4,34.013 43.579,52.549 26.934,43.798
-                  10.288,52.549 13.467,34.013 0,20.887 18.611,18.182 "/>
-              </svg>
-              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 53.867 53.867" width="15" height="15">
-              <polygon points="26.934,1.318 35.256,18.182 53.867,20.887 40.4,34.013 43.579,52.549 26.934,43.798
-                  10.288,52.549 13.467,34.013 0,20.887 18.611,18.182 "/>
-              </svg>
-              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 53.867 53.867" width="15" height="15">
-              <polygon points="26.934,1.318 35.256,18.182 53.867,20.887 40.4,34.013 43.579,52.549 26.934,43.798
-                  10.288,52.549 13.467,34.013 0,20.887 18.611,18.182 "/>
-              </svg>
-              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 53.867 53.867" width="15" height="15">
-              <polygon points="26.934,1.318 35.256,18.182 53.867,20.887 40.4,34.013 43.579,52.549 26.934,43.798
-                  10.288,52.549 13.467,34.013 0,20.887 18.611,18.182 "/>
-              </svg>
-              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 53.867 53.867" width="15" height="15">
-              <polygon points="26.934,1.318 35.256,18.182 53.867,20.887 40.4,34.013 43.579,52.549 26.934,43.798
-                  10.288,52.549 13.467,34.013 0,20.887 18.611,18.182 "/>
-              </svg>
-            </span>';
+    $five_star   = '<span class="star">
+                      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 53.867 53.867" width="15" height="15">
+                      <polygon points="26.934,1.318 35.256,18.182 53.867,20.887 40.4,34.013 43.579,52.549 26.934,43.798
+                          10.288,52.549 13.467,34.013 0,20.887 18.611,18.182 "/>
+                      </svg>
+                      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 53.867 53.867" width="15" height="15">
+                      <polygon points="26.934,1.318 35.256,18.182 53.867,20.887 40.4,34.013 43.579,52.549 26.934,43.798
+                          10.288,52.549 13.467,34.013 0,20.887 18.611,18.182 "/>
+                      </svg>
+                      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 53.867 53.867" width="15" height="15">
+                      <polygon points="26.934,1.318 35.256,18.182 53.867,20.887 40.4,34.013 43.579,52.549 26.934,43.798
+                          10.288,52.549 13.467,34.013 0,20.887 18.611,18.182 "/>
+                      </svg>
+                      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 53.867 53.867" width="15" height="15">
+                      <polygon points="26.934,1.318 35.256,18.182 53.867,20.887 40.4,34.013 43.579,52.549 26.934,43.798
+                          10.288,52.549 13.467,34.013 0,20.887 18.611,18.182 "/>
+                      </svg>
+                      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 53.867 53.867" width="15" height="15">
+                      <polygon points="26.934,1.318 35.256,18.182 53.867,20.887 40.4,34.013 43.579,52.549 26.934,43.798
+                          10.288,52.549 13.467,34.013 0,20.887 18.611,18.182 "/>
+                      </svg>
+                    </span>';
     ?>
 
     <div class="wrap">

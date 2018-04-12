@@ -6,14 +6,18 @@
 class Permalinks_Customizer_Taxonomy_Tags {
 
   /**
-   * Call Taxonomy Tags Function
+   * Call Taxonomy Tags Function.
    */
   function __construct() {
     $this->available_taxonomy_tags();
   }
 
   /**
-   * Shows all the Tags which this Plugin Supports for Taxonomies
+   * Shows all the Tags which this Plugin Supports for Taxonomies.
+   *
+   * @access private
+   * @since 1.1
+   * @return void
    */
   private function available_taxonomy_tags() {
     ?>

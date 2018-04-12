@@ -6,14 +6,18 @@
 class Permalinks_Customizer_Post_Tags {
 
   /**
-   * Call Posy Tags Function
+   * Call Posy Tags Function.
    */
   function __construct() {
     $this->post_available_tags();
   }
 
   /**
-   * Shows all the Tags which this Plugin Supports for PostTypes
+   * Shows all the Tags which this Plugin Supports for PostTypes.
+   *
+   * @access private
+   * @since 0.1
+   * @return void
    */
   private function post_available_tags() {
     ?>
