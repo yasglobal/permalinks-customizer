@@ -89,13 +89,13 @@ This process defines you the steps to follow either you are installing through W
 1. Visit 'Plugins > Add New'
 2. Search for Permalinks Customizer
 3. Activate Permalinks Customizer from your Plugins page.
-4. Go to "after activation" below.
+4. Go to [after activation](#after-activation) below.
 
 ## Manually
 
 1. Upload the `permalinks-customizer` folder to the `/wp-content/plugins/` directory
 2. Activate Permalinks Customizer through the 'Plugins' menu in WordPress
-3. Go to "after activation" below.
+3. Go to [after activation](#after-activation) below.
 
 ### After activation
 
