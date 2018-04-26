@@ -516,7 +516,9 @@ class Permalinks_Customizer_Form {
 	 * Check and Call the Function which saves the Permalink for Taxonomy
 	 */
 	public function permalinks_customizer_create_term( $id ) {
-		$new_permalink = ltrim( stripcslashes( $_REQUEST['permalinks_customizer'] ), "/" );
+		if( isset( $_REQUEST['permalinks_customizer'] ) ) {
+			$new_permalink = ltrim(stripcslashes($_REQUEST['permalinks_customizer']), "/");
+		}
 
 		$term = get_term( $id );
 		if ( empty( $new_permalink )
