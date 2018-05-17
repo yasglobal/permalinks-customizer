@@ -21,7 +21,6 @@ class Permalinks_Customizer_PostTypes_Settings {
    * @return void
    */
   private function post_settings() {
-    $post_types = get_post_types( '', 'objects' );
     if ( isset( $_POST['submit'] ) ) {
       foreach ( $_POST as $key => $value ) {
         if ( 'submit' === $key ) {
@@ -30,6 +29,10 @@ class Permalinks_Customizer_PostTypes_Settings {
         update_option( $key, $value );
       }
     }
+    $args = array(
+      'public'   => true
+    );
+    $post_types = get_post_types( $args, 'objects' );
     ?>
     <div class="wrap">
       <h1><?php _e( 'PostTypes Permalinks Settings', 'permalinks-customizer' ); ?></h1>
@@ -41,16 +44,15 @@ class Permalinks_Customizer_PostTypes_Settings {
         <table class="form-table">
           <?php
           foreach ( $post_types as $post_type ) {
-            if ( 'revision' == $post_type->name
-              || 'nav_menu_item' == $post_type->name
-              || 'attachment' == $post_type->name ) {
+            if ( 'attachment' == $post_type->name ) {
               continue;
             }
             $perm_struct = 'permalinks_customizer_' . $post_type->name;
+            $value       = esc_attr( get_option( $perm_struct, '' ) );
           ?>
           <tr valign="top">
             <th scope="row"><?php echo $post_type->labels->name; ?></th>
-            <td><?php echo site_url(); ?>/<input type="text" name="<?php echo $perm_struct; ?>" value="<?php echo esc_attr( get_option( $perm_struct ) ); ?>" class="regular-text" /></td>
+            <td><?php echo site_url(); ?>/<input type="text" name="<?php echo $perm_struct; ?>" value="<?php echo $value; ?>" class="regular-text" /></td>
           </tr>
           <?php } ?>
         </table>

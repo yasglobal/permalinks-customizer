@@ -39,6 +39,10 @@ class Permalinks_Customizer_Taxonomies_Settings {
     $permalinks_customizer_settings = unserialize(
       get_option( 'permalinks_customizer_taxonomy_settings' )
     );
+    $args = array(
+      'public' => true
+    );
+    $taxonomies = get_taxonomies( $args, 'objects' );
     ?>
     <div class="wrap">
       <h1><?php _e( 'Taxonomies Permalinks Settings', 'permalinks-customizer' ); ?></h1>
@@ -50,21 +54,17 @@ class Permalinks_Customizer_Taxonomies_Settings {
       <form enctype="multipart/form-data" action="" method="POST">
         <table class="form-table">
           <?php
-          $taxonomies = get_taxonomies();
           foreach ( $taxonomies as $taxonomy ) {
-            if ( 'nav_menu' == $taxonomy ) {
-              continue;
-            }
             $value = '';
-            if ( isset( $permalinks_customizer_settings[$taxonomy . '_settings'] )
-              && isset( $permalinks_customizer_settings[$taxonomy . '_settings']['structure'] )
-              && ! empty( $permalinks_customizer_settings[$taxonomy . '_settings']['structure'] ) ) {
-              $value = $permalinks_customizer_settings[$taxonomy . '_settings']['structure'];
+            if ( isset( $permalinks_customizer_settings[$taxonomy->name . '_settings'] )
+              && isset( $permalinks_customizer_settings[$taxonomy->name . '_settings']['structure'] )
+              && ! empty( $permalinks_customizer_settings[$taxonomy->name . '_settings']['structure'] ) ) {
+              $value = $permalinks_customizer_settings[$taxonomy->name . '_settings']['structure'];
             }
           ?>
           <tr valign="top">
-            <th scope="row"><?php echo $taxonomy; ?></th>
-            <td><?php echo site_url(); ?>/<input type="text" name="<?php echo $taxonomy; ?>" value="<?php echo $value; ?>" class="regular-text" /></td>
+            <th scope="row"><?php echo $taxonomy->labels->name; ?></th>
+            <td><?php echo site_url(); ?>/<input type="text" name="<?php echo $taxonomy->name; ?>" value="<?php echo $value; ?>" class="regular-text" /></td>
           </tr>
           <?php } ?>
         </table>
