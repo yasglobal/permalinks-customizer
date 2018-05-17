@@ -574,7 +574,10 @@ final class Permalinks_Customizer_Form {
    * @return void
    */
   public function generate_term_permalink( $id ) {
-    $new_permalink = ltrim( stripcslashes( $_REQUEST['permalinks_customizer'] ), '/' );
+    $new_permalink = '';
+    if ( isset( $_REQUEST['permalinks_customizer'] ) ) {
+      $new_permalink = ltrim( stripcslashes( $_REQUEST['permalinks_customizer'] ), '/' );
+    }
 
     $term = get_term( $id );
     if ( empty( $new_permalink )
