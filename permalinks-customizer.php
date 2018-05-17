@@ -103,7 +103,31 @@ final class Permalinks_Customizer {
         PERMALINKS_CUSTOMIZER_PATH . 'admin/class-permalinks-customizer-admin.php'
       );
       new Permalinks_Customizer_Admin();
+
+      register_activation_hook( PERMALINKS_CUSTOMIZER_FILE, array( 'Permalinks_Customizer', 'plugin_activate' ) );
     }
+  }
+
+  /**
+   * Assign Capabilities to Administrator role on activating the plugin.
+   *
+   * @access public
+   * @since 2.0.0
+   * @return void
+   */
+  public static function plugin_activate() {
+    $role = get_role( 'administrator' );
+    $role->add_cap( 'pc_manage_permalinks' );
+    $role->add_cap( 'pc_manage_permalink_settings' );
+    $role->add_cap( 'pc_manage_permalink_redirects' );
+
+    $added_capability = array();
+    $added_capability['administrator'] = array(
+      'pc_manage_permalinks',
+      'pc_manage_permalink_settings',
+      'pc_manage_permalink_redirects'
+    );
+    update_option( 'permalinks_customizer_capabilities', serialize( $added_capability ) );
   }
 
   /**
@@ -118,6 +142,11 @@ final class Permalinks_Customizer {
       basename( dirname( PERMALINKS_CUSTOMIZER_FILE ) ) . '/languages/'
     );
     $this->update_taxonomy_table();
+
+    $capability = get_option( 'permalinks_customizer_capabilities', -1 );
+    if ( -1 === $capability ) {
+      Permalinks_Customizer::plugin_activate();
+    }
   }
 
   /**
@@ -130,7 +159,8 @@ final class Permalinks_Customizer {
    */
   private function update_taxonomy_table() {
     $current_version = get_option( 'permalinks_customizer_plugin_version', -1 );
-    if ( -1 === $current_version || PERMALINKS_CUSTOMIZER_PLUGIN_VERSION < $current_version ) {
+    if ( -1 === $current_version
+      || PERMALINKS_CUSTOMIZER_PLUGIN_VERSION < $current_version ) {
       require_once(
         PERMALINKS_CUSTOMIZER_PATH . 'admin/class-permalinks-customizer-update-taxonomy-table.php'
       );

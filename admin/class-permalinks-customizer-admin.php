@@ -21,45 +21,45 @@ class Permalinks_Customizer_Admin {
    */
   public function admin_menu() {
     add_menu_page( 'Set Your Permalinks', 'Permalinks Customizer',
-      'administrator', 'permalinks-customizer-posts-settings',
+      'pc_manage_permalink_settings', 'permalinks-customizer-posts-settings',
       array( $this,'posts_settings_page' ), 'dashicons-admin-links'
     );
     add_submenu_page( 'permalinks-customizer-posts-settings',
-      'PostTypes Settings', 'PostTypes Settings', 'administrator',
-      'permalinks-customizer-posts-settings',
+      'PostTypes Settings', 'PostTypes Settings',
+      'pc_manage_permalink_settings', 'permalinks-customizer-posts-settings',
       array( $this, 'posts_settings_page' )
     );
     add_submenu_page( 'permalinks-customizer-posts-settings',
-      'Structure Tags for PostTypes', 'PostTypes Tags', 'administrator',
-      'permalinks-customizer-post-tags',
+      'Structure Tags for PostTypes', 'PostTypes Tags',
+      'pc_manage_permalink_settings', 'permalinks-customizer-post-tags',
       array( $this, 'post_tags_page' )
     );
     add_submenu_page( 'permalinks-customizer-posts-settings',
-      'PostTypes Permalinks', 'PostTypes Permalinks', 'administrator',
+      'PostTypes Permalinks', 'PostTypes Permalinks', 'pc_manage_permalinks',
       'permalinks-customizer-post-permalinks',
       array( $this, 'post_permalinks_page' )
     );
     add_submenu_page( 'permalinks-customizer-posts-settings',
-      'Set Taxonomies Permalinks', 'Taxonomies Settings', 'administrator',
-      'permalinks-customizer-taxonomies-settings',
+      'Set Taxonomies Permalinks', 'Taxonomies Settings',
+      'pc_manage_permalink_settings', 'permalinks-customizer-taxonomies-settings',
       array( $this, 'taxonomies_settings_page' )
     );
     add_submenu_page( 'permalinks-customizer-posts-settings',
-      'Structure Tags for Taxonomies', 'Taxonomies Tags', 'administrator',
-      'permalinks-customizer-taxonomy-tags',
+      'Structure Tags for Taxonomies', 'Taxonomies Tags',
+      'pc_manage_permalink_settings', 'permalinks-customizer-taxonomy-tags',
       array( $this, 'taxonomy_tags_page' )
     );
     add_submenu_page( 'permalinks-customizer-posts-settings',
-      'Taxonomies Permalinks', 'Taxonomies Permalinks', 'administrator',
+      'Taxonomies Permalinks', 'Taxonomies Permalinks', 'pc_manage_permalinks',
       'permalinks-customizer-taxonomy-permalinks',
       array( $this, 'taxonomy_permalinks_page' )
     );
     add_submenu_page( 'permalinks-customizer-posts-settings',
-      'Convert Custom Permalinks', 'Convert CP', 'administrator',
+      'Convert Custom Permalinks', 'Convert CP', 'pc_manage_permalink_settings',
       'permalinks-customizer-convert-url', array( $this, 'convert_url' )
     );
     add_submenu_page( 'permalinks-customizer-posts-settings',
-      'About Permalinks Customizer', 'About', 'administrator',
+      'About Permalinks Customizer', 'About', 'install_plugins',
       'permalinks-customizer-about-plugins', array( $this, 'about_plugin' )
     );
 
