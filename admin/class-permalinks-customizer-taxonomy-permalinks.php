@@ -99,7 +99,8 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
                 <input type="submit" id="doaction" class="button action" value="Apply">
               </div>';
 
-    $taxonomies = 0;
+    $taxonomies      = 0;
+    $pagination_html = '';
     if ( isset( $count_tax->total_permalinks )
       && $count_tax->total_permalinks > 0 ) {
       $html .= '<h2 class="screen-reader-text">Permalinks Customizer navigation</h2>';
@@ -107,7 +108,6 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
       $query = "SELECT t.term_id, t.name, tm.meta_value, tt.taxonomy FROM $wpdb->terms AS t LEFT JOIN $wpdb->termmeta AS tm ON (t.term_id = tm.term_id) LEFT JOIN $wpdb->term_taxonomy AS tt ON (t.term_id = tt.term_id) WHERE tm.meta_key = 'permalink_customizer' AND tm.meta_value != '' " . $filter_permalink . " " . $sorting_by . " " . $page_limit . "";
       $taxonomies = $wpdb->get_results( $query );
 
-      $pagination_html = '';
       $total_pages     = ceil( $count_tax->total_permalinks / 20 );
       if ( isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] )
         && $_GET['paged'] > 0 ) {

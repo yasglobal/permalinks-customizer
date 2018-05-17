@@ -101,17 +101,21 @@ class Permalinks_Customizer_PostType_Permalinks {
                 <input type="submit" id="doaction" class="button action" value="Apply">
               </div>';
 
-    $posts = 0;
-    if ( isset( $count_posts->total_permalinks ) && $count_posts->total_permalinks > 0 ) {
+    $posts           = 0;
+    $pagination_html = '';
+    if ( isset( $count_posts->total_permalinks )
+      && $count_posts->total_permalinks > 0 ) {
       $html .= '<h2 class="screen-reader-text">Permalinks Customizer navigation</h2>';
 
       $query = "SELECT p.ID, p.post_title, p.post_type, pm.meta_value FROM $wpdb->posts AS p LEFT JOIN $wpdb->postmeta AS pm ON (p.ID = pm.post_id) WHERE pm.meta_key = 'permalink_customizer' AND pm.meta_value != '' " . $filter_permalink . " " . $sorting_by . " " . $page_limit . "";
       $posts = $wpdb->get_results( $query );
 
-      $pagination_html = '';
       $total_pages     = ceil( $count_posts->total_permalinks / 20 );
-      if ( isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] ) && $_GET['paged'] > 0 ) {
-        $pagination_html = $common_functions->get_pager( $count_posts->total_permalinks, $_GET['paged'], $total_pages );
+      if ( isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] )
+        && $_GET['paged'] > 0 ) {
+        $pagination_html = $common_functions->get_pager(
+          $count_posts->total_permalinks, $_GET['paged'], $total_pages
+        );
         if ( $_GET['paged'] > $total_pages ) {
           $redirect_uri = explode( '&paged=' . $_GET['paged'] . '', $_SERVER['REQUEST_URI'] );
           header( 'Location: ' . $redirect_uri[0], 301 );
