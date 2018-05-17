@@ -27,8 +27,8 @@ class Permalinks_Customizer_PostType_Permalinks {
     $html             = '';
 
     // Handle Bulk Operations
-    if ( ( isset( $_POST['action'] ) && 'delete' == $_POST['action'] )
-      || ( isset( $_POST['action2'] ) && 'delete' == $_POST['action2'] )
+    if ( ( ( isset( $_POST['action'] ) && 'delete' == $_POST['action'] )
+      || ( isset( $_POST['action2'] ) && 'delete' == $_POST['action2'] ) )
       && isset( $_POST['permalink'] ) && ! empty( $_POST['permalink'] ) ) {
       $post_ids =  implode( ',', $_POST['permalink'] );
       if ( preg_match( '/^\d+(?:,\d+)*$/', $post_ids ) ) {
@@ -149,8 +149,8 @@ class Permalinks_Customizer_PostType_Permalinks {
       $html .= '<tr class="no-items"><td class="colspanchange" colspan="10">No permalinks found.</td></tr>';
     }
     $html .= '</tbody>
-         <tfoot>' . $table_navigation . '</tfoot>
-         </table>';
+              <tfoot>' . $table_navigation . '</tfoot>
+              </table>';
 
     $html .= '<div class="tablenav bottom">
                 <div class="alignleft actions bulkactions">

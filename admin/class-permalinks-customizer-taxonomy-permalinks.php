@@ -27,8 +27,8 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
     $html             = '';
 
     // Handle Bulk Operations
-    if ( ( isset( $_POST['action'] ) && 'delete' == $_POST['action'] )
-      || ( isset( $_POST['action2'] ) && 'delete' == $_POST['action2'] )
+    if ( ( ( isset( $_POST['action'] ) && 'delete' == $_POST['action'] )
+      || ( isset( $_POST['action2'] ) && 'delete' == $_POST['action2'] ) )
       && isset( $_POST['permalink'] ) && ! empty( $_POST['permalink'] ) ) {
       $taxonomy_ids =  implode( ',', $_POST['permalink'] );
       if ( preg_match( '/^\d+(?:,\d+)*$/', $taxonomy_ids ) ) {
