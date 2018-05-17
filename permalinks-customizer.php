@@ -47,8 +47,6 @@ final class Permalinks_Customizer {
   public function __construct() {
     $this->setup_constants();
     $this->includes();
-
-    add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
   }
 
   /**
@@ -104,6 +102,7 @@ final class Permalinks_Customizer {
       );
       new Permalinks_Customizer_Admin();
 
+      add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
       register_activation_hook( PERMALINKS_CUSTOMIZER_FILE, array( 'Permalinks_Customizer', 'plugin_activate' ) );
     }
   }
