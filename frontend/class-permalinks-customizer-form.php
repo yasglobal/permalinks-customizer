@@ -516,6 +516,37 @@ final class Permalinks_Customizer_Form {
       $replace_tag = str_replace( '%product_cat%', $category, $replace_tag );
     }
 
+    // Replace <%ctax_category_name%> with it's appropriate selected category
+    if ( false !== strpos( $replace_tag, '&lt;%ctax_' )
+      && false !== strpos( $replace_tag, '%&gt;' ) ) {
+      preg_match_all('/&lt;%ctax_(.*?)%&gt;/s', $replace_tag, $matches);
+      foreach ( $matches[1] as $row ) {
+        $ctax_tag   = '&lt;%ctax_' . $row . '%&gt;';
+        $categories = get_the_terms( $post_id, $row );
+        $total_cat  = count( $categories );
+        $tid        = 1;
+        if ( $total_cat > 0 && is_array( $categories ) ) {
+          $tid = '';
+          foreach ( $categories as $cat ) {
+            if ( $cat->term_id < $tid || empty( $tid ) ) {
+              $tid = $cat->term_id;
+              $pid = '';
+              if ( ! empty( $cat->parent ) ) {
+                $pid = $cat->parent;
+              }
+            }
+          }
+        }
+        $term_category = get_term( $tid );
+        $category      = is_object( $term_category ) ? $term_category->slug : '';
+        if ( ! empty( $pid ) ) {
+          $parent_category = get_term( $pid );
+          $category        = is_object( $parent_category ) ? $parent_category->slug . '/' . $category : $category;
+        }
+        $replace_tag = str_replace( $ctax_tag, $category, $replace_tag );
+      }
+    }
+
     // Replace %author% with the author of the respective post
     if ( false !== strpos( $replace_tag, '%author%' ) ) {
       $author      = get_the_author_meta( 'user_login', $post->post_author );
