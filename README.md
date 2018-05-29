@@ -2,11 +2,11 @@
 
 ## Description
 
-Customize your URL and set the slug. You can use basic keywords which is defined by the wordpress for defining the permalinks as well as someother new keywords which is defined by this plugin. All the keywords are defined on the Tags page under Permalinks Customizer.
+Customize your URL and set the slug. You can use basic keywords which is defined by the WordPress for defining the permalinks as well as someother new keywords which is defined by this plugin. All the keywords are defined on the Tags page under Permalinks Customizer.
 
-By using **Permalinks Customizer** you can set the different permalink structure for each post-type and taxonomy.
+By using **Permalinks Customizer** you can set the different permalink structure for each and every PostType and Taxonomy.
 
-### How to set the Permalinks for the PostTypes seperately
+### How to set the Permalinks for the PostTypes separately
 
 Let's assume that you have 6 <strong>PostTypes</strong> and they all have different style of <strong>permalinks</strong>. Like:
 
@@ -17,9 +17,9 @@ Let's assume that you have 6 <strong>PostTypes</strong> and they all have differ
 * **News** : For this post type you want to create a **permalink** which looks like this: http://www.example.com/news/year/postname/
 * **Sponsors** : For this post type you want to create a **permalink** which looks like this: http://www.example.com/company/sponsor/post_title/
 
-This plugin allows you to do this very easily. You just need to go on **Permalinks Customizer** Settings Page. Where text fields are shown with post-type name. You can define your permalinks you want to create for each post type.
+This plugin allows you to do this very easily. You just need to go on **Permalinks Customizer** Settings Page. Where text fields are shown with PostType name. You can define your permalinks you want to create for each post type.
 
-If you leave the some post-type fields empty. So, **Permalinks Customizer** would create a permalink for that post-type by using the default **permalink** settings.
+If you leave any PostType field empty. So, **Permalinks Customizer** would create a permalink for that PostType by using the default **permalink** settings.
 
 ### How to Configure Permalinks Customizer
 
@@ -43,6 +43,8 @@ If you leave the some post-type fields empty. So, **Permalinks Customizer** woul
 * **%category%** : A sanitized version of the category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI.
 * **%child-category%** : A sanitized version of the category name (category slug field on New/Edit Category panel).
 * **%product_cat%** : A sanitized version of the product category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI. <i>This <strong>tag</strong> is specially used for WooCommerce Products.</i>
+* **&lt;%ctax_custom_taxonomy%&gt;** : A sanitized version of the custom taxonomy where the taxonomy name is **_custom_taxonomy_**. Replace the _custom_taxonomy_ with your appropriate created taxonomy name.
+If you want to provide the default slug which is used when the category/taxonomy doesn\'t be selected so, make sure to provide default name/slug which looks like this: **_&lt;%ctax_custom_taxonomy??sales%&gt;_**. Value which is written between the **_??_** and **_%&gt;_** is used as default slug.
 * **%author%** : A sanitized version of the author name.
 * **%author_firstname%** : A sanitized version of the author first name. If author first name is not available so, it uses the author\'s username.
 * **%author_lastname%** : A sanitized version of the author last name. If author last name is not available so, it uses the author\'s username.
@@ -66,7 +68,7 @@ If you leave the some post-type fields empty. So, **Permalinks Customizer** woul
 If you want to exclude some Permalink to processed with the plugin so, just add the filter looks like this:
 ```
 function yasglobal_exclude_url( $permalink ) {
-  if ( strpos( $permalink, '/contact-us/' ) !== false ) {
+  if ( false !== strpos( $permalink, '/contact-us/' ) ) {
     return '__true';
   }
   return;
@@ -76,7 +78,7 @@ add_filter( 'permalinks_customizer_exclude_request', 'yasglobal_exclude_url' );
 
 ### Thanks for the Support
 
-The support from the users that love Permalinks Customizer is huge. You can support Permalinks Customizer future development and help to make it even better by donating or even giving a [5 star rating with a nice message](https://wordpress.org/support/plugin/permalinks-customizer/reviews/?rate=5#new-post) to me :)
+The support from the users that love Permalinks Customizer is huge. You can support Permalinks Customizer future development and help to make it even better by donating or even giving a [5 star rating with a nice message](https://wordpress.org/support/plugin/permalinks-customizer/reviews/?rate=5#new-post) to me :smiley:
 
 [Donate to Permalinks Customizer](https://www.paypal.me/yasglobal)
 
@@ -110,7 +112,11 @@ A. Go to Settings, there is a field with the post type name. On this fields, you
 
 **Q. Can i use tags?**
 
-A. Yes, you can use all the tags as defined on the [Permalinks Customizer page](https://wordpress.org/plugins/permalinks-customizer/).
+A. Yes, you can use any tag as defined on the [Structure Tags Section](#structure-tags).
+
+**Q. Does the plugin supports custom taxonomy tag?**
+
+A. Yes, it supports custom taxonomy tag. You can define the tag as mentioned on the [Structure Tags Section](#structure-tags).
 
 **Q. May this plugin works with custom permalinks?**
 

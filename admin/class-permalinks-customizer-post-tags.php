@@ -79,7 +79,11 @@ class Permalinks_Customizer_Post_Tags {
         </tr>
         <tr valign="top">
           <th scope="row">%product_cat%</th>
-          <td><?php _e( 'A sanitized version of the product category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI. <i>This <strong>tag</strong> is specially used for WooCommerce Products.', 'permalinks-customizer' ); ?></i></td>
+          <td><?php _e( 'A sanitized version of the product category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI. <i>This <strong>tag</strong> is specially used for WooCommerce Products.</i>', 'permalinks-customizer' ); ?></td>
+        </tr>
+        <tr valign="top">
+          <th scope="row">&lt;%ctax_custom_taxonomy%&gt;</th>
+          <td><?php _e( '<p>A sanitized version of the custom taxonomy where the taxonomy name is <b><i>custom_taxonomy</i></b>. Replace the <i>custom_taxonomy</i> with your appropriate created taxonomy name.</p> <p>If you want to provide the default slug which is used when the category/taxonomy doesn\'t be selected so, make sure to provide default name/slug which looks like this: <b><i>&lt;%ctax_custom_taxonomy??sales%&gt;</i></b>. Value which is written between the <b><i>??</i></b> and <b><i>%&gt;</i></b> is used as default slug.</p>', 'permalinks-customizer' ); ?></td>
         </tr>
         <tr valign="top">
           <th scope="row">%author%</th>
