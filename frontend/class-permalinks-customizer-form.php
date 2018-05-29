@@ -155,7 +155,7 @@ final class Permalinks_Customizer_Form {
                     </span><br>';
       } else {
         $content .= '<span id="view-post-btn">
-                      <a href="/' . $original_permalink . '" class="button button-small" target="_blank">$view_post</a>
+                      <a href="/' . $original_permalink . '" class="button button-small" target="_blank">' . $view_post .' </a>
                     </span>
                     <span id="regenerate_permalink">
                       <a href="javascript:void(0);" class="button button-small">Regenerate Permalink</a>
