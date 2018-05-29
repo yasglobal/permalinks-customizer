@@ -521,27 +521,37 @@ final class Permalinks_Customizer_Form {
       && false !== strpos( $replace_tag, '%&gt;' ) ) {
       preg_match_all('/&lt;%ctax_(.*?)%&gt;/s', $replace_tag, $matches);
       foreach ( $matches[1] as $row ) {
-        $ctax_tag   = '&lt;%ctax_' . $row . '%&gt;';
-        $categories = get_the_terms( $post_id, $row );
-        $total_cat  = count( $categories );
-        $tid        = 1;
-        if ( $total_cat > 0 && is_array( $categories ) ) {
-          $tid = '';
-          foreach ( $categories as $cat ) {
-            if ( $cat->term_id < $tid || empty( $tid ) ) {
-              $tid = $cat->term_id;
-              $pid = '';
-              if ( ! empty( $cat->parent ) ) {
-                $pid = $cat->parent;
-              }
-            }
+        $ctax_name = $row;
+        $category  = '';
+        if ( false !== strpos( $row, '??' ) ) {
+          $split_ctax = explode( '??', $row );
+          if ( isset( $split_ctax[0] ) && isset( $split_ctax[1] ) ) {
+            $ctax_name = $split_ctax[0];
+            $category  = $split_ctax[1];
           }
         }
-        $term_category = get_term( $tid );
-        $category      = is_object( $term_category ) ? $term_category->slug : '';
-        if ( ! empty( $pid ) ) {
-          $parent_category = get_term( $pid );
-          $category        = is_object( $parent_category ) ? $parent_category->slug . '/' . $category : $category;
+
+        $ctax_tag   = '&lt;%ctax_' . $row . '%&gt;';
+        $categories = get_the_terms( $post_id, $ctax_name );
+        if ( ! is_wp_error( $categories ) && false !== $categories ) {
+          if ( count( $categories ) > 0 && is_array( $categories ) ) {
+            $tid = '';
+            foreach ( $categories as $cat ) {
+              if ( $cat->term_id < $tid || empty( $tid ) ) {
+                $tid = $cat->term_id;
+                $pid = '';
+                if ( ! empty( $cat->parent ) ) {
+                  $pid = $cat->parent;
+                }
+              }
+            }
+            $term_category = get_term( $tid );
+            $category      = is_object( $term_category ) ? $term_category->slug : '';
+            if ( ! empty( $pid ) ) {
+              $parent_category = get_term( $pid );
+              $category        = is_object( $parent_category ) ? $parent_category->slug . '/' . $category : $category;
+            }
+          }
         }
         $replace_tag = str_replace( $ctax_tag, $category, $replace_tag );
       }
@@ -626,7 +636,7 @@ final class Permalinks_Customizer_Form {
       return;
     }
 
-    $pc_frontend = new Permalinks_Customizer_Frontend;
+    $pc_frontend   = new Permalinks_Customizer_Frontend;
     $old_permalink = $pc_frontend->original_taxonomy_link( $id );
 
     if ( $new_permalink == $old_permalink ) {
