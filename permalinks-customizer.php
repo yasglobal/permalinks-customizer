@@ -127,6 +127,39 @@ final class Permalinks_Customizer {
       'pc_manage_permalink_redirects'
     );
     update_option( 'permalinks_customizer_capabilities', serialize( $added_capability ) );
+
+    self::create_table();
+  }
+
+  /**
+   * Creates a redirect table to the database.
+   *
+   * @access private
+   * @since 2.0.0
+   * @return void
+   */
+  private static function create_table() {
+    global $wpdb;
+
+    if ( ! $wpdb->get_var( "SHOW TABLES LIKE '{$wpdb->prefix}permalinks_customizer_redirects';" ) ) {
+      $collate = '';
+      if ( $wpdb->has_cap( 'collation' ) ) {
+        $collate = $wpdb->get_charset_collate();
+      }
+
+      $sql = "CREATE TABLE {$wpdb->prefix}permalinks_customizer_redirects (
+        id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+        redirect_from text NOT NULL,
+        redirect_to text NOT NULL,
+        type varchar(20) NOT NULL DEFAULT 'post',
+        redirect_status varchar(20) NOT NULL DEFAULT 'auto',
+        enable tinyint(1) NOT NULL DEFAULT '1',
+        PRIMARY KEY (id)
+      ) $collate";
+
+      require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+      dbDelta( $sql );
+    }
   }
 
   /**
@@ -144,7 +177,7 @@ final class Permalinks_Customizer {
 
     $capability = get_option( 'permalinks_customizer_capabilities', -1 );
     if ( -1 === $capability ) {
-      Permalinks_Customizer::plugin_activate();
+      self::plugin_activate();
     }
   }
 

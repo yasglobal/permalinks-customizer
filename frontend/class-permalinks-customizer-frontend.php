@@ -53,6 +53,12 @@ final class Permalinks_Customizer_Frontend {
       return $query;
     }
 
+    $redirect = $this->check_redirect( $request );
+    if ( isset( $redirect ) && ! empty( $redirect ) ) {
+      wp_redirect( home_url() . '/' . $redirect, 301 );
+      exit();
+    }
+
     if ( defined( 'POLYLANG_VERSION' ) ) {
       require_once(
         PERMALINKS_CUSTOMIZER_PATH . 'frontend/class-permalinks-customizer-conflicts.php'
@@ -457,5 +463,37 @@ final class Permalinks_Customizer_Frontend {
       }
     }
     return $string;
+  }
+
+  /**
+   * Add Redirect on regenerating or manual updating the permalink
+   *
+   * @access private
+   * @since 2.0.0
+   *
+   * @param string $url
+   *   URL which is requested by user
+   *
+   * @return string $return_uri
+   *   Return URL on which it needs to be redirected or return empty string
+   */
+  private function check_redirect( $url ) {
+    $return_uri = '';
+    if ( isset( $url ) && ! empty( $url ) ) {
+      global $wpdb;
+
+      $table_name = "{$wpdb->prefix}permalinks_customizer_redirects";
+
+      $find_red = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name " .
+        " WHERE redirect_from = %s AND enable = 1", $url
+      ) );
+
+      if ( isset( $find_red ) && is_object( $find_red )
+        && isset( $find_red->redirect_to )
+        && ! empty( $find_red->redirect_to ) ) {
+        $return_uri = $find_red->redirect_to;
+      }
+    }
+    return $return_uri;
   }
 }

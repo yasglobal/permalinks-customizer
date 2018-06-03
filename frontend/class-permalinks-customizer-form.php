@@ -298,6 +298,18 @@ final class Permalinks_Customizer_Form {
         // generated again on updating the post
         update_post_meta( $post_id, 'permalink_customizer_regenerate_status', 0 );
       }
+
+      // Add Redirect on regenrating the permalink
+      if ( ! empty( $url ) && 'trash' != $post_status
+        && isset( $_REQUEST['permalinks_customizer_regenerate_permalink'] )
+        && 'true' === $_REQUEST['permalinks_customizer_regenerate_permalink'] ) {
+        $post_type = 'post';
+        if ( isset( $post->post_type ) && ! empty( $post->post_type ) ) {
+          $post_type = $post->post_type;
+        }
+
+        $this->add_auto_redirect( $url, $permalink, $post_type );
+      }
     } elseif ( isset( $_REQUEST['permalinks_customizer'] )
       && ! empty( $_REQUEST['permalinks_customizer'] )
       && $url != $_REQUEST['permalinks_customizer'] ) {
@@ -309,6 +321,13 @@ final class Permalinks_Customizer_Form {
       // Permalink_customizer_regenerate_status = 1 means Permalink won't be
       // generated again on updating the post (Once, user changed it)
       update_post_meta( $post_id, 'permalink_customizer_regenerate_status', 1 );
+
+      $post_type = 'post';
+      if ( isset( $post->post_type ) && ! empty( $post->post_type ) ) {
+        $post_type = $post->post_type;
+      }
+      // Add Redirect on manually updating the post
+      $this->add_auto_redirect( $url, $permalink, $post_type );
     }
   }
 
@@ -806,6 +825,40 @@ final class Permalinks_Customizer_Form {
       }
       add_action( $taxonomy . '_add_form', array( $this, 'term_edit_form' ) );
       add_action( $taxonomy . '_edit_form', array( $this, 'term_edit_form' ) );
+    }
+  }
+
+  /**
+   * Add Redirect on regenerating or manual updating the permalink
+   *
+   * @param string $redirect_from
+   *   Previous permalink or url
+   * @param string $redirect_to
+   *   Current permalink or url
+   * @param string $type
+   *   Post Name or Term Name
+   *
+   * @access private
+   * @since 2.0.0
+   * @return void
+   */
+  private function add_auto_redirect( $redirect_from, $redirect_to, $type ) {
+    if ( $redirect_from !== $redirect_to ) {
+      global $wpdb;
+
+      $table_name = "{$wpdb->prefix}permalinks_customizer_redirects";
+
+      $wpdb->query( $wpdb->prepare( "UPDATE $table_name SET enable = 0 " .
+        " WHERE redirect_from = %s", $redirect_to
+      ) );
+
+      $redirect_added = $wpdb->insert( $table_name, array(
+        'redirect_from'   => $redirect_from,
+        'redirect_to'     => $redirect_to,
+        'type'            => $type,
+        'redirect_status' => 'auto',
+        'enable'          => 1,
+      ));
     }
   }
 }
