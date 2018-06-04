@@ -242,10 +242,16 @@ final class Permalinks_Customizer_Form {
     if ( ( empty( $url ) && 'trash' != $post_status )
       || ( ! empty( $url ) && $url == $_REQUEST['permalinks_customizer']
         && isset( $permalink_status ) && '' != $permalink_status
-        && $permalink_status != 1 && 'trash' != $post_status )
+        && 1 != $permalink_status && 'trash' != $post_status )
         || ( isset( $_REQUEST['permalinks_customizer_regenerate_permalink'] )
-        && "true" === $_REQUEST['permalinks_customizer_regenerate_permalink']
+        && 'true' === $_REQUEST['permalinks_customizer_regenerate_permalink']
         && 'trash' != $post_status ) ) {
+
+      if ( empty( $url ) ) {
+        $url = ltrim(
+          str_replace( home_url(), '', get_permalink( $post_id ) ), '/'
+        );
+      }
 
       $get_permalink = esc_attr(
         get_option( 'permalinks_customizer_' . $post->post_type )
@@ -300,7 +306,7 @@ final class Permalinks_Customizer_Form {
       }
 
       // Add Redirect on regenrating the permalink
-      if ( ! empty( $url ) && 'trash' != $post_status
+      if ( 'trash' != $post_status
         && isset( $_REQUEST['permalinks_customizer_regenerate_permalink'] )
         && 'true' === $_REQUEST['permalinks_customizer_regenerate_permalink'] ) {
         $post_type = 'post';
@@ -314,6 +320,12 @@ final class Permalinks_Customizer_Form {
       && ! empty( $_REQUEST['permalinks_customizer'] )
       && $url != $_REQUEST['permalinks_customizer'] ) {
 
+      if ( empty( $url ) ) {
+        $url = ltrim(
+          str_replace( home_url(), '', get_permalink( $post_id ) ), '/'
+        );
+      }
+
       $permalink = $_REQUEST['permalinks_customizer'];
       $permalink = preg_replace( '/(\/+)/', '/', $permalink );
       $permalink = preg_replace( '/(\-+)/', '-', $permalink );
@@ -326,6 +338,7 @@ final class Permalinks_Customizer_Form {
       if ( isset( $post->post_type ) && ! empty( $post->post_type ) ) {
         $post_type = $post->post_type;
       }
+
       // Add Redirect on manually updating the post
       $this->add_auto_redirect( $url, $permalink, $post_type );
     }
