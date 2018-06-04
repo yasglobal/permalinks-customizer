@@ -238,6 +238,13 @@ final class Permalinks_Customizer_Form {
 
     $url              = get_post_meta( $post_id, 'permalink_customizer', true );
     $permalink_status = get_post_meta( $post_id, 'permalink_customizer_regenerate_status', true );
+    $prev_url         = $url;
+
+    if ( empty( $prev_url ) ) {
+      $prev_url = ltrim(
+        str_replace( home_url(), '', get_permalink( $post_id ) ), '/'
+      );
+    }
 
     if ( ( empty( $url ) && 'trash' != $post_status )
       || ( ! empty( $url ) && $url == $_REQUEST['permalinks_customizer']
@@ -246,12 +253,6 @@ final class Permalinks_Customizer_Form {
         || ( isset( $_REQUEST['permalinks_customizer_regenerate_permalink'] )
         && 'true' === $_REQUEST['permalinks_customizer_regenerate_permalink']
         && 'trash' != $post_status ) ) {
-
-      if ( empty( $url ) ) {
-        $url = ltrim(
-          str_replace( home_url(), '', get_permalink( $post_id ) ), '/'
-        );
-      }
 
       $get_permalink = esc_attr(
         get_option( 'permalinks_customizer_' . $post->post_type )
@@ -306,26 +307,19 @@ final class Permalinks_Customizer_Form {
       }
 
       // Add Redirect on regenrating the permalink
-      if ( 'trash' != $post_status
-        && isset( $_REQUEST['permalinks_customizer_regenerate_permalink'] )
-        && 'true' === $_REQUEST['permalinks_customizer_regenerate_permalink'] ) {
+      if ( 'trash' != $post_status && ( empty( $url )
+        || ( isset( $_REQUEST['permalinks_customizer_regenerate_permalink'] )
+        && 'true' === $_REQUEST['permalinks_customizer_regenerate_permalink'] ) ) ) {
         $post_type = 'post';
         if ( isset( $post->post_type ) && ! empty( $post->post_type ) ) {
           $post_type = $post->post_type;
         }
 
-        $this->add_auto_redirect( $url, $permalink, $post_type );
+        $this->add_auto_redirect( $prev_url, $permalink, $post_type );
       }
     } elseif ( isset( $_REQUEST['permalinks_customizer'] )
       && ! empty( $_REQUEST['permalinks_customizer'] )
       && $url != $_REQUEST['permalinks_customizer'] ) {
-
-      if ( empty( $url ) ) {
-        $url = ltrim(
-          str_replace( home_url(), '', get_permalink( $post_id ) ), '/'
-        );
-      }
-
       $permalink = $_REQUEST['permalinks_customizer'];
       $permalink = preg_replace( '/(\/+)/', '/', $permalink );
       $permalink = preg_replace( '/(\-+)/', '-', $permalink );
@@ -340,7 +334,7 @@ final class Permalinks_Customizer_Form {
       }
 
       // Add Redirect on manually updating the post
-      $this->add_auto_redirect( $url, $permalink, $post_type );
+      $this->add_auto_redirect( $prev_url, $permalink, $post_type );
     }
   }
 
