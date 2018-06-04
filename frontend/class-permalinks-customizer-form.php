@@ -658,11 +658,20 @@ final class Permalinks_Customizer_Form {
     $pc_frontend   = new Permalinks_Customizer_Frontend;
     $old_permalink = $pc_frontend->original_taxonomy_link( $id );
 
-    if ( $new_permalink == $old_permalink ) {
+    $regenerate = 0;
+    if ( isset( $_REQUEST['permalinks_customizer_regenerate_permalink'] )
+      && 'true' === $_REQUEST['permalinks_customizer_regenerate_permalink'] ) {
+      $regenerate = 1;
+    }
+
+    if ( $new_permalink == $old_permalink && 0 == $regenerate) {
       return;
     }
 
-    $this->save_term_permalink( $term, str_replace( '%2F', '/', urlencode( $new_permalink ) ) );
+    $this->save_term_permalink(
+      $term, str_replace( '%2F', '/', urlencode( $new_permalink ) ),
+      $old_permalink, $regenerate
+    );
   }
 
   /**
@@ -742,9 +751,9 @@ final class Permalinks_Customizer_Form {
    * @since 1.3
    * @return void
    */
-  private function save_term_permalink( $term, $permalink ) {
+  private function save_term_permalink( $term, $permalink, $prev, $update ) {
     $url = get_term_meta( $term->term_id, 'permalink_customizer' );
-    if ( empty( $url ) ) {
+    if ( empty( $url ) || 1 == $update ) {
       global $wpdb;
       $trailing_slash = substr( $permalink, -1 );
       if ( '/' == $trailing_slash ) {
@@ -772,7 +781,17 @@ final class Permalinks_Customizer_Form {
         $permalink = substr( $permalink, 1 );
       }
     }
+
     update_term_meta( $term->term_id, 'permalink_customizer', $permalink );
+
+    $taxonomy = 'category';
+    if ( isset( $term->taxonomy ) && ! empty( $term->taxonomy ) ) {
+      $taxonomy = $term->taxonomy;
+    }
+
+    if ( ! empty( $permalink ) && ! empty( $prev ) && $permalink != $prev  ) {
+      $this->add_auto_redirect( $prev, $permalink, $taxonomy );
+    }
   }
 
   /**
