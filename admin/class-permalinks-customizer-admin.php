@@ -55,6 +55,11 @@ class Permalinks_Customizer_Admin {
       array( $this, 'taxonomy_permalinks_page' )
     );
     add_submenu_page( 'permalinks-customizer-posts-settings',
+      'Redirects', 'Redirects', 'pc_manage_permalink_redirects',
+      'permalinks-customizer-redirects',
+      array( $this, 'redirects_page' )
+    );
+    add_submenu_page( 'permalinks-customizer-posts-settings',
       'Convert Custom Permalinks', 'Convert CP', 'pc_manage_permalink_settings',
       'permalinks-customizer-convert-url', array( $this, 'convert_url' )
     );
@@ -150,7 +155,7 @@ class Permalinks_Customizer_Admin {
 
   /**
    * This Function Calls the another Function which shows
-   * the Taxonomies Settings Page.
+   * the Taxonomies Permalinks Page.
    *
    * @access public
    * @since 1.3
@@ -161,6 +166,22 @@ class Permalinks_Customizer_Admin {
       PERMALINKS_CUSTOMIZER_PATH . 'admin/class-permalinks-customizer-taxonomy-permalinks.php'
     );
     new Permalinks_Customizer_Taxonomy_Permalinks();
+    add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 1 );
+  }
+
+  /**
+   * This Function Calls the another Function which shows
+   * the Redirects Page.
+   *
+   * @access public
+   * @since 2.0.0
+   * @return void
+   */
+  public function redirects_page() {
+    require_once(
+      PERMALINKS_CUSTOMIZER_PATH . 'admin/class-permalinks-customizer-redirects.php'
+    );
+    new Permalinks_Customizer_Redirects();
     add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 1 );
   }
 

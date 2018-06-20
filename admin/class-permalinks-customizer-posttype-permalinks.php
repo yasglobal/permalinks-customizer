@@ -146,7 +146,7 @@ class Permalinks_Customizer_PostType_Permalinks {
         $html .= '<td><a href="/' . $post->meta_value . '" target="_blank" title="' . __( "Visit ". $post->post_title, "permalinks-customizer" ) . '">/' . urldecode( $post->meta_value ) . '</a></td></tr>';
       }
     } else {
-      $html .= '<tr class="no-items"><td class="colspanchange" colspan="10">No permalinks found.</td></tr>';
+      $html .= '<tr class="no-items"><td class="colspanchange" colspan="4">No permalinks found.</td></tr>';
     }
     $html .= '</tbody>
               <tfoot>' . $table_navigation . '</tfoot>

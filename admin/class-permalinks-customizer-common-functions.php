@@ -13,18 +13,18 @@ class Permalinks_Customizer_Common_Functions {
    * @since 1.3
    * @return string
    */
-  public function get_tablenav( $order_by_class, $order_by, $search_permalink, $page_url = 'permalinks-customizer-post-permalinks' ) {
-    $nav = '<tr>
-              <td id="cb" class="manage-column column-cb check-column">
-                <label class="screen-reader-text" for="cb-select-all-1">Select All</label>
-                <input id="cb-select-all-1" type="checkbox">
-              </td>
-              <th scope="col" id="title" class="manage-column column-title column-primary sortable ' . $order_by_class . '">
-                <a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=title&order=' .  $order_by . $search_permalink . '"><span>' . __( "Title", "permalinks-customizer" ) . '</span><span class="sorting-indicator"></span></a>
-              </th>
-              <th scope="col">' . __( "Type", "permalinks-customizer" ) . '</th>
-              <th scope="col">' . __( "Permalink", "permalinks-customizer" ) . '</th>
-            </tr>';
+  public function get_tablenav( $order_by_class, $order_by, $search_permalink, $page_url ) {
+    $nav = '<tr>' .
+              '<td id="cb" class="manage-column column-cb check-column">' .
+                '<label class="screen-reader-text" for="cb-select-all-1">Select All</label>' .
+                '<input id="cb-select-all-1" type="checkbox">' .
+              '</td>' .
+              '<th scope="col" id="title" class="manage-column column-title column-primary sortable ' . $order_by_class . '">' .
+                '<a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=title&order=' .  $order_by . $search_permalink . '"><span>' . __( "Title", "permalinks-customizer" ) . '</span><span class="sorting-indicator"></span></a>' .
+              '</th>' .
+              '<th scope="col">' . __( "Type", "permalinks-customizer" ) . '</th>' .
+              '<th scope="col">' . __( "Permalink", "permalinks-customizer" ) . '</th>' .
+            '</tr>';
     return $nav;
   }
 
