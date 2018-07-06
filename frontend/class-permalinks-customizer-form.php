@@ -74,7 +74,7 @@ final class Permalinks_Customizer_Form {
       $postname_html = '<input type="hidden" id="new-post-slug" class="text" value="' . $postname . '" />';
     }
 
-    $permalink_edit_field = home_url() . '/
+    $permalink_edit_field = trailingslashit( home_url() ) . '
                             <span id="editable-post-name" title="Click to edit this part of the permalink">
                               '. $postname_html .'
                               <input type="text" id="permalinks-customizer-post-slug" class="text" value="' . $permalink_edit_value . '" style="width: 250px; color: #ddd;" onfocus="focusPermalinkField()" onblur="blurPermalinkField()" />
