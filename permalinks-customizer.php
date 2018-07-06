@@ -108,7 +108,9 @@ final class Permalinks_Customizer {
   }
 
   /**
-   * Assign Capabilities to Administrator role on activating the plugin.
+   * Assign Capabilities to Administrator role (if found) on activating
+   * the plugin and create a custom role with the name of
+   * `Permalinks Customizer Manager` and assign the capabilities to that role.
    *
    * @access public
    * @since 2.0.0
@@ -116,17 +118,29 @@ final class Permalinks_Customizer {
    */
   public static function plugin_activate() {
     $role = get_role( 'administrator' );
-    $role->add_cap( 'pc_manage_permalinks' );
-    $role->add_cap( 'pc_manage_permalink_settings' );
-    $role->add_cap( 'pc_manage_permalink_redirects' );
+    if ( ! empty( $role ) ) {
+      $role->add_cap( 'pc_manage_permalinks' );
+      $role->add_cap( 'pc_manage_permalink_settings' );
+      $role->add_cap( 'pc_manage_permalink_redirects' );
 
-    $added_capability = array();
-    $added_capability['administrator'] = array(
-      'pc_manage_permalinks',
-      'pc_manage_permalink_settings',
-      'pc_manage_permalink_redirects'
+      $added_capability = array();
+      $added_capability['administrator'] = array(
+        'pc_manage_permalinks',
+        'pc_manage_permalink_settings',
+        'pc_manage_permalink_redirects'
+      );
+      update_option( 'permalinks_customizer_capabilities', serialize( $added_capability ) );
+    }
+
+    add_role(
+      'permalinks_customizer_manager',
+      __( 'Permalinks Customizer Manager' ),
+      array(
+        'pc_manage_permalinks'          => true,
+        'pc_manage_permalink_settings'  => true,
+        'pc_manage_permalink_redirects' => true
+      )
     );
-    update_option( 'permalinks_customizer_capabilities', serialize( $added_capability ) );
 
     self::create_table();
   }

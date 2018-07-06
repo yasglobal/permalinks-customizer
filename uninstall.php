@@ -50,5 +50,14 @@ if ( -1 !== $get_capability ) {
   }
 }
 
+$role = get_role( 'permalinks_customizer_manager' );
+if ( ! empty( $role ) ) {
+  $role->remove_cap( 'pc_manage_permalinks' );
+  $role->remove_cap( 'pc_manage_permalink_settings' );
+  $role->remove_cap( 'pc_manage_permalink_redirects' );
+
+  remove_role( 'permalinks_customizer_manager' );
+}
+
 // Clear any cached data that has been removed
 wp_cache_flush();
