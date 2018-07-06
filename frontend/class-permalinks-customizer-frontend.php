@@ -53,8 +53,12 @@ final class Permalinks_Customizer_Frontend {
       return $query;
     }
 
-    $redirect = $this->check_redirect( $request );
-    if ( isset( $redirect ) && ! empty( $redirect ) ) {
+    $redirect        = $this->check_redirect( $request );
+    $redirect_filter = apply_filters(
+      'permalinks_customizer_disable_redirects', '__true'
+    );
+    if ( isset( $redirect ) && ! empty( $redirect )
+      && '__true' === $redirect_filter ) {
       wp_redirect( trailingslashit( home_url() ) . $redirect, 301 );
       exit();
     }

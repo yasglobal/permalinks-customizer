@@ -74,6 +74,8 @@ If you leave any PostType field empty. So, <strong>Permalinks Customizer</strong
 
 === Filter ===
 
+==== Exclude Permalinks ====
+
 If you want to exclude some Permalink to processed with the plugin so, just add the filter looks like this:
 `
 function yasglobal_exclude_url( $permalink ) {
@@ -84,6 +86,22 @@ function yasglobal_exclude_url( $permalink ) {
 }
 add_filter( 'permalinks_customizer_exclude_request', 'yasglobal_exclude_url' );
 `
+==== Disable automatically create redirects ====
+
+To disable automatically create redirects feature on creating and updating the post/pages/categories, add this filter in your themes functions.php.
+```
+add_filter( 'permalinks_customizer_auto_created_redirects', '__return_false');
+```
+This filter stops to be creating new redirects but existed redirects keeps working. To stop existed redirects, add `permalinks_customizer_disable_redirects` filter.
+
+==== Disable Redirects ====
+
+To disable redirects to be applied , add this filter in your themes functions.php.
+```
+add_filter( 'permalinks_customizer_disable_redirects', '__return_false');
+```
+This filter only stop redirects to be work but the automatically create redirects still works. To stop automatically create redirects feature add `permalinks_customizer_auto_created_redirects` filter.
+
 === Thanks for the Support ===
 
 The support from the users that love Permalinks Customizer is huge. You can support Permalinks Customizer future development and help to make it even better by donating or even giving a 5 star rating with a nice message to me :)

@@ -869,7 +869,10 @@ final class Permalinks_Customizer_Form {
    * @return void
    */
   private function add_auto_redirect( $redirect_from, $redirect_to, $type ) {
-    if ( $redirect_from !== $redirect_to ) {
+    $redirect_filter = apply_filters(
+      'permalinks_customizer_auto_created_redirects', '__true'
+    );
+    if ( $redirect_from !== $redirect_to && '__true' === $redirect_filter ) {
       global $wpdb;
 
       $table_name = "{$wpdb->prefix}permalinks_customizer_redirects";
