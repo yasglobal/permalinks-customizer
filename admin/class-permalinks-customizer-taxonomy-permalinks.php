@@ -43,8 +43,8 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
     );
     $common_functions = new Permalinks_Customizer_Common_Functions();
 
-    $html .= '<div class="wrap">
-                <h1 class="wp-heading-inline">' . __( 'Taxonomy Permalinks', 'permalinks-customizer' ) . '</h1>';
+    $html .= '<div class="wrap">' .
+                '<h1 class="wp-heading-inline">' . __( 'Taxonomy Permalinks', 'permalinks-customizer' ) . '</h1>';
 
     $search_value     = '';
     $filter_permalink = '';
@@ -77,7 +77,32 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
         $filter_options .= '<input type="hidden" name="order" value="asc" />';
       }
     }
-    $count_query = "SELECT COUNT(t.term_id) AS total_permalinks FROM $wpdb->terms AS t LEFT JOIN $wpdb->termmeta AS tm ON (t.term_id = tm.term_id) WHERE tm.meta_key = 'permalink_customizer' AND tm.meta_value != '' " . $filter_permalink . "";
+    if ( isset( $_GET['orderby'] ) && ( 'title' === $_GET['orderby']
+      || 'permalink' === $_GET['orderby'] || 'type' === $_GET['orderby'] ) ) {
+      if ( 'permalink' === $_GET['orderby'] ) {
+        $set_orderby = 'tm.meta_value';
+      } elseif ( 'type' === $_GET['orderby'] ) {
+        $set_orderby = 'tt.taxonomy';
+      } else {
+        $set_orderby = 't.name';
+      }
+      $filter_options .= '<input type="hidden" name="orderby" value="' . $set_orderby . '" />';
+      if ( isset( $_GET['order'] ) && $_GET['order'] == 'desc' ) {
+        $sorting_by      = 'ORDER By ' . $set_orderby . ' DESC';
+        $order_by        = 'asc';
+        $order_by_class  = 'desc';
+        $filter_options .= '<input type="hidden" name="order" value="desc" />';
+      } else {
+        $sorting_by      = 'ORDER By ' . $set_orderby;
+        $order_by        = 'desc';
+        $order_by_class  = 'asc';
+        $filter_options .= '<input type="hidden" name="order" value="asc" />';
+      }
+    }
+    $count_query = "SELECT COUNT(t.term_id) AS total_permalinks FROM $wpdb->terms AS t " .
+                    " LEFT JOIN $wpdb->termmeta AS tm ON (t.term_id = tm.term_id) " .
+                    " WHERE tm.meta_key = 'permalink_customizer' " .
+                    " AND tm.meta_value != '' " . $filter_permalink . "";
     $count_tax   = $wpdb->get_row( $count_query );
 
     $html .= '<form action="' . $_SERVER["REQUEST_URI"] . '" method="get">';
@@ -90,14 +115,14 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
     $html .= '</form>';
     $html .= '<form action="' . $_SERVER["REQUEST_URI"] . '" method="post">';
     $html .= '<div class="tablenav top">';
-    $html .= '<div class="alignleft actions bulkactions">
-                <label for="bulk-action-selector-top" class="screen-reader-text">' . __( "Select bulk action", "permalinks-customizer" ) . '</label>
-                <select name="action" id="bulk-action-selector-top">
-                    <option value="-1">' . __( "Bulk Actions", "permalinks-customizer" ) . '</option>
-                    <option value="delete">' . __( "Delete Permalinks", "permalinks-customizer" ) . '</option>
-                </select>
-                <input type="submit" id="doaction" class="button action" value="Apply">
-              </div>';
+    $html .= '<div class="alignleft actions bulkactions">' .
+                '<label for="bulk-action-selector-top" class="screen-reader-text">' . __( "Select bulk action", "permalinks-customizer" ) . '</label>' .
+                '<select name="action" id="bulk-action-selector-top">' .
+                    '<option value="-1">' . __( "Bulk Actions", "permalinks-customizer" ) . '</option>' .
+                    '<option value="delete">' . __( "Delete Permalinks", "permalinks-customizer" ) . '</option>' .
+                '</select>' .
+                '<input type="submit" id="doaction" class="button action" value="Apply">' .
+              '</div>';
 
     $taxonomies      = 0;
     $pagination_html = '';
@@ -105,7 +130,11 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
       && $count_tax->total_permalinks > 0 ) {
       $html .= '<h2 class="screen-reader-text">Permalinks Customizer navigation</h2>';
 
-      $query = "SELECT t.term_id, t.name, tm.meta_value, tt.taxonomy FROM $wpdb->terms AS t LEFT JOIN $wpdb->termmeta AS tm ON (t.term_id = tm.term_id) LEFT JOIN $wpdb->term_taxonomy AS tt ON (t.term_id = tt.term_id) WHERE tm.meta_key = 'permalink_customizer' AND tm.meta_value != '' " . $filter_permalink . " " . $sorting_by . " " . $page_limit . "";
+      $query = "SELECT t.term_id, t.name, tm.meta_value, tt.taxonomy FROM $wpdb->terms AS t " .
+                " LEFT JOIN $wpdb->termmeta AS tm ON (t.term_id = tm.term_id) " .
+                " LEFT JOIN $wpdb->term_taxonomy AS tt ON (t.term_id = tt.term_id) " .
+                " WHERE tm.meta_key = 'permalink_customizer' AND tm.meta_value != '' " .
+                $filter_permalink . " " . $sorting_by . " " . $page_limit . "";
       $taxonomies = $wpdb->get_results( $query );
 
       $total_pages     = ceil( $count_tax->total_permalinks / 20 );
@@ -134,9 +163,9 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
     );
 
     $html .= '</div>';
-    $html .= '<table class="wp-list-table widefat fixed striped posts">
-                <thead>' . $table_navigation . '</thead>
-                <tbody>';
+    $html .= '<table class="wp-list-table widefat fixed striped posts">' .
+                '<thead>' . $table_navigation . '</thead>' .
+                '<tbody>';
     if ( 0 != $taxonomies && ! empty( $taxonomies ) ) {
       foreach ( $taxonomies as $taxonomy ) {
         $html .= '<tr valign="top">';
@@ -148,21 +177,21 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
     } else {
       $html .= '<tr class="no-items"><td class="colspanchange" colspan="4">No permalinks found.</td></tr>';
     }
-    $html .= '</tbody>
-              <tfoot>' . $table_navigation . '</tfoot>
-              </table>';
+    $html .= '</tbody>' .
+              '<tfoot>' . $table_navigation . '</tfoot>' .
+              '</table>';
 
-    $html .= '<div class="tablenav bottom">
-                <div class="alignleft actions bulkactions">
-                  <label for="bulk-action-selector-bottom" class="screen-reader-text">' .  __( "Select bulk action", "permalinks-customizer" ) . '</label>
-                  <select name="action2" id="bulk-action-selector-bottom">
-                    <option value="-1">' .  __( "Bulk Actions", "permalinks-customizer" ) . '</option>
-                    <option value="delete">' .  __( "Delete Permalinks", "permalinks-customizer" ) . '</option>
-                  </select>
-                  <input type="submit" id="doaction2" class="button action" value="Apply">
-                </div>
-                ' . $pagination_html . '
-              </div>';
+    $html .= '<div class="tablenav bottom">' .
+                '<div class="alignleft actions bulkactions">' .
+                  '<label for="bulk-action-selector-bottom" class="screen-reader-text">' .  __( "Select bulk action", "permalinks-customizer" ) . '</label>' .
+                  '<select name="action2" id="bulk-action-selector-bottom">' .
+                    '<option value="-1">' .  __( "Bulk Actions", "permalinks-customizer" ) . '</option>' .
+                    '<option value="delete">' .  __( "Delete Permalinks", "permalinks-customizer" ) . '</option>' .
+                  '</select>' .
+                 '<input type="submit" id="doaction2" class="button action" value="Apply">' .
+                '</div>' .
+                $pagination_html .
+              '</div>';
     $html .= '</form></div>';
     echo $html;
   }
