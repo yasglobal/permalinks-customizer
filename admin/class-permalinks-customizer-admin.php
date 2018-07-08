@@ -10,6 +10,7 @@ class Permalinks_Customizer_Admin {
    */
   function __construct() {
     add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+    add_action( 'admin_notices', array( $this, 'show_admin_notice' ) );
   }
 
   /**
@@ -259,5 +260,36 @@ class Permalinks_Customizer_Admin {
     array_unshift( $links, $about );
 
     return $links;
+  }
+
+  /**
+   * Print the Admin Notice.
+   *
+   * @access public
+   * @since 4.0.0
+   * @return void
+   */
+  public function show_admin_notice() {
+    if ( isset( $_REQUEST['regenerated_permalink_error'] ) ) {
+      if ( 1 == $_REQUEST['regenerated_permalink_error'] ) {
+        print '<div id="message" class="error notice notice-success is-dismissible">' .
+                '<p>' . __(
+                  'Permalink Structure not found. So, the requested action can not be completed.',
+                  'permalinks-customizer'
+                ) . '</p>' .
+              '</div>';
+      }
+    }
+
+    if ( isset( $_REQUEST['regenerated_permalink'] )
+      && is_numeric( $_REQUEST['regenerated_permalink'] ) ) {
+      $permalink = intval( $_REQUEST['regenerated_permalink'] );
+      printf( '<div id="message" class="updated notice notice-success is-dismissible"><p>' .
+        _n( '%s Permalink has been regenerated.',
+          '%s Permalinks have been regenerated.',
+          $permalink,
+          'permalinks-customizer'
+        ) . '</p></div>', $permalink );
+    }
   }
 }

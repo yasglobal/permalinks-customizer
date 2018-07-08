@@ -34,6 +34,8 @@ final class Permalinks_Customizer_Form {
       array( $this, 'static_front_page' ), 10, 2
     );
     add_action( 'init', array( $this, 'register_taxonomies_form' ) );
+
+    add_action( 'admin_init', array( $this, 'add_bulk_option' ) );
   }
 
   /**
@@ -889,5 +891,238 @@ final class Permalinks_Customizer_Form {
         'enable'          => 1,
       ));
     }
+  }
+
+  /**
+   * Add Redirect on regenerating or manual updating the permalink
+   *
+   * @param string $redirect_from
+   *   Previous permalink or url
+   * @param string $redirect_to
+   *   Current permalink or url
+   * @param string $type
+   *   Post Name or Term Name
+   *
+   * @access public
+   * @since 2.0.0
+   * @return void
+   */
+  public function add_bulk_option() {
+    $args = array(
+      'public' => true
+    );
+
+    $post_types = get_post_types( $args, 'objects' );
+    foreach ( $post_types as $post_type ) {
+      if ( 'attachment' == $post_type->name ) {
+        continue;
+      }
+      add_filter( 'bulk_actions-edit-' . $post_type->name,
+        array( $this, 'bulk_option' )
+      );
+      add_filter( 'handle_bulk_actions-edit-' . $post_type->name,
+       array( $this, 'bulk_posttype_regenerate' ), 10, 3 );
+    }
+
+    $taxonomies = get_taxonomies( $args, 'objects' );
+    foreach ( $taxonomies as $taxonomy ) {
+      add_filter( 'bulk_actions-edit-' . $taxonomy->name,
+        array( $this, 'bulk_option' )
+      );
+      add_filter( 'handle_bulk_actions-edit-' . $taxonomy->name,
+       array( $this, 'bulk_term_regenerate' ), 10, 3 );
+    }
+  }
+
+  /**
+   * Add Regenerate Permalink option in bulk action.
+   *
+   * @param array $actions
+   *   Contains the list of actions.
+   *
+   * @access public
+   * @since 2.0.0
+   * @return array
+   */
+  public function bulk_option( $actions ) {
+    $action           = 'permalinks_customizer_regenerate';
+    $actions[$action] = __( 'Regenerate Permalink', 'permalinks-customizer' );
+    return $actions;
+  }
+
+  /**
+   * Regenerate Permalink only or with adding redirect against the old permalink
+   * of the selected posts/taxonomies.
+   *
+   * @param string $redirect_to
+   *   URL on which needs to be redirected
+   * @param string $doaction
+   *   Action that has been requested
+   * @param array $post_ids
+   *   List of Term IDs
+   *
+   * @access public
+   * @since 2.0.0
+   * @return string $redirect_to
+   *   Redirect URI or Redirect URI with adding query argument.
+   */
+  public function bulk_posttype_regenerate( $redirect_to, $doaction, $post_ids ) {
+    if ( 'permalinks_customizer_regenerate' !== $doaction ) {
+      return redirect_to;
+    }
+    $post_struct = '';
+    $generated   = 0;
+
+    global $wpdb;
+    foreach ( $post_ids as $id ) {
+      $post = get_post( $id );
+      if ( '' == $post_struct ) {
+        $post_struct = esc_attr(
+          get_option( 'permalinks_customizer_' . $post->post_type )
+        );
+        if ( empty( $post_struct ) ) {
+          $post_struct = esc_attr( get_option('permalink_structure' ) );
+        }
+      }
+
+      $prev_url = get_post_meta( $id, 'permalink_customizer', true );
+      if ( empty( $prev_url ) ) {
+        $prev_url = ltrim(
+          str_replace( home_url(), '', get_permalink( $id ) ), '/'
+        );
+      }
+
+      $set_permalink = $this->replace_posttype_tags( $id, $post, $post_struct );
+
+      $trailing_slash = substr( $set_permalink, -1 );
+      if ( '/' == $trailing_slash ) {
+        $set_permalink = rtrim( $set_permalink, '/' );
+      }
+      $permalink = $set_permalink;
+      $qry       = "SELECT * FROM $wpdb->postmeta WHERE meta_key = 'permalink_customizer' AND meta_value = '" . $permalink . "' AND post_id != " . $id . " OR meta_key = 'permalink_customizer' AND meta_value = '" . $permalink . "/' AND post_id != " . $id . " LIMIT 1";
+      $check_exist_url = $wpdb->get_results( $qry );
+      if ( ! empty( $check_exist_url ) ) {
+        $i = 2;
+        while (1) {
+          $permalink       = $set_permalink . '-' . $i;
+          $qry             = "SELECT * FROM $wpdb->postmeta WHERE meta_key = 'permalink_customizer' AND meta_value = '" . $permalink . "' AND post_id != " . $id . " OR meta_key = 'permalink_customizer' AND meta_value = '" . $permalink . "/' AND post_id != " . $id . " LIMIT 1";
+          $check_exist_url = $wpdb->get_results( $qry );
+          if ( empty( $check_exist_url ) ) {
+            break;
+          }
+          $i++;
+        }
+      }
+
+      if ( '/' == $trailing_slash ) {
+        $permalink = $permalink . '/';
+      }
+
+      if ( 0 === strpos( $permalink, '/' ) ) {
+        $permalink = substr( $permalink, 1 );
+      }
+
+      $permalink = preg_replace( '/(\/+)/', '/', $permalink );
+      $permalink = preg_replace( '/(\-+)/', '-', $permalink );
+      if ( $prev_url == $permalink ) {
+        continue;
+      }
+      update_post_meta( $id, 'permalink_customizer', $permalink );
+      if ( 'publish' == $post->post_status ) {
+        // permalink_customizer_regenerate_status = 1 means Permalink won't be
+        // generated again on updating the post
+        update_post_meta( $id, 'permalink_customizer_regenerate_status', 1 );
+      } else {
+        // permalink_customizer_regenerate_status = 0 means Permalink will be
+        // generated again on updating the post
+        update_post_meta( $id, 'permalink_customizer_regenerate_status', 0 );
+      }
+
+      $post_type = 'post';
+      if ( isset( $post->post_type ) && ! empty( $post->post_type ) ) {
+        $post_type = $post->post_type;
+      }
+
+      $this->add_auto_redirect( $prev_url, $permalink, $post_type );
+
+      $generated++;
+    }
+
+    $redirect_to = add_query_arg(
+      'regenerated_permalink', $generated, $redirect_to
+    );
+
+    return $redirect_to;
+  }
+
+  /**
+   * Regenerate Permalink only or with adding redirect against the old permalink
+   * of the selected posts/taxonomies.
+   *
+   * @param string $redirect_to
+   *   URL on which needs to be redirected
+   * @param string $doaction
+   *   Action that has been requested
+   * @param array $term_ids
+   *   List of Term IDs
+   *
+   * @access public
+   * @since 2.0.0
+   * @return string $redirect_to
+   *   Redirect URI or Redirect URI with adding query argument.
+   */
+  public function bulk_term_regenerate( $redirect_to, $doaction, $term_ids ) {
+    if ( 'permalinks_customizer_regenerate' !== $doaction ) {
+      return redirect_to;
+    }
+    $settings = unserialize(
+      get_option( 'permalinks_customizer_taxonomy_settings' )
+    );
+    $term_struct = '';
+    $error       = 0;
+    $generated   = 0;
+    foreach ( $term_ids as $id ) {
+      $new_permalink = '';
+      $term          = get_term( $id );
+      if ( '' == $term_struct ) {
+        if ( isset( $settings[$term->taxonomy . '_settings'] )
+          && isset( $settings[$term->taxonomy . '_settings']['structure'] )
+          && ! empty( $settings[$term->taxonomy . '_settings']['structure'] ) ) {
+          $term_struct = $settings[$term->taxonomy . '_settings']['structure'];
+        } else {
+          $error = 1;
+        }
+      }
+
+      $new_permalink = $this->replace_term_tags( $term, $term_struct );
+
+      if ( '' == $new_permalink ) {
+        continue;
+      }
+
+      $pc_frontend   = new Permalinks_Customizer_Frontend;
+      $old_permalink = $pc_frontend->original_taxonomy_link( $id );
+
+      if ( $new_permalink == $old_permalink ) {
+        continue;
+      }
+
+      $this->save_term_permalink(
+        $term, str_replace( '%2F', '/', urlencode( $new_permalink ) ),
+        $old_permalink, 1
+      );
+      $generated++;
+    }
+    if ( 1 === $error ) {
+      $redirect_to = add_query_arg(
+        'regenerated_permalink_error', $error, $redirect_to
+      );
+    } else {
+      $redirect_to = remove_query_arg( 'regenerated_permalink_error' );
+      $redirect_to = add_query_arg(
+        'regenerated_permalink', $generated, $redirect_to
+      );
+    }
+    return $redirect_to;
   }
 }
