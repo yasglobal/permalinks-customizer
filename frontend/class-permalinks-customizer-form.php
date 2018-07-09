@@ -267,6 +267,15 @@ final class Permalinks_Customizer_Form {
       if ( empty( $get_permalink ) ) {
         $get_permalink = esc_attr( get_option('permalink_structure' ) );
       }
+
+      /**
+       * Permalink structure doesn't be defined in the Plugin Settings and
+       * Permalink Settings of WordPress set to plain.
+       */
+      if ( empty( $get_permalink ) ) {
+        return;
+      }
+
       $set_permalink = $this->replace_posttype_tags(
         $post_id, $post, $get_permalink
       );
