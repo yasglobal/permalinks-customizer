@@ -81,7 +81,6 @@ class Permalinks_Customizer_Redirects {
     $sorting_by     = 'ORDER By id DESC';
     $order_by       = 'asc';
     $order_by_class = 'desc';
-    $order_by_query = '';
     if ( isset( $_GET['orderby'] ) && ( 'redirect_from' === $_GET['orderby']
       || 'redirect_to' === $_GET['orderby'] || 'type' === $_GET['orderby']
       || 'enable' === $_GET['orderby'] || 'count' === $_GET['orderby']
