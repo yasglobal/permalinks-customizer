@@ -10,7 +10,12 @@ class Permalinks_Customizer_Conflicts {
    *
    * @access public
    * @since 1.3.3
-   * @return string
+   *
+   * @param string $requested_url
+   *   URL requested by User
+   *
+   * @return string $requested_url
+   *   Return the requested URL by removing the language/ from it if exist.
    */
   public function check_conflicts ( $requested_url = '' ) {
     if ( '' == $requested_url ) {

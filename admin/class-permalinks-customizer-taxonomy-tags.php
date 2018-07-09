@@ -17,6 +17,7 @@ class Permalinks_Customizer_Taxonomy_Tags {
    *
    * @access private
    * @since 1.1
+   *
    * @return void
    */
   private function available_taxonomy_tags() {

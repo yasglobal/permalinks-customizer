@@ -18,6 +18,7 @@ class Permalinks_Customizer_Admin {
    *
    * @access public
    * @since 0.1
+   *
    * @return void
    */
   public function admin_menu() {
@@ -80,6 +81,7 @@ class Permalinks_Customizer_Admin {
    *
    * @access public
    * @since 0.1
+   *
    * @return void
    */
   public function posts_settings_page() {
@@ -96,6 +98,7 @@ class Permalinks_Customizer_Admin {
    *
    * @access public
    * @since 0.1
+   *
    * @return void
    */
   public function post_tags_page() {
@@ -112,6 +115,7 @@ class Permalinks_Customizer_Admin {
    *
    * @access public
    * @since 1.3
+   *
    * @return void
    */
   public function post_permalinks_page() {
@@ -128,6 +132,7 @@ class Permalinks_Customizer_Admin {
    *
    * @access public
    * @since 1.1
+   *
    * @return void
    */
   public function taxonomies_settings_page() {
@@ -144,6 +149,7 @@ class Permalinks_Customizer_Admin {
    *
    * @access public
    * @since 1.1
+   *
    * @return void
    */
   public function taxonomy_tags_page() {
@@ -160,6 +166,7 @@ class Permalinks_Customizer_Admin {
    *
    * @access public
    * @since 1.3
+   *
    * @return void
    */
   public function taxonomy_permalinks_page() {
@@ -176,6 +183,7 @@ class Permalinks_Customizer_Admin {
    *
    * @access public
    * @since 2.0.0
+   *
    * @return void
    */
   public function redirects_page() {
@@ -192,6 +200,7 @@ class Permalinks_Customizer_Admin {
    *
    * @access public
    * @since 1.0
+   *
    * @return void
    */
   public function convert_url() {
@@ -207,6 +216,7 @@ class Permalinks_Customizer_Admin {
    *
    * @access public
    * @since 1.3.9
+   *
    * @return void
    */
   public function about_plugin() {
@@ -222,6 +232,7 @@ class Permalinks_Customizer_Admin {
    *
    * @access public
    * @since 1.3.3
+   *
    * @return string
    */
   public function admin_footer_text() {
@@ -240,7 +251,13 @@ class Permalinks_Customizer_Admin {
    *
    * @access public
    * @since 1.3.9
-   * @return array
+   *
+   * @param array $links
+   *   Contains the Plugin Basic Link (Activate/Deactivate/Delete)
+   *
+   * @return array $links
+   *   Returns the Plugin Basic Links and added some custome link for Settings,
+   *   Contact and About.
    */
   public function settings_link( $links ) {
     $about = sprintf(
@@ -267,6 +284,7 @@ class Permalinks_Customizer_Admin {
    *
    * @access public
    * @since 4.0.0
+   *
    * @return void
    */
   public function show_admin_notice() {

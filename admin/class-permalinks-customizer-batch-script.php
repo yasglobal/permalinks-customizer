@@ -18,6 +18,7 @@ class Permalinks_Customizer_Batch_Script {
    *
    * @access private
    * @since 1.0
+   *
    * @return void
    */
   private function permalink_conversion() {

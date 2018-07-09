@@ -17,6 +17,7 @@ class Permalinks_Customizer_About {
    *
    * @access private
    * @since 1.3.9
+   *
    * @return void
    */
   private function more_plugins() {

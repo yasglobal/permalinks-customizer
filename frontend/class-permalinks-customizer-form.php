@@ -43,6 +43,7 @@ final class Permalinks_Customizer_Form {
    *
    * @access private
    * @since 0.1
+   *
    * @return void
    */
   private function get_form( $permalink, $original = '', $renderContainers = true, $postname = '' ) {
@@ -119,7 +120,9 @@ final class Permalinks_Customizer_Form {
    *
    * @access public
    * @since 0.1
+   *
    * @return string
+   *   Returns Edit Form string
    */
   public function post_edit_form( $html, $id, $new_title, $new_slug ) {
     $permalink = get_post_meta( $id, 'permalink_customizer', true );
@@ -183,6 +186,7 @@ final class Permalinks_Customizer_Form {
    *
    * @access public
    * @since 1.3
+   *
    * @return void
    */
   public function term_edit_form( $object ) {
@@ -217,6 +221,7 @@ final class Permalinks_Customizer_Form {
    *
    * @access public
    * @since 0.1
+   *
    * @return void
    */
   public function save_post_permalink( $post_id, $post, $update ) {
@@ -346,7 +351,16 @@ final class Permalinks_Customizer_Form {
    *
    * @access private
    * @since 0.1
-   * @return string
+   *
+   * @param integer $post_id
+   *   Post ID
+   * @param object $post
+   *   contains the list of saved values
+   * @param string $replace_tag
+   *   Structure which is used to create permalink
+   *
+   * @return string $replace_tag
+   *   Return permalink after replacing the appropriate tags with their values
    */
   private function replace_posttype_tags( $post_id, $post, $replace_tag ) {
 
@@ -626,6 +640,7 @@ final class Permalinks_Customizer_Form {
    *
    * @access public
    * @since 0.1
+   *
    * @return void
    */
   public function delete_post_permalink( $id ) {
@@ -640,6 +655,7 @@ final class Permalinks_Customizer_Form {
    *
    * @access public
    * @since 1.0
+   *
    * @return void
    */
   public function generate_term_permalink( $id ) {
@@ -689,7 +705,14 @@ final class Permalinks_Customizer_Form {
    *
    * @access private
    * @since 1.0
-   * @return string
+   *
+   * @param object $term
+   *   contains the list of saved values
+   * @param string $replace_tag
+   *   Structure which is used to create permalink
+   *
+   * @return string $replace_tag
+   *   Return permalink after replacing the appropriate tags with their values
    */
   private function replace_term_tags( $term, $replace_tag ) {
 
@@ -758,6 +781,7 @@ final class Permalinks_Customizer_Form {
    *
    * @access private
    * @since 1.3
+   *
    * @return void
    */
   private function save_term_permalink( $term, $permalink, $prev, $update ) {
@@ -808,6 +832,7 @@ final class Permalinks_Customizer_Form {
    *
    * @access public
    * @since 1.0
+   *
    * @return void
    */
   public function delete_term_permalink( $id ) {
@@ -832,6 +857,7 @@ final class Permalinks_Customizer_Form {
    *
    * @access public
    * @since 1.0
+   *
    * @return void
    */
   public function static_front_page( $prev_front_page_id, $new_front_page_id ) {
@@ -843,6 +869,7 @@ final class Permalinks_Customizer_Form {
    *
    * @access public
    * @since 1.3
+   *
    * @return void
    */
   public function register_taxonomies_form() {
@@ -859,6 +886,9 @@ final class Permalinks_Customizer_Form {
   /**
    * Add Redirect on regenerating or manual updating the permalink
    *
+   * @access private
+   * @since 2.0.0
+   *
    * @param string $redirect_from
    *   Previous permalink or url
    * @param string $redirect_to
@@ -866,8 +896,6 @@ final class Permalinks_Customizer_Form {
    * @param string $type
    *   Post Name or Term Name
    *
-   * @access private
-   * @since 2.0.0
    * @return void
    */
   private function add_auto_redirect( $redirect_from, $redirect_to, $type ) {
@@ -896,6 +924,9 @@ final class Permalinks_Customizer_Form {
   /**
    * Add Redirect on regenerating or manual updating the permalink
    *
+   * @access public
+   * @since 2.0.0
+   *
    * @param string $redirect_from
    *   Previous permalink or url
    * @param string $redirect_to
@@ -903,8 +934,6 @@ final class Permalinks_Customizer_Form {
    * @param string $type
    *   Post Name or Term Name
    *
-   * @access public
-   * @since 2.0.0
    * @return void
    */
   public function add_bulk_option() {
@@ -937,12 +966,14 @@ final class Permalinks_Customizer_Form {
   /**
    * Add Regenerate Permalink option in bulk action.
    *
+   * @access public
+   * @since 2.0.0
+   *
    * @param array $actions
    *   Contains the list of actions.
    *
-   * @access public
-   * @since 2.0.0
-   * @return array
+   * @return array $actions
+   *   Returns the bulk actions with adding the Regenerate Permalink
    */
   public function bulk_option( $actions ) {
     $action           = 'permalinks_customizer_regenerate';
@@ -954,6 +985,9 @@ final class Permalinks_Customizer_Form {
    * Regenerate Permalink only or with adding redirect against the old permalink
    * of the selected posts/taxonomies.
    *
+   * @access public
+   * @since 2.0.0
+   *
    * @param string $redirect_to
    *   URL on which needs to be redirected
    * @param string $doaction
@@ -961,8 +995,6 @@ final class Permalinks_Customizer_Form {
    * @param array $post_ids
    *   List of Term IDs
    *
-   * @access public
-   * @since 2.0.0
    * @return string $redirect_to
    *   Redirect URI or Redirect URI with adding query argument.
    */
@@ -1071,6 +1103,9 @@ final class Permalinks_Customizer_Form {
    * Regenerate Permalink only or with adding redirect against the old permalink
    * of the selected posts/taxonomies.
    *
+   * @access public
+   * @since 2.0.0
+   *
    * @param string $redirect_to
    *   URL on which needs to be redirected
    * @param string $doaction
@@ -1078,8 +1113,6 @@ final class Permalinks_Customizer_Form {
    * @param array $term_ids
    *   List of Term IDs
    *
-   * @access public
-   * @since 2.0.0
    * @return string $redirect_to
    *   Redirect URI or Redirect URI with adding query argument.
    */

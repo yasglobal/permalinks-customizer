@@ -11,7 +11,18 @@ class Permalinks_Customizer_Common_Functions {
    *
    * @access public
    * @since 1.3
-   * @return string
+   *
+   * @param string $order_by_class
+   *   Class either asc or desc
+   * @param string $order_by
+   *   set orderby for sorting
+   * @param string $search_permalink
+   *   Permalink which has been searched or an empty string
+   * @param string $page_url
+   *   Page Slug set by the Plugin
+   *
+   * @return string $nav
+   *   Return table row according to the provided params.
    */
   public function get_tablenav( $order_by_class, $order_by, $search_permalink, $page_url ) {
     $nav = '<tr>' .
@@ -37,7 +48,16 @@ class Permalinks_Customizer_Common_Functions {
    *
    * @access public
    * @since 1.3
-   * @return string
+   *
+   * @param integer $total_permalinks
+   *   No. of total results found
+   * @param integer $current_pager_value
+   *   Current Page
+   * @param integer $total_pager
+   *   Total no. of pages
+   *
+   * @return string $pagination_html
+   *   Return Pagination HTML if pager exist
    */
   public function get_pager( $total_permalinks, $current_pager_value = 1, $total_pager = 0 ) {
 

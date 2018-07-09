@@ -17,6 +17,7 @@ class Permalinks_Customizer_Post_Tags {
    *
    * @access private
    * @since 0.1
+   *
    * @return void
    */
   private function post_available_tags() {

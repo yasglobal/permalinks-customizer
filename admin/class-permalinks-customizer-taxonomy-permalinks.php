@@ -18,6 +18,7 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
    *
    * @access private
    * @since 1.3
+   *
    * @return void
    */
   private function tax_permalinks() {

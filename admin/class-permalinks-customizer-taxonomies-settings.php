@@ -18,6 +18,7 @@ class Permalinks_Customizer_Taxonomies_Settings {
    *
    * @access private
    * @since 1.1
+   *
    * @return void
    */
   private function taxonomy_settings() {

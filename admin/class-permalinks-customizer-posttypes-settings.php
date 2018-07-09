@@ -18,6 +18,7 @@ class Permalinks_Customizer_PostTypes_Settings {
    *
    * @access public
    * @since 0.1
+   *
    * @return void
    */
   private function post_settings() {

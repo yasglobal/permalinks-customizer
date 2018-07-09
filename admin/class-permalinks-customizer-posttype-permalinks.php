@@ -18,6 +18,7 @@ class Permalinks_Customizer_PostType_Permalinks {
    *
    * @access private
    * @since 1.3
+   *
    * @return void
    */
   private function post_permalinks() {

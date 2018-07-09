@@ -17,6 +17,7 @@ class Permalinks_Customizer_Update_Taxonomy {
    *
    * @access private
    * @since 1.3
+   *
    * @return void
    */
   private function update_taxonomy_terms() {

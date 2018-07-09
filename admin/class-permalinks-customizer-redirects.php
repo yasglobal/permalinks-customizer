@@ -18,6 +18,7 @@ class Permalinks_Customizer_Redirects {
    *
    * @access private
    * @since 2.0.0
+   *
    * @return void
    */
   private function show_redirects() {
@@ -238,7 +239,18 @@ class Permalinks_Customizer_Redirects {
    *
    * @access private
    * @since 2.0.0
-   * @return string
+   *
+   * @param string $order_by_class
+   *   Class either asc or desc
+   * @param string $order_by
+   *   set orderby for sorting
+   * @param string $search_permalink
+   *   Permalink which has been searched or an empty string
+   * @param string $page_url
+   *   Page Slug set by the Plugin
+   *
+   * @return string $nav
+   *   Return table row according to the provided params.
    */
   private function redirect_nav( $order_by_class, $order_by, $search_permalink, $page_url ) {
     $nav = '<tr>' .
