@@ -126,7 +126,7 @@ This process defines you the steps to follow either you are installing through W
 
 **Q. How to define slug of the post type?**
 
-A. Go to Settings, there is a field with the post type name. On this fields, you can define slug for the post type.
+A. Go to Settings, there is a field with the post type name. On this field, you can define slug for the post type.
 
 **Q. Can i use tags?**
 
@@ -136,6 +136,14 @@ A. Yes, you can use any tag as defined on the [Structure Tags Section](#structur
 
 A. Yes, it supports custom taxonomy tag. You can define the tag as mentioned on the [Structure Tags Section](#structure-tags).
 
+**Q. Can i regenerate all the permalinks according to the defined structure?**
+
+A. Yes, you can regenerate all the permalinks according to the defined structure. To have a bulk permalink update, Go to the `All Post` page there is a a option in the bulk action drop down with the name of `Regenerate Pemralinks`. Use that option for regenerating the Permalinks.
+
+**Q. Does `Regenerate Pemralinks` damage my site SEO?**
+
+A. No, it won't damage your site SEO. As regenerating permalinks added redirect against their previous permalink.
+
 **Q. May this plugin works with custom permalinks?**
 
-A. No, This plugin does not work with [custom permalinks](https://wordpress.org/plugins/custom-permalinks/).
+A. No, This plugin does not work with [custom permalinks Plugin](https://wordpress.org/plugins/custom-permalinks/).

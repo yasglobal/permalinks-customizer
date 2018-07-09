@@ -1001,7 +1001,7 @@ final class Permalinks_Customizer_Form {
    */
   public function bulk_option( $actions ) {
     $action           = 'permalinks_customizer_regenerate';
-    $actions[$action] = __( 'Regenerate Permalink', 'permalinks-customizer' );
+    $actions[$action] = __( 'Regenerate Permalinks', 'permalinks-customizer' );
     return $actions;
   }
 

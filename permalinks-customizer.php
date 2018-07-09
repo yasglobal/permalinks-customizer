@@ -54,6 +54,7 @@ final class Permalinks_Customizer {
    *
    * @access private
    * @since 2.0.0
+   *
    * @return void
    */
   private function setup_constants() {
@@ -79,6 +80,7 @@ final class Permalinks_Customizer {
    *
    * @access private
    * @since 2.0.0
+   *
    * @return void
    */
   private function includes() {
@@ -114,6 +116,7 @@ final class Permalinks_Customizer {
    *
    * @access public
    * @since 2.0.0
+   *
    * @return void
    */
   public static function plugin_activate() {
@@ -150,6 +153,7 @@ final class Permalinks_Customizer {
    *
    * @access private
    * @since 2.0.0
+   *
    * @return void
    */
   private static function create_table() {
@@ -184,6 +188,7 @@ final class Permalinks_Customizer {
    *
    * @access public
    * @since 2.0.0
+   *
    * @return void
    */
   public function load_textdomain() {
@@ -204,6 +209,7 @@ final class Permalinks_Customizer {
    *
    * @access private
    * @since 2.0.0
+   *
    * @return void
    */
   private function update_taxonomy_table() {
