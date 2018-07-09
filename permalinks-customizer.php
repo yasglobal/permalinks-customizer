@@ -168,6 +168,9 @@ final class Permalinks_Customizer {
         type varchar(20) NOT NULL DEFAULT 'post',
         redirect_status varchar(20) NOT NULL DEFAULT 'auto',
         enable tinyint(1) NOT NULL DEFAULT '1',
+        redirect_type tinyint(1) NOT NULL DEFAULT '0',
+        count BIGINT UNSIGNED NOT NULL DEFAULT '0',
+        last_accessed datetime,
         PRIMARY KEY (id)
       ) $collate";
 

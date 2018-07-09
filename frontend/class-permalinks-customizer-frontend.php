@@ -470,7 +470,8 @@ final class Permalinks_Customizer_Frontend {
   }
 
   /**
-   * Add Redirect on regenerating or manual updating the permalink
+   * Check the requested URL has redirect if it has
+   * then return the redirect URL.
    *
    * @access private
    * @since 2.0.0
@@ -479,7 +480,7 @@ final class Permalinks_Customizer_Frontend {
    *   URL which is requested by user
    *
    * @return string $return_uri
-   *   Return URL on which it needs to be redirected or return empty string
+   *   Return URL on which it needs to be redirected or return empty string.
    */
   private function check_redirect( $url ) {
     $return_uri = '';
@@ -496,6 +497,10 @@ final class Permalinks_Customizer_Frontend {
         && isset( $find_red->redirect_to )
         && ! empty( $find_red->redirect_to ) ) {
         $return_uri = $find_red->redirect_to;
+        $date       = date('Y-m-d h:i:s');
+        $count      = $find_red->count + 1;
+        $wpdb->query( "UPDATE $table_name SET count = " . $count . ", " .
+          " last_accessed = '" . $date ."' WHERE id = " . $find_red->id ."" );
       }
     }
     return $return_uri;

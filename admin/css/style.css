@@ -6,4 +6,12 @@
     .redirects .status {
         width: 10%;
     }
+
+    .redirects .count {
+        width: 6%;
+    }
+
+    .redirects .accessed {
+        width: 13%;
+    }
 }

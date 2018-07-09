@@ -83,9 +83,9 @@ class Permalinks_Customizer_Redirects {
     $order_by_class = 'desc';
     $order_by_query = '';
     if ( isset( $_GET['orderby'] ) && ( 'redirect_from' === $_GET['orderby']
-      || 'redirect_to' === $_GET['orderby']
-      || 'type' === $_GET['orderby']
-      || 'enable' === $_GET['orderby'] )
+      || 'redirect_to' === $_GET['orderby'] || 'type' === $_GET['orderby']
+      || 'enable' === $_GET['orderby'] || 'count' === $_GET['orderby']
+      || 'last_accessed' === $_GET['orderby'] )
     ) {
       $set_orderby     = $_GET['orderby'];
       $filter_options .= '<input type="hidden" name="orderby" value="' . $set_orderby . '" />';
@@ -184,16 +184,22 @@ class Permalinks_Customizer_Redirects {
         if ( 1 == $row->enable) {
           $html .= '<td class="status enabled"> ' .
             __( "Enabled", "permalinks-customizer" ) .
-            ' </td></tr>';
+            ' </td>';
         } else {
           $html .= '<td class="status disabled"> ' .
             __( "Disabled", "permalinks-customizer" ) .
-            ' </td></tr>';
+            ' </td>';
         }
-
+        $html .= '<td class="count">' . $row->count . '</td>';
+        if ( '' == $row->last_accessed) {
+          $html .= '<td class="accessed">Never</td>';
+        } else {
+          $html .= '<td class="accessed">' . $row->last_accessed . '</td>';
+        }
+        $html .= '</tr>';
       }
     } else {
-      $html .= '<tr class="no-items"><td class="colspanchange" colspan="5">' .
+      $html .= '<tr class="no-items"><td class="colspanchange" colspan="7">' .
                   __( "No redirects found.", "permalinks-customizer" ) .
                 ' </td></tr>';
     }
@@ -252,6 +258,12 @@ class Permalinks_Customizer_Redirects {
               '</th>' .
               '<th scope="col" id="enable" class="manage-column sortable ' . $order_by_class . ' status">' .
                 '<a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=enable&order=' .  $order_by . $search_permalink . '"><span>' . __( "Status", "permalinks-customizer" ) . '</span><span class="sorting-indicator"></span></a>' .
+              '</th>' .
+              '<th scope="col" id="count" class="manage-column sortable ' . $order_by_class . ' count">' .
+                '<a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=count&order=' .  $order_by . $search_permalink . '"><span>' . __( "Count", "permalinks-customizer" ) . '</span><span class="sorting-indicator"></span></a>' .
+              '</th>' .
+              '<th scope="col" id="last_accessed" class="manage-column sortable ' . $order_by_class . ' accessed">' .
+                '<a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=last_accessed&order=' .  $order_by . $search_permalink . '"><span>' . __( "Last Accessed", "permalinks-customizer" ) . '</span><span class="sorting-indicator"></span></a>' .
               '</th>' .
             '</tr>';
     return $nav;
