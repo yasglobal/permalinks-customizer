@@ -2,91 +2,144 @@
 
 This file contains only old changelog. See readme.txt for newer versions.
 
-= 1.2.5 =
+= 1.3.8 - Oct 15, 2017 =
+
+  * Updated Postname if it's not available at the Created Post time
+
+= 1.3.7 - Oct 06, 2017 =
+
+  * Resolved the Yoast SEO Slug Issue
+
+= 1.3.6 - Oct 02, 2017 =
+
+  * Resolved the Draft Permalink Issue on editing the description under the snippet of Yoast SEO
+
+= 1.3.5 - Sept 28, 2017 =
+
+  * Resolved the Pagination Issue for Taxonomies
+
+= 1.3.4 - Sept 27, 2017 =
+
+  * Applied PHP Coding Standards on WordPress
+
+= 1.3.3 - Sept 26, 2017 =
+
+  * Enhancements
+    * Added Filter to Exclude/Ignore URL to be processed
+  * Bugs
+    * Fixed Vulnerability Issues
+
+= 1.3.2 - Sept 12, 2017 =
+
+  * Fixed Setting Custom Post Type Permalink doesn't work and redirects to /wp-admin/option
+
+= 1.3.1 - Sept 11, 2017 =
+
+  * Added Translation Capability
+
+= 1.3 - Sept 08, 2017 =
+
+  * Enhancements
+    * Added PostTypes Permalinks Page
+      * View all the PostTypes permalinks
+      * Search Permalinks
+      * Sort by Title
+      * Pagination
+    * Added Taxonomies Permalinks Page
+      * View all the Category/Tags permalinks
+      * Search Permalinks
+      * Sort by Title
+      * Pagination
+
+  * Bug Fixes
+     * Replaced Deprecated Actions with the newer Actions
+     * Breaking the tag permalinks
+
+= 1.2.5 - Aug 29, 2017 =
 
   * Added Regenerate Permalink Button
 
-= 1.2.4 =
+= 1.2.4 - Aug 21, 2017 =
 
   * Resolves the Deletes first character of permalink issue using the use-case
 
-= 1.2.3 =
+= 1.2.3 - Aug 19, 2017 =
 
   * Add Auto regenerate Permalink Functionality on Inherit and Add the Compatibility with the Previously (Old) Created Posts
 
-= 1.2.2 =
+= 1.2.2 - Aug 18, 2017 =
 
   * Fixed Permalink Issue for Preview of Draft Post and PHP Notice
 
-= 1.2.1 =
+= 1.2.1 - Aug 16, 2017 =
 
   * Resolved Issues of AMP Pages
 
-= 1.2 =
+= 1.2 - Aug 12, 2017 =
 
   * Resolved issues with AMP Pages and Added Functionality to regenerate the Permalinks until you publish the post/page or updated the permalink manually
 
-= 1.1 =
+= 1.1 - Aug 08, 2017 =
 
   * Added Functionality to create Permalinks automtically on Creating the Term (Default + Custom Taxonomies) and updated DB Query for PostTypes
 
-= 1.0.2 =
+= 1.0.2 - July 26, 2017 =
 
   * Fixed PHP Warning of Undefined Variable
 
-= 1.0.1 =
+= 1.0.1 - July 26, 2017 =
 
   * Fixed Convert Custom Permalink Empty Page Issue
 
-= 1.0 =
+= 1.0 - July 25, 2017 =
 
   * Fixed Quick Edit Bug, HomePage does not load Bug, Removed some Deprecated Filters/Actions and Added Permalinks for Custom Taxonomy
 
-= 0.4 =
+= 0.4 - July 21, 2017 =
 
   * Fixed PolyLang Conflicts
 
-= 0.3.10 =
+= 0.3.10 - May 27, 2017 =
 
  * Fixed TrailingSlash Function Name
 
-= 0.3.9 =
+= 0.3.9 - May 26, 2017 =
 
  * Fixed WPML Conflicts
 
-= 0.3.8 =
+= 0.3.8 - Jan 28, 2017 =
 
  * Fixed post_status error under the request() function
 
-= 0.3.7 =
+= 0.3.7 - Jan 22, 2017 =
 
  * Added 4 new Tags (author_firstname, author_lastname, parent_postname, all_parents_postname)
 
-= 0.3.6 =
+= 0.3.6 - Sept 18, 2016 =
 
  * Added 1 new Tag
 
-= 0.3.5 =
+= 0.3.5 - Aug 09, 2016 =
 
  * Fixed Table Prefix Issue and some PHP Warnings
 
-= 0.3.4 =
+= 0.3.4 - July 28, 2016 =
 
  * Fixed draft preview issue
 
-= 0.3.3 =
+= 0.3.3 - July 24, 2016 =
 
  * Fixed PHP undefined index error
 
-= 0.3.2 =
+= 0.3.2 - Apr 01, 2016 =
 
  * Convert custom permalink to permalink customizer
 
-= 0.3.1 =
+= 0.3.1 - Mar 31, 2016 =
 
  * Add product_cat tag which is specially used for WooCommerce Products
 
-= 0.3 =
+= 0.3 - Mar 31, 2016 =
 
  * Add functionality to create a permalink for category and tag for default post type
 
