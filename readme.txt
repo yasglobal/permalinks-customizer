@@ -164,9 +164,9 @@ A. Yes, you can use all the tags as defined on the [Permalinks Customizer page](
 A. Yes, it supports custom taxonomy tag. You can define the tag as mentioned on the [Permalinks Customizer page](https://wordpress.org/plugins/permalinks-customizer/).
 
 = Q. Can i regenerate all the permalinks according to the defined structure? =
-A. Yes, you can regenerate all the permalinks according to the defined structure. To have a bulk permalink update, Go to the `All Post` page there is a a option in the bulk action drop down with the name of `Regenerate Pemralinks`. Use that option for regenerating the Permalinks.
+A. Yes, you can regenerate all the permalinks according to the defined structure. To have a bulk permalink update, Go to the `All Post` page there is a a option in the bulk action drop down with the name of `Regenerate Permalinks`. Use that option for regenerating the Permalinks.
 
-= Q. Does `Regenerate Pemralinks` damage my site SEO? =
+= Q. Does `Regenerate Permalinks` damage my site SEO? =
 A. No, it won't damage your site SEO. As regenerating permalinks added redirect against their previous permalink.
 
 = Q. May this plugin works with custom permalinks? =
