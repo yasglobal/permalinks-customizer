@@ -274,7 +274,14 @@ class Permalinks_Customizer_Admin {
       if ( 1 == $_REQUEST['regenerated_permalink_error'] ) {
         print '<div id="message" class="error notice notice-success is-dismissible">' .
                 '<p>' . __(
-                  'Permalink Structure not found. So, the requested action can not be completed.',
+                  'Permalink Structure not found for the selected Taxonomy in the Plugin Settings. Please define the Permalink Structure in the Plugin <a href="/wp-admin/admin.php?page=permalinks-customizer-taxonomies-settings" title="Taxonomies Permalinks Settings" target="_blank">Settings Page</a> to use <i>Regenerate Permalink</i> Action.',
+                  'permalinks-customizer'
+                ) . '</p>' .
+              '</div>';
+      } elseif ( 2 == $_REQUEST['regenerated_permalink_error'] ) {
+        print '<div id="message" class="error notice notice-success is-dismissible">' .
+                '<p>' . __(
+                  'Permalink Structure not found for the selected Post Type in the Plugin Settings and the Permalink Settings of WordPress are set to Plain. Please either define the Permalink Structure in the Plugin <a href="/wp-admin/admin.php?page=permalinks-customizer-posts-settings" title="PostTypes Permalinks Settings" target="_blank">Settings Page</a> or change the <a href="/wp-admin/options-permalink.php" title="Permalink Settings" target="_blank">Permalink Settings</a> of WordPress to use <i>Regenerate Permalink</i> Action.',
                   'permalinks-customizer'
                 ) . '</p>' .
               '</div>';

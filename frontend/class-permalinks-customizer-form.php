@@ -972,6 +972,7 @@ final class Permalinks_Customizer_Form {
     }
     $post_struct = '';
     $generated   = 0;
+    $error       = 0;
 
     global $wpdb;
     foreach ( $post_ids as $id ) {
@@ -982,6 +983,10 @@ final class Permalinks_Customizer_Form {
         );
         if ( empty( $post_struct ) ) {
           $post_struct = esc_attr( get_option('permalink_structure' ) );
+        }
+        if ( empty( $post_struct ) ) {
+          $error = 2;
+          break;
         }
       }
 
@@ -1048,10 +1053,17 @@ final class Permalinks_Customizer_Form {
       $generated++;
     }
 
-    $redirect_to = add_query_arg(
-      'regenerated_permalink', $generated, $redirect_to
-    );
-
+    if ( 2 === $error ) {
+      $redirect_to = remove_query_arg( 'regenerated_permalink' );
+      $redirect_to = add_query_arg(
+        'regenerated_permalink_error', $error, $redirect_to
+      );
+    } else {
+      $redirect_to = remove_query_arg( 'regenerated_permalink_error' );
+      $redirect_to = add_query_arg(
+        'regenerated_permalink', $generated, $redirect_to
+      );
+    }
     return $redirect_to;
   }
 
@@ -1091,6 +1103,7 @@ final class Permalinks_Customizer_Form {
           $term_struct = $settings[$term->taxonomy . '_settings']['structure'];
         } else {
           $error = 1;
+          break;
         }
       }
 
@@ -1114,6 +1127,7 @@ final class Permalinks_Customizer_Form {
       $generated++;
     }
     if ( 1 === $error ) {
+      $redirect_to = remove_query_arg( 'regenerated_permalink' );
       $redirect_to = add_query_arg(
         'regenerated_permalink_error', $error, $redirect_to
       );
