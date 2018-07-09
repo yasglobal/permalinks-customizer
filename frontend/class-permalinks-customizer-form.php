@@ -920,13 +920,28 @@ final class Permalinks_Customizer_Form {
         " WHERE redirect_from = %s", $redirect_to
       ) );
 
-      $redirect_added = $wpdb->insert( $table_name, array(
-        'redirect_from'   => $redirect_from,
-        'redirect_to'     => $redirect_to,
-        'type'            => $type,
-        'redirect_status' => 'auto',
-        'enable'          => 1,
-      ));
+      $find_red = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name " .
+        " WHERE redirect_from = %s AND redirect_to = %s", $redirect_from,
+        $redirect_to
+      ) );
+
+      if ( isset( $find_red ) && is_object( $find_red )
+        && isset( $find_red->id ) ) {
+
+        if ( isset( $find_red->enable ) && 0 == $find_red->enable ) {
+          $wpdb->query( $wpdb->prepare( "UPDATE $table_name SET enable = 1 " .
+            " WHERE id = %d", $find_red->id
+          ) );
+        }
+      } else {
+        $redirect_added = $wpdb->insert( $table_name, array(
+          'redirect_from'   => $redirect_from,
+          'redirect_to'     => $redirect_to,
+          'type'            => $type,
+          'redirect_status' => 'auto',
+          'enable'          => 1,
+        ));
+      }
     }
   }
 
