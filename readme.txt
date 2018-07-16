@@ -5,7 +5,7 @@ Tags: Link, Permalink, URL, Redirects, Tags
 Requires at least: 3.5
 Requires PHP: 5.2.4
 Tested up to: 4.9
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl.html
 
@@ -164,15 +164,21 @@ A. Yes, you can use all the tags as defined on the [Permalinks Customizer page](
 A. Yes, it supports custom taxonomy tag. You can define the tag as mentioned on the [Permalinks Customizer page](https://wordpress.org/plugins/permalinks-customizer/).
 
 = Q. Can i regenerate all the permalinks according to the defined structure? =
-A. Yes, you can regenerate all the permalinks according to the defined structure. To have a bulk permalink update, Go to the `All Post` page there is a a option in the bulk action drop down with the name of `Regenerate Pemralinks`. Use that option for regenerating the Permalinks.
+A. Yes, you can regenerate all the permalinks according to the defined structure. To have a bulk permalink update, Go to the `All Post` page there is a a option in the bulk action drop down with the name of `Regenerate Permalinks`. Use that option for regenerating the Permalinks.
 
-= Q. Does `Regenerate Pemralinks` damage my site SEO? =
+= Q. Does `Regenerate Permalinks` damage my site SEO? =
 A. No, it won't damage your site SEO. As regenerating permalinks added redirect against their previous permalink.
 
 = Q. May this plugin works with custom permalinks? =
 A. No, This plugin does not work with [custom permalinks](https://wordpress.org/plugins/custom-permalinks/).
 
 == Changelog ==
+
+= 2.0.1 - July 16, 2018 =
+
+  * Bugs
+    * Fixed subdomain URL issue
+    * Make the URLs to absolute on Admin Pages so, Permalinks for subdomain points to the correct URL
 
 = 2.0.0 - July 09, 2018 =
 
