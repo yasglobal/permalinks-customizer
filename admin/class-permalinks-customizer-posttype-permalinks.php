@@ -1,4 +1,4 @@
-<?php
+  <?php
 /**
  * @package PermalinksCustomizer\Admin
  */
@@ -155,11 +155,12 @@ class Permalinks_Customizer_PostType_Permalinks {
                 '<tbody>';
     if ( 0 != $posts && ! empty( $posts ) ) {
       foreach ( $posts as $post ) {
+        $pview = home_url() . '/' . $post->meta_value;
         $html .= '<tr valign="top">';
         $html .= '<th scope="row" class="check-column"><input type="checkbox" name="permalink[]" value="' . $post->ID . '" /></th>';
         $html .= '<td><strong><a class="row-title" href="post.php?action=edit&post=' . $post->ID . '">' . $post->post_title . '</a></strong></td>';
         $html .= '<td>' . ucwords( $post->post_type ) . '</td>';
-        $html .= '<td><a href="/' . $post->meta_value . '" target="_blank" title="' . __( "Visit ". $post->post_title, "permalinks-customizer" ) . '">/' . urldecode( $post->meta_value ) . '</a></td></tr>';
+        $html .= '<td><a href="' . $pview . '" target="_blank" title="' . __( "Visit ". $post->post_title, "permalinks-customizer" ) . '">/' . urldecode( $post->meta_value ) . '</a></td></tr>';
       }
     } else {
       $html .= '<tr class="no-items"><td class="colspanchange" colspan="4">No permalinks found.</td></tr>';

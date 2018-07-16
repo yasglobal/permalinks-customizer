@@ -169,11 +169,12 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
                 '<tbody>';
     if ( 0 != $taxonomies && ! empty( $taxonomies ) ) {
       foreach ( $taxonomies as $taxonomy ) {
+        $tview = home_url() . '/' . $taxonomy->meta_value;
         $html .= '<tr valign="top">';
         $html .= '<th scope="row" class="check-column"><input type="checkbox" name="permalink[]" value="' . $taxonomy->term_id . '" /></th>';
         $html .= '<td><strong><a class="row-title" href="edit-tags.php?action=edit&taxonomy=' . $taxonomy->taxonomy . '&tag_ID=' . $taxonomy->term_id . ' ">' . $taxonomy->name . '</a></strong></td>';
         $html .= '<td>' . ucwords( $taxonomy->taxonomy ) . '</td>';
-        $html .= '<td><a href="/' . $taxonomy->meta_value . '" target="_blank" title="' . __( "Visit " . $taxonomy->name, "permalinks-customizer" ) . '">/' . urldecode( $taxonomy->meta_value ) . '</a></td></tr>';
+        $html .= '<td><a href="' . $tview . '" target="_blank" title="' . __( "Visit " . $taxonomy->name, "permalinks-customizer" ) . '">/' . urldecode( $taxonomy->meta_value ) . '</a></td></tr>';
       }
     } else {
       $html .= '<tr class="no-items"><td class="colspanchange" colspan="4">No permalinks found.</td></tr>';
