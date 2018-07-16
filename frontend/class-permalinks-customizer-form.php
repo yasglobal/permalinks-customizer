@@ -248,8 +248,9 @@ final class Permalinks_Customizer_Form {
     $prev_url         = $url;
 
     if ( empty( $prev_url ) ) {
+      $wp_perm  = get_permalink( $post_id );
       $prev_url = ltrim(
-        str_replace( home_url(), '', get_permalink( $post_id ) ), '/'
+        preg_replace( '|^(https?:)?//[^/]+(/.*)|i', '$2', $wp_perm ), '/'
       );
     }
 
@@ -1048,8 +1049,9 @@ final class Permalinks_Customizer_Form {
 
       $prev_url = get_post_meta( $id, 'permalink_customizer', true );
       if ( empty( $prev_url ) ) {
+        $wp_perm  = get_permalink( $id );
         $prev_url = ltrim(
-          str_replace( home_url(), '', get_permalink( $id ) ), '/'
+          preg_replace( '|^(https?:)?//[^/]+(/.*)|i', '$2', $wp_perm ), '/'
         );
       }
 

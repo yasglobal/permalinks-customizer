@@ -174,12 +174,14 @@ class Permalinks_Customizer_Redirects {
               '<tbody>';
     if ( 0 != $redirects && ! empty( $redirects ) ) {
       foreach ( $redirects as $row ) {
+        $f_red = home_url() . '/' . $row->redirect_from;
+        $t_red = home_url() . '/' . $row->redirect_to;
         $html .= '<tr valign="top">';
         $html .= '<th scope="row" class="check-column">';
         $html .= '<input type="checkbox" name="permalink[]" value="' . $row->id . '" />';
         $html .= '</th>';
-        $html .= '<td><strong><a class="row-title" href="/' . $row->redirect_from . '">/' . $row->redirect_from . '</a></strong></td>';
-        $html .= '<td><strong><a class="row-title" href="/' . $row->redirect_to . '">/' . $row->redirect_to . '</a></strong></td>';
+        $html .= '<td><strong><a class="row-title" href="' . $f_red . '">/' . $row->redirect_from . '</a></strong></td>';
+        $html .= '<td><strong><a class="row-title" href="' . $t_red . '">/' . $row->redirect_to . '</a></strong></td>';
         $html .= '<td class="type">' . ucwords( $row->type ) . '</td>';
         if ( 1 == $row->enable) {
           $html .= '<td class="status enabled"> ' .

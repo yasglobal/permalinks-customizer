@@ -417,8 +417,9 @@ final class Permalinks_Customizer_Frontend {
   public function original_post_link( $post_id ) {
     remove_filter( 'post_link', array( $this, 'customized_post_link' ), 10, 2 );
     remove_filter( 'post_type_link', array( $this, 'customized_post_link' ), 10, 2 );
+    $wp_perm = get_permalink( $post_id );
     $original_permalink = ltrim(
-      str_replace( home_url(), '', get_permalink( $post_id ) ), '/'
+      preg_replace( '|^(https?:)?//[^/]+(/.*)|i', '$2', $wp_perm ), '/'
     );
     add_filter( 'post_link', array( $this, 'customized_post_link' ), 10, 2 );
     add_filter( 'post_type_link', array( $this, 'customized_post_link' ), 10, 2 );
@@ -441,8 +442,9 @@ final class Permalinks_Customizer_Frontend {
    */
   public function original_page_link( $post_id ) {
     remove_filter( 'page_link', array( $this, 'customized_page_link' ), 10, 2 );
+    $wp_perm = get_permalink( $post_id );
     $original_permalink = ltrim(
-      str_replace( home_url(), '', get_permalink( $post_id ) ), '/'
+      preg_replace( '|^(https?:)?//[^/]+(/.*)|i', '$2', $wp_perm ), '/'
     );
     add_filter( 'page_link', array( $this, 'customized_page_link' ), 10, 2 );
     return $original_permalink;
@@ -481,7 +483,9 @@ final class Permalinks_Customizer_Frontend {
       return '';
     }
 
-    $original_permalink = ltrim( str_replace( home_url(), '', $term_link ), '/' );
+    $original_permalink = ltrim(
+      preg_replace( '|^(https?:)?//[^/]+(/.*)|i', '$2', $term_link ), '/'
+    );
 
     return $original_permalink;
   }
