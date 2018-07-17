@@ -174,6 +174,11 @@ A. No, This plugin does not work with [custom permalinks](https://wordpress.org/
 
 == Changelog ==
 
+= 2.0.2 =
+
+  * Bug
+    * Fixed Permalinks Customizer Version issue on plugin update
+
 = 2.0.1 - July 16, 2018 =
 
   * Bugs

@@ -52,7 +52,11 @@ class Permalinks_Customizer_Update_Taxonomy {
       update_option( 'permalinks_customizer_table', $taxonomy_table );
     } elseif ( isset( $taxonomy_table ) && empty( $taxonomy_table ) ) {
       delete_option( 'permalinks_customizer_table' );
-      update_option( 'permalinks_customizer_plugin_version', '1.3.9' );
+      if ( defined( 'PERMALINKS_CUSTOMIZER_PLUGIN_VERSION' ) ) {
+        update_option( 'permalinks_customizer_plugin_version',
+          PERMALINKS_CUSTOMIZER_PLUGIN_VERSION
+        );
+      }
     }
   }
 }

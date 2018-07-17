@@ -220,6 +220,10 @@ final class Permalinks_Customizer {
         PERMALINKS_CUSTOMIZER_PATH . 'admin/class-permalinks-customizer-update-taxonomy-table.php'
       );
       new Permalinks_Customizer_Update_Taxonomy();
+    } elseif ( PERMALINKS_CUSTOMIZER_PLUGIN_VERSION !== $current_version  ) {
+      update_option( 'permalinks_customizer_plugin_version',
+        PERMALINKS_CUSTOMIZER_PLUGIN_VERSION
+      );
     }
   }
 }
