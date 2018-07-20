@@ -48,15 +48,15 @@ final class Permalinks_Customizer_Form {
    */
   private function get_form( $permalink, $original = '', $renderContainers = true, $postname = '' ) {
     $encoded_permalink = htmlspecialchars( urldecode( $permalink ) );
-    echo '<input value="false" type="hidden" name="permalinks_customizer_regenerate_permalink" id="permalinks_customizer_regenerate_permalink" />
-          <input value="'. home_url() .'" type="hidden" name="permalinks_customizer_home_url" id="permalinks_customizer_home_url" />
-          <input value="' . $encoded_permalink . '" type="hidden" name="permalinks_customizer" id="permalinks_customizer" />';
+    echo '<input value="false" type="hidden" name="permalinks_customizer_regenerate_permalink" id="permalinks_customizer_regenerate_permalink" />' .
+         '<input value="'. home_url() .'" type="hidden" name="permalinks_customizer_home_url" id="permalinks_customizer_home_url" />' .
+         '<input value="' . $encoded_permalink . '" type="hidden" name="permalinks_customizer" id="permalinks_customizer" />';
 
     if ( $renderContainers ) {
-      echo '<table class="form-table" id="permalinks_customizer_form">
-            <tr>
-              <th scope="row">' . __( 'Permalink', 'permalinks-customizer' ) . '</th>
-              <td>';
+      echo '<table class="form-table" id="permalinks_customizer_form">' .
+           '<tr>' .
+           '<th scope="row">' . __( 'Permalink', 'permalinks-customizer' ) . '</th>' .
+           '<td>';
     }
 
     if ( '' == $permalink && defined( 'POLYLANG_VERSION' ) ) {
@@ -76,12 +76,12 @@ final class Permalinks_Customizer_Form {
       $postname_html = '<input type="hidden" id="new-post-slug" class="text" value="' . $postname . '" />';
     }
 
-    $permalink_edit_field = trailingslashit( home_url() ) . '
-                            <span id="editable-post-name" title="Click to edit this part of the permalink">
-                              '. $postname_html .'
-                              <input type="text" id="permalinks-customizer-post-slug" class="text" value="' . $permalink_edit_value . '" style="width: 250px; color: #ddd;" onfocus="focusPermalinkField()" onblur="blurPermalinkField()" />
-                              <input type="hidden" value="' . $original_permalink . '" id="original_permalink" />
-                            </span>';
+    $permalink_edit_field = trailingslashit( home_url() ) .
+                            '<span id="editable-post-name" title="Click to edit this part of the permalink">' .
+                            $postname_html .
+                            '<input type="text" id="permalinks-customizer-post-slug" class="text" value="' . $permalink_edit_value . '" style="width: 250px; color: #ddd;" onfocus="focusPermalinkField()" onblur="blurPermalinkField()" />' .
+                            '<input type="hidden" value="' . $original_permalink . '" id="original_permalink" />' .
+                            '</span>';
     echo apply_filters( 'edit_permalink_field', $permalink_edit_field );
 
     echo '<script type="text/javascript">
@@ -151,19 +151,19 @@ final class Permalinks_Customizer_Form {
         plugins_url( '/js/script-form.min.js', __FILE__ ), array(), false, true
       );
       if ( isset( $permalink ) && ! empty( $permalink ) ) {
-        $content .= '<span id="view-post-btn">
-                      <a href="/' . $permalink . '" class="button button-small" target="_blank">' . $view_post . '</a>
-                    </span>
-                    <span id="regenerate_permalink">
-                      <a href="javascript:void(0);" class="button button-small">Regenerate Permalink</a>
-                    </span><br>';
+        $content .= '<span id="view-post-btn">' .
+                    '<a href="/' . $permalink . '" class="button button-small" target="_blank">' . $view_post . '</a>' .
+                    '</span>' .
+                    '<span id="regenerate_permalink">' .
+                    '<a href="javascript:void(0);" class="button button-small">Regenerate Permalink</a>' .
+                    '</span><br>';
       } else {
-        $content .= '<span id="view-post-btn">
-                      <a href="/' . $original_permalink . '" class="button button-small" target="_blank">' . $view_post .' </a>
-                    </span>
-                    <span id="regenerate_permalink">
-                      <a href="javascript:void(0);" class="button button-small">Regenerate Permalink</a>
-                    </span><br>';
+        $content .= '<span id="view-post-btn">' .
+                    '<a href="/' . $original_permalink . '" class="button button-small" target="_blank">' . $view_post .' </a>' .
+                    '</span>' .
+                    '<span id="regenerate_permalink">' .
+                    '<a href="javascript:void(0);" class="button button-small">Regenerate Permalink</a>' .
+                    '</span><br>';
       }
     }
     if ( preg_match( "@view-post-btn.*?href='([^']+)'@s", $html, $matches ) ) {
@@ -250,6 +250,13 @@ final class Permalinks_Customizer_Form {
       $prev_url = ltrim(
         preg_replace( '|^(https?:)?//[^/]+(/.*)|i', '$2', $wp_perm ), '/'
       );
+    }
+
+    // Make sure that the post saved from quick edit form so, just make the
+    // $_REQUEST['permalinks_customizer'] same as $url to regenerate permalink
+    // if applicable
+    if ( ! isset( $_REQUEST['permalinks_customizer'] ) ) {
+      $_REQUEST['permalinks_customizer'] = $url;
     }
 
     if ( ( empty( $url ) && 'trash' != $post_status )
