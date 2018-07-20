@@ -952,17 +952,10 @@ final class Permalinks_Customizer_Form {
   }
 
   /**
-   * Add Redirect on regenerating or manual updating the permalink
+   * Add `Regenerate Permalink` option in Bulk Action
    *
    * @access public
    * @since 2.0.0
-   *
-   * @param string $redirect_from
-   *   Previous permalink or url
-   * @param string $redirect_to
-   *   Current permalink or url
-   * @param string $type
-   *   Post Name or Term Name
    *
    * @return void
    */
@@ -980,7 +973,8 @@ final class Permalinks_Customizer_Form {
         array( $this, 'bulk_option' )
       );
       add_filter( 'handle_bulk_actions-edit-' . $post_type->name,
-       array( $this, 'bulk_posttype_regenerate' ), 10, 3 );
+        array( $this, 'bulk_posttype_regenerate' ), 10, 3
+      );
     }
 
     $taxonomies = get_taxonomies( $args, 'objects' );
@@ -989,7 +983,8 @@ final class Permalinks_Customizer_Form {
         array( $this, 'bulk_option' )
       );
       add_filter( 'handle_bulk_actions-edit-' . $taxonomy->name,
-       array( $this, 'bulk_term_regenerate' ), 10, 3 );
+        array( $this, 'bulk_term_regenerate' ), 10, 3
+      );
     }
   }
 
