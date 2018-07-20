@@ -48,8 +48,7 @@ final class Permalinks_Customizer_Form {
    */
   private function get_form( $permalink, $original = '', $renderContainers = true, $postname = '' ) {
     $encoded_permalink = htmlspecialchars( urldecode( $permalink ) );
-    echo '<input value="true" type="hidden" name="permalinks_customizer_edit" />
-          <input value="false" type="hidden" name="permalinks_customizer_regenerate_permalink" id="permalinks_customizer_regenerate_permalink" />
+    echo '<input value="false" type="hidden" name="permalinks_customizer_regenerate_permalink" id="permalinks_customizer_regenerate_permalink" />
           <input value="'. home_url() .'" type="hidden" name="permalinks_customizer_home_url" id="permalinks_customizer_home_url" />
           <input value="' . $encoded_permalink . '" type="hidden" name="permalinks_customizer" id="permalinks_customizer" />';
 
@@ -226,8 +225,7 @@ final class Permalinks_Customizer_Form {
    */
   public function save_post_permalink( $post_id, $post, $update ) {
 
-    if ( ! isset( $_REQUEST['permalinks_customizer_edit'] )
-      || $_REQUEST['permalinks_customizer_edit'] != true ) {
+    if ( 'Auto Draft' === $post->post_title ) {
       return;
     }
 
