@@ -927,6 +927,13 @@ final class Permalinks_Customizer_Form {
         " WHERE redirect_from = %s", $redirect_to
       ) );
 
+      if ( 0 === strpos( $redirect_from, '?' ) ) {
+        if ( false !== strpos( $redirect_from, 'p=' )
+          || false !== strpos( $redirect_from, 'page_id=' ) ) {
+          return;
+        }
+      }
+
       $find_red = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $table_name " .
         " WHERE redirect_from = %s AND redirect_to = %s", $redirect_from,
         $redirect_to
