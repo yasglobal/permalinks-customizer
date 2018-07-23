@@ -318,6 +318,7 @@ final class Permalinks_Customizer_Form {
       $permalink = preg_replace( '/(\/+)/', '/', $permalink );
       $permalink = preg_replace( '/(\-+)/', '-', $permalink );
       update_post_meta( $post_id, 'permalink_customizer', $permalink );
+      $_REQUEST['permalinks_customizer'] = $permalink;
       if ( 'publish' == $post_status ) {
         // permalink_customizer_regenerate_status = 1 means Permalink won't be
         // generated again on updating the post
