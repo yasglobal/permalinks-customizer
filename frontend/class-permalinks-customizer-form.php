@@ -338,7 +338,7 @@ final class Permalinks_Customizer_Form {
           $post_type = $post->post_type;
         }
 
-        $this->add_auto_redirect( $prev_url, $permalink, $post_type );
+        $this->add_auto_redirect( $prev_url, $permalink, $post_type, $post_id );
       }
     } elseif ( isset( $_REQUEST['permalinks_customizer'] )
       && ! empty( $_REQUEST['permalinks_customizer'] )
@@ -357,7 +357,7 @@ final class Permalinks_Customizer_Form {
       }
 
       // Add Redirect on manually updating the post
-      $this->add_auto_redirect( $prev_url, $permalink, $post_type );
+      $this->add_auto_redirect( $prev_url, $permalink, $post_type, $post_id );
     }
   }
 
@@ -839,7 +839,7 @@ final class Permalinks_Customizer_Form {
     }
 
     if ( ! empty( $permalink ) && ! empty( $prev ) && $permalink != $prev  ) {
-      $this->add_auto_redirect( $prev, $permalink, $taxonomy );
+      $this->add_auto_redirect( $prev, $permalink, $taxonomy, $term->term_id );
     }
   }
 
@@ -911,10 +911,12 @@ final class Permalinks_Customizer_Form {
    *   Current permalink or url
    * @param string $type
    *   Post Name or Term Name
+   * @param integer $id
+   *   Post ID or Term ID
    *
    * @return void
    */
-  private function add_auto_redirect( $redirect_from, $redirect_to, $type ) {
+  private function add_auto_redirect( $redirect_from, $redirect_to, $type, $id ) {
     $redirect_filter = apply_filters(
       'permalinks_customizer_auto_created_redirects', '__true'
     );
@@ -927,9 +929,11 @@ final class Permalinks_Customizer_Form {
         " WHERE redirect_from = %s", $redirect_to
       ) );
 
+      $post_perm = 'p=' . $id;
+      $page_perm = 'page_id=' . $id;
       if ( 0 === strpos( $redirect_from, '?' ) ) {
-        if ( false !== strpos( $redirect_from, 'p=' )
-          || false !== strpos( $redirect_from, 'page_id=' ) ) {
+        if ( false !== strpos( $redirect_from, $post_perm )
+          || false !== strpos( $redirect_from, $page_perm ) ) {
           return;
         }
       }
@@ -1114,7 +1118,7 @@ final class Permalinks_Customizer_Form {
         $post_type = $post->post_type;
       }
 
-      $this->add_auto_redirect( $prev_url, $permalink, $post_type );
+      $this->add_auto_redirect( $prev_url, $permalink, $post_type, $id );
 
       $generated++;
     }
