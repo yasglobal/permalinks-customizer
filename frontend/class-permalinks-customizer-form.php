@@ -225,7 +225,7 @@ final class Permalinks_Customizer_Form {
    */
   public function save_post_permalink( $post_id, $post, $update ) {
 
-    if ( 'Auto Draft' === $post->post_title ) {
+    if ( 'auto-draft' === sanitize_title( $post->post_title ) ) {
       return;
     }
 
