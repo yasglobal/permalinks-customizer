@@ -62,10 +62,6 @@ class Permalinks_Customizer_Admin {
       array( $this, 'redirects_page' )
     );
     add_submenu_page( 'permalinks-customizer-posts-settings',
-      'Convert Custom Permalinks', 'Convert CP', 'pc_manage_permalink_settings',
-      'permalinks-customizer-convert-url', array( $this, 'convert_url' )
-    );
-    add_submenu_page( 'permalinks-customizer-posts-settings',
       'About Permalinks Customizer', 'About', 'install_plugins',
       'permalinks-customizer-about-plugins', array( $this, 'about_plugin' )
     );
@@ -191,23 +187,6 @@ class Permalinks_Customizer_Admin {
       PERMALINKS_CUSTOMIZER_PATH . 'admin/class-permalinks-customizer-redirects.php'
     );
     new Permalinks_Customizer_Redirects();
-    add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 1 );
-  }
-
-  /**
-   * This Function Calls the another Function which provide the functionality
-   * to convert Custom Permalink URLs to Permalinks Customizer.
-   *
-   * @access public
-   * @since 1.0
-   *
-   * @return void
-   */
-  public function convert_url() {
-    require_once(
-      PERMALINKS_CUSTOMIZER_PATH . 'admin/class-permalinks-customizer-batch-script.php'
-    );
-    new Permalinks_Customizer_Batch_Script();
     add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 1 );
   }
 
