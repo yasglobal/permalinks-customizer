@@ -86,20 +86,28 @@ function yasglobal_exclude_url( $permalink ) {
 }
 add_filter( 'permalinks_customizer_exclude_request', 'yasglobal_exclude_url' );
 `
+
+==== Show Relative Permalink/URL ====
+
+To show relative permalink/url in Edit Post, add this filter in your themes functions.php.
+`
+add_filter( 'permalinks_customizer_remove_home_url', '__return_true' );
+`
+
 ==== Disable automatically create redirects ====
 
 To disable automatically create redirects feature on creating and updating the post/pages/categories, add this filter in your themes functions.php.
-```
+`
 add_filter( 'permalinks_customizer_auto_created_redirects', '__return_false');
-```
+`
 This filter stops to be creating new redirects but existed redirects keeps working. To stop existed redirects, add `permalinks_customizer_disable_redirects` filter.
 
 ==== Disable Redirects ====
 
 To disable redirects to be applied , add this filter in your themes functions.php.
-```
+`
 add_filter( 'permalinks_customizer_disable_redirects', '__return_false');
-```
+`
 This filter only stop redirects to be work but the automatically create redirects still works. To stop automatically create redirects feature add `permalinks_customizer_auto_created_redirects` filter.
 
 === Thanks for the Support ===

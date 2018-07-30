@@ -78,6 +78,13 @@ function yasglobal_exclude_url( $permalink ) {
 add_filter( 'permalinks_customizer_exclude_request', 'yasglobal_exclude_url' );
 ```
 
+### Show Relative Permalink/URL
+
+To show relative permalink/url in Edit Post, add this filter in your themes functions.php.
+```
+add_filter( 'permalinks_customizer_remove_home_url', '__return_true' );
+```
+
 ### Disable automatically create redirects
 
 To disable automatically create redirects feature on creating and updating the post/pages/categories, add this filter in your themes functions.php.
