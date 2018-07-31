@@ -111,9 +111,7 @@ This filter only stop redirects to be work but the automatically create redirect
 
 === Thanks for the Support ===
 
-The support from the users that love Permalinks Customizer is huge. You can support Permalinks Customizer future development and help to make it even better by donating or even giving a 5 star rating with a nice message to me :)
-
-[Donate to Permalinks Customizer](https://www.paypal.me/yasglobal)
+The support from the users that love Permalinks Customizer is huge. You can support Permalinks Customizer future development and help to make it even better by leaving a 5 star rating with a nice message to me :)
 
 === Bug reports ===
 
@@ -192,7 +190,7 @@ A. Yes, you can disable/delete the redirects from the Redirects Page using Bulk 
 
 == Changelog ==
 
-= 2.1.0 =
+= 2.1.0 - July 16, 2018 =
 
   * Enhancement
     * Generate Post Permalink as soon as Post saved at the very first time
