@@ -103,9 +103,7 @@ This filter only stop redirects to be work but the automatically create redirect
 
 ### Thanks for the Support
 
-The support from the users that love Permalinks Customizer is huge. You can support Permalinks Customizer future development and help to make it even better by donating or even giving a [5 star rating with a nice message](https://wordpress.org/support/plugin/permalinks-customizer/reviews/?rate=5#new-post) to me :smiley:
-
-[Donate to Permalinks Customizer](https://www.paypal.me/yasglobal)
+The support from the users that love Permalinks Customizer is huge. You can support Permalinks Customizer future development and help to make it even better by giving a [5 star rating with a nice message](https://wordpress.org/support/plugin/permalinks-customizer/reviews/?rate=5#new-post) to me :smiley:
 
 ## Installation
 
@@ -131,26 +129,46 @@ This process defines you the steps to follow either you are installing through W
 
 ## Frequently Asked Questions
 
-**Q. How to define slug of the post type?**
+**Q. How to define Settings for the PostType?**
 
-A. Go to Settings, there is a field with the post type name. On this field, you can define slug for the post type.
+A. Go to WordPress Dashboard under Permalinks Customizer, Go to PostTypes Settings Page, there is a textfield for all the available PostType. On this field, you can define structure which is used for this PostType.
 
-**Q. Can i use tags?**
+**Q. Can i use tags in PostType Settings?**
 
-A. Yes, you can use any tag as defined on the [Structure Tags Section](#structure-tags).
+A. Yes, you can use any tag as defined on the [Permalinks Customizer page](https://wordpress.org/plugins/permalinks-customizer/) under the *TAGS FOR POSTTYPES* heading.
 
 **Q. Does the plugin supports custom taxonomy tag?**
 
-A. Yes, it supports custom taxonomy tag. You can define the tag as mentioned on the [Structure Tags Section](#structure-tags).
+A. Yes, it supports custom taxonomy tag. You can define the tag as mentioned on the [Permalinks Customizer page](https://wordpress.org/plugins/permalinks-customizer/).
+
+**Q. Can i see the created permalinks for the PostType?**
+
+A. Yes, you can see all the created permalinks on the PostType Permalinks Page under Permalinks Customizer.
+
+**Q. How to define Settings for the Taxonomies?**
+
+A. Go to WordPress Dashboard under Permalinks Customizer, Go to Taxonomies Settings Page, there is a textfield for every available Taxonomies. On this field, you can define structure which is used for this Taxonomy.
+
+**Q. Can i use tags in Taxonomies Settings?**
+
+A. Yes, you can use any tag as defined on the [Permalinks Customizer page](https://wordpress.org/plugins/permalinks-customizer/) under the *TAGS FOR TAXONOMIES* heading.
+
+**Q. Can i see the created permalinks for the Taxonomies?**
+
+A. Yes, you can see all the created permalinks on the Taxonomies Permalinks Page under Permalinks Customizer.
 
 **Q. Can i regenerate all the permalinks according to the defined structure?**
 
-A. Yes, you can regenerate all the permalinks according to the defined structure. To have a bulk permalink update, Go to the `All Post` page there is a a option in the bulk action drop down with the name of `Regenerate Pemralinks`. Use that option for regenerating the Permalinks.
+A. Yes, you can regenerate all the permalinks according to the defined structure. To have a bulk permalink update, Go to the *All Post* page there is a a option in the bulk action drop down with the name of `Regenerate Permalinks`. Use that option for regenerating the Permalinks.
 
-**Q. Does `Regenerate Pemralinks` damage my site SEO?**
+**Q. Does *Regenerate Permalinks* damage my site SEO?**
 
 A. No, it won't damage your site SEO. As regenerating permalinks added redirect against their previous permalink.
 
-**Q. May this plugin works with custom permalinks?**
+**Q. Can i see the available redirects?**
 
-A. No, This plugin does not work with [custom permalinks Plugin](https://wordpress.org/plugins/custom-permalinks/).
+A. Yes, you can see the all the redirects created by this plugin from the Redirects Page under the Permalinks Customizer in the WordPress Dashboard.
+
+**Q. Can i disable/delete redirects?**
+
+A. Yes, you can disable/delete the redirects from the Redirects Page using Bulk Action.

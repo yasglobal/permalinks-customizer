@@ -1,11 +1,10 @@
 === Permalinks Customizer ===
 Contributors: aliya-yasir, sasiddiqui
-Donate link: https://www.paypal.me/yasglobal
 Tags: Link, Permalink, URL, Redirects, Tags
 Requires at least: 3.5
 Requires PHP: 5.2.4
 Tested up to: 4.9
-Stable tag: 2.0.1
+Stable tag: 2.1.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl.html
 
@@ -144,48 +143,67 @@ This process defines you the steps to follow either you are installing through W
 
 == Screenshots ==
 
-* Permalinks can be set for each and every PostType from [here](http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-posts-settings). The empty permalink field for the PostType will use the WordPress Permalink Settings.
+* Permalinks can be set for each and every PostType from PostTypes Settings Page. The empty permalink field for the PostType will use the WordPress Permalink Settings.
 
-* All the available tags which can be used for defining the permalinks for PostTypes are listed [here](http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-post-tags). Some of the tags are defined here may only be use with [Permalinks Customizer](https://wordpress.org/plugins/permalinks-customizer/) plugin only.
+* All the available tags which can be used for defining the permalinks for PostTypes are listed here. Some of the tags are defined here may only be used with this plugin only.
 
 * Permalinks can easily be changed for the single post from its post edit page.
 
-* Permalinks can be set for each and every Taxonomies from [here](http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-taxonomies-settings). The empty permalink field for the taxonomy would not create teh permalink for it.
+* Permalinks can be set for each and every Taxonomies from Taxonomies Settings Page. The empty permalink field for the taxonomy would not create the permalink for it.
 
-* All the available tags which can be used for defining the permalinks for Taxonomies are listed [here](http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-taxonomy-tags). These tags may work with this Plugin Only.
+* All the available tags which can be used for defining the permalinks for Taxonomies are listed here. These tags may work with this Plugin Only.
 
 * Permalinks can easily be changed for the single Term from its Term edit page.
 
-* You can easily convert the custom permalink URLs to permalink customizer URLs by going on [permalinks settings page](http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-convert-url)
-
-* Permalink conversion varies from server to server. So, make sure to convert the url at a time on depending on your server capability.
-
 == Frequently Asked Questions ==
 
-= Q. How to define slug of the post type? =
-A. Go to Settings, there is a field with the post type name. On this field, you can define slug for the post type.
+= Q. How to define Settings for the PostType? =
+A. Go to WordPress Dashboard under Permalinks Customizer, Go to PostTypes Settings Page, there is a textfield for all the available PostType. On this field, you can define structure which is used for this PostType.
 
-= Q. Can i use tags? =
-A. Yes, you can use all the tags as defined on the [Permalinks Customizer page](https://wordpress.org/plugins/permalinks-customizer/).
+= Q. Can i use tags in PostType Settings? =
+A. Yes, you can use any tag as defined on the [Permalinks Customizer page](https://wordpress.org/plugins/permalinks-customizer/) under the *TAGS FOR POSTTYPES* heading.
 
 = Q. Does the plugin supports custom taxonomy tag? =
 A. Yes, it supports custom taxonomy tag. You can define the tag as mentioned on the [Permalinks Customizer page](https://wordpress.org/plugins/permalinks-customizer/).
 
-= Q. Can i regenerate all the permalinks according to the defined structure? =
-A. Yes, you can regenerate all the permalinks according to the defined structure. To have a bulk permalink update, Go to the `All Post` page there is a a option in the bulk action drop down with the name of `Regenerate Permalinks`. Use that option for regenerating the Permalinks.
+= Q. Can i see the created permalinks for the PostType? =
+A. Yes, you can see all the created permalinks on the PostType Permalinks Page under Permalinks Customizer.
 
-= Q. Does `Regenerate Permalinks` damage my site SEO? =
+= Q. How to define Settings for the Taxonomies? =
+A. Go to WordPress Dashboard under Permalinks Customizer, Go to Taxonomies Settings Page, there is a textfield for every available Taxonomies. On this field, you can define structure which is used for this Taxonomy.
+
+= Q. Can i use tags in Taxonomies Settings? =
+A. Yes, you can use any tag as defined on the [Permalinks Customizer page](https://wordpress.org/plugins/permalinks-customizer/) under the *TAGS FOR TAXONOMIES* heading.
+
+= Q. Can i see the created permalinks for the Taxonomies? =
+A. Yes, you can see all the created permalinks on the Taxonomies Permalinks Page under Permalinks Customizer.
+
+= Q. Can i regenerate all the permalinks according to the defined structure? =
+A. Yes, you can regenerate all the permalinks according to the defined structure. To have a bulk permalink update, Go to the *All Post* page there is a a option in the bulk action drop down with the name of `Regenerate Permalinks`. Use that option for regenerating the Permalinks.
+
+= Q. Does *Regenerate Permalinks* damage my site SEO? =
 A. No, it won't damage your site SEO. As regenerating permalinks added redirect against their previous permalink.
 
-= Q. May this plugin works with custom permalinks? =
-A. No, This plugin does not work with [custom permalinks](https://wordpress.org/plugins/custom-permalinks/).
+= Q. Can i see the available redirects? =
+A. Yes, you can see the all the redirects created by this plugin from the Redirects Page under the Permalinks Customizer in the WordPress Dashboard.
+
+= Q. Can i disable/delete redirects? =
+A. Yes, you can disable/delete the redirects from the Redirects Page using Bulk Action.
 
 == Changelog ==
 
-= 2.0.2 =
+= 2.1.0 =
+
+  * Enhancement
+    * Generate Post Permalink as soon as Post saved at the very first time
+    * Prevent to add auto-redirects for plain permalinks
+    * Regenerate Permalink on Quick Edit Post
+    * Added filter by which relative permalink can be shown on post edit page
 
   * Bug
+    * Regenerate Status Issue on Post/Page
     * Fixed Permalinks Customizer Version issue on plugin update
+    * Removed Convert URL Page
 
 = 2.0.1 - July 16, 2018 =
 
@@ -217,14 +235,6 @@ A. No, This plugin does not work with [custom permalinks](https://wordpress.org/
     * Fixed undefined variable warning in PostType Permalinks and Taxonomies Permalinks Page
     * Fixed PHP warning on Bulk update over PostType Permalinks and Taxonomies Permalinks Page when no post/category is selected
     * Print `$view_post` varaible value
-
-= 1.3.9 - Feb 13, 2018 =
-
-  * Enhancements
-    * Fixed Empty Title issue
-    * Added About Page
-  * Bugs
-    * Fixed PHP Notices
 
 = Earlier versions =
 

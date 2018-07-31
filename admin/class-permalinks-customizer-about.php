@@ -55,7 +55,7 @@ class Permalinks_Customizer_About {
         <h1><?php echo $plugin_name . ' ' . PERMALINKS_CUSTOMIZER_PLUGIN_VERSION; ?></h1>
         <div class="tagline">
           <p><?php _e('Thank you for choosing Permalinks Customizer! We hope that your experience with our plugin for auto creating permalinks and updating permalinks is quick and easy. We are trying to make it more feasible for you and provide capabilities in it.', 'permalinks-customizer' ); ?></p>
-          <p><?php printf( __( 'To support future development and help to make it even better just leaving us a <a href="%s" title="Permalinks Customizer Rating" target="_blank">%s</a> rating with a nice message to me :)', 'permalinks-customizer' ), 'https://wordpress.org/support/plugin/permalinks-customizer/reviews/?rate=5#new-post', $five_star ); ?></p>
+          <p><?php printf( __( 'To support future development and help to make it even better by just leaving a <a href="%s" title="Permalinks Customizer Rating" target="_blank">%s</a> rating with a nice message to me :)', 'permalinks-customizer' ), 'https://wordpress.org/support/plugin/permalinks-customizer/reviews/?rate=5#new-post', $five_star ); ?></p>
         </div>
       </div>
 
