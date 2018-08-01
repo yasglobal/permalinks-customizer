@@ -44,6 +44,15 @@ final class Permalinks_Customizer_Form {
    * @access private
    * @since 0.1
    *
+   * @param string $permalink
+   *   Permalink which is created by the plugin
+   * @param string $original
+   *   Permalink which set by WordPress
+   * @param boolean $renderContainers
+   *   Shows Post/Term Edit
+   * @param string $postname
+   *   Post Name
+   *
    * @return void
    */
   private function get_form( $permalink, $original = '', $renderContainers = true, $postname = '' ) {
@@ -129,6 +138,15 @@ final class Permalinks_Customizer_Form {
    * @access public
    * @since 0.1
    *
+   * @param string $html
+   *   WP Post Permalink HTML
+   * @param integer $id
+   *   Post ID
+   * @param string $new_title
+   *   Post Title
+   * @param string $new_slug
+   *   Post Slug
+   *
    * @return string
    *   Returns Edit Form string
    */
@@ -195,6 +213,9 @@ final class Permalinks_Customizer_Form {
    * @access public
    * @since 1.3
    *
+   * @param object $object
+   *   Term Object
+   *
    * @return void
    */
   public function term_edit_form( $object ) {
@@ -229,6 +250,13 @@ final class Permalinks_Customizer_Form {
    *
    * @access public
    * @since 0.1
+   *
+   * @param integer $post_id
+   *   Post ID
+   * @param object $post
+   *   Post Object
+   * @param boolean $update
+   *   Post Status
    *
    * @return void
    */
@@ -656,7 +684,7 @@ final class Permalinks_Customizer_Form {
    * @access private
    * @since 2.1.1
    *
-   * @param object $id
+   * @param integer $id
    *   Post ID
    * @param string $post_name
    *   Post name which needs to be set
@@ -677,6 +705,9 @@ final class Permalinks_Customizer_Form {
    * @access public
    * @since 0.1
    *
+   * @param integer $id
+   *   Post ID
+   *
    * @return void
    */
   public function delete_post_permalink( $id ) {
@@ -691,6 +722,9 @@ final class Permalinks_Customizer_Form {
    *
    * @access public
    * @since 1.0
+   *
+   * @param integer $id
+   *   Term ID
    *
    * @return void
    */
@@ -818,6 +852,15 @@ final class Permalinks_Customizer_Form {
    * @access private
    * @since 1.3
    *
+   * @param object $term
+   *   Term Object
+   * @param string $permalink
+   *   New permalink which needs to be saved
+   * @param string $prev
+   *   Previously saved permalink
+   * @param string $update
+   *   1 for Permaink Regenerating else for creating permalink
+   *
    * @return void
    */
   private function save_term_permalink( $term, $permalink, $prev, $update ) {
@@ -869,6 +912,9 @@ final class Permalinks_Customizer_Form {
    * @access public
    * @since 1.0
    *
+   * @param integer $id
+   *   Term ID
+   *
    * @return void
    */
   public function delete_term_permalink( $id ) {
@@ -893,6 +939,11 @@ final class Permalinks_Customizer_Form {
    *
    * @access public
    * @since 1.0
+   *
+   * @param integer $prev_front_page_id
+   *   Page ID of previously set Front Page
+   * @param integer $new_front_page_id
+   *   Page ID of current Front Page
    *
    * @return void
    */
