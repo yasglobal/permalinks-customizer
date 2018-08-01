@@ -105,7 +105,7 @@ To disable automatically create redirects feature on creating and updating the p
 ```
 add_filter( 'permalinks_customizer_auto_created_redirects', '__return_false');
 ```
-This filter stops to be creating new redirects but existed redirects keeps working. To stop existed redirects, add [this](#disable Redirects) filter.
+This filter stops to be creating new redirects but existed redirects keeps working. To stop existed redirects, add [this](#disable-redirects) filter.
 
 ### Disable Redirects
 
