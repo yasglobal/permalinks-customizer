@@ -446,10 +446,7 @@ final class Permalinks_Customizer_Form {
         $title       = sanitize_title( $post->post_title );
         $replace_tag = str_replace( '%postname%', $title, $replace_tag );
         if ( ! empty( $title ) ) {
-          wp_update_post( array(
-            'ID'        => $post_id,
-            'post_name' => $title
-          ));
+          $this->update_post_name($post_id, $title);
         }
       }
     }
@@ -471,10 +468,7 @@ final class Permalinks_Customizer_Form {
         $title      = sanitize_title( $post->post_title );
         $postnames .=  $title;
         if ( ! empty( $title ) ) {
-          wp_update_post( array(
-            'ID'        => $post_id,
-            'post_name' => $title
-          ));
+          $this->update_post_name($post_id, $title);
         }
       }
 
@@ -501,10 +495,7 @@ final class Permalinks_Customizer_Form {
         $title      = sanitize_title( $post->post_title );
         $postnames .=  $title;
         if ( ! empty( $title ) ) {
-          wp_update_post( array(
-            'ID'        => $post_id,
-            'post_name' => $title
-          ));
+          $this->update_post_name($post_id, $title);
         }
       }
 
@@ -657,6 +648,26 @@ final class Permalinks_Customizer_Form {
     }
 
     return $replace_tag;
+  }
+
+  /**
+   * Set `post_name` for the posts who doesn't have that.
+   *
+   * @access private
+   * @since 2.1.1
+   *
+   * @param object $id
+   *   Post ID
+   * @param string $post_name
+   *   Post name which needs to be set
+   *
+   * @return void
+   */
+  private function update_post_name($id, $post_name) {
+    global $wpdb;
+    $wpdb->query( $wpdb->prepare( "UPDATE $wpdb->posts SET post_name = %s " .
+      " WHERE id = %d", $post_name, $id
+    ) );
   }
 
   /**
