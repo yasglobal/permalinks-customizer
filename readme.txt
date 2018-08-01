@@ -211,6 +211,7 @@ A. Yes, you can exclude any posttype from the plugin to be worked on. For this j
 
   * Enhancement
     * Added Filter to Exclude the PostType from the Plugin to be worked on
+    * Added Support of `WP All Import` Plugin
 
   * Bug
     * Plugin causing 504 gateway error when submitting a post for review

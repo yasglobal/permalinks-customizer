@@ -16,6 +16,10 @@ final class Permalinks_Customizer_Form {
     add_action( 'save_post',
       array( $this, 'save_post_permalink' ), 10, 3
     );
+    add_action( 'pmxi_saved_post',
+      array( $this, 'pmxi_post_permalink' ), 10, 1
+    );
+
     add_action( 'delete_post',
       array( $this, 'delete_post_permalink' ), 10
     );
@@ -254,6 +258,24 @@ final class Permalinks_Customizer_Form {
   }
 
   /**
+   * This Function call when the Post/Page created by the WP All Import Plugin.
+   *
+   * @access public
+   * @since 2.2.0
+   *
+   * @param integer $post_id
+   *   Post ID
+   *
+   * @return void
+   */
+  public function pmxi_post_permalink( $post_id ) {
+    $post = get_post( $post_id );
+    if ( is_object( $post ) && isset( $post->post_type ) ) {
+      $this->save_post_permalink( $post_id, $post, false );
+    }
+  }
+
+  /**
    * This Function call when the Post/Page has been Saved. This function
    * generates the Permalink according the PostType Permalink Structure and
    * also saves the permalink if it is updated manually by user.
@@ -266,7 +288,7 @@ final class Permalinks_Customizer_Form {
    * @param object $post
    *   Post Object
    * @param boolean $update
-   *   Post Status
+   *   Whether this is an existing post being updated or not.
    *
    * @return void
    */
