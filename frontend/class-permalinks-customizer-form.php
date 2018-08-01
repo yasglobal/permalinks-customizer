@@ -154,6 +154,20 @@ final class Permalinks_Customizer_Form {
     $permalink = get_post_meta( $id, 'permalink_customizer', true );
     $post      = get_post( $id );
 
+    if ( 'attachment' == $post->post_type
+      || $post->ID == get_option( 'page_on_front' ) ) {
+      return $html;
+    }
+
+    // Filter to excluding PostTypes to be worked on by the plugin
+    $exclude_post_types = $post->post_type;
+    $excluded           = apply_filters(
+      'permalinks_customizer_exclude_post_type', $exclude_post_types
+    );
+    if ( '__true' === $excluded ) {
+      return $html;
+    }
+
     ob_start();
     $pc_frontend = new Permalinks_Customizer_Frontend;
 
@@ -168,10 +182,6 @@ final class Permalinks_Customizer_Form {
 
     $content = ob_get_contents();
     ob_end_clean();
-    if ( 'attachment' == $post->post_type
-      || $post->ID == get_option( 'page_on_front' ) ) {
-      return $html;
-    }
 
     if ( 'trash' != $post->post_status ) {
       wp_enqueue_script( 'permalink-customizer-admin',

@@ -85,6 +85,20 @@ To show relative permalink/url in Edit Post, add this filter in your themes func
 add_filter( 'permalinks_customizer_remove_home_url', '__return_true' );
 ```
 
+### Exclude PostType from the Plugin
+
+To exclude the plugin to be worked on any PostType. Add this filter in your themes functions.php.
+
+```
+function yasglobal_exclude_post_types( $post_type ) {
+  if ( $post_type == 'custompost' ) {
+    return '__true';
+  }
+  return '__false';
+}
+add_filter( 'permalinks_customizer_exclude_post_type', 'yasglobal_exclude_post_types');
+```
+
 ### Disable automatically create redirects
 
 To disable automatically create redirects feature on creating and updating the post/pages/categories, add this filter in your themes functions.php.
@@ -172,3 +186,7 @@ A. Yes, you can see the all the redirects created by this plugin from the Redire
 **Q. Can i disable/delete redirects?**
 
 A. Yes, you can disable/delete the redirects from the Redirects Page using Bulk Action.
+
+**Q. Can i exclude PostType from the Plugin?**
+
+A. Yes, you can exclude any posttype from the plugin to be worked on. For this just add the filter as shown [here](#exclude-posttype-from-the-plugin).
