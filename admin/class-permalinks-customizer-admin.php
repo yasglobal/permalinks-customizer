@@ -262,7 +262,7 @@ class Permalinks_Customizer_Admin {
    * Print the Admin Notice.
    *
    * @access public
-   * @since 4.0.0
+   * @since 2.0.0
    *
    * @return void
    */

@@ -29,9 +29,15 @@ class Permalinks_Customizer_PostTypes_Settings {
         }
         update_option( $key, $value );
       }
+      print '<div id="message" class="updated notice notice-success is-dismissible">' .
+                '<p>' . __(
+                  'PostTypes Permalinks Settings are updated.',
+                  'permalinks-customizer'
+                ) . '</p>' .
+              '</div>';
     }
     $args = array(
-      'public'   => true
+      'public' => true
     );
     $post_types = get_post_types( $args, 'objects' );
     ?>

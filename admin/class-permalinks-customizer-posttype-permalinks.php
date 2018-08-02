@@ -34,6 +34,13 @@ class Permalinks_Customizer_PostType_Permalinks {
       $post_ids =  implode( ',', $_POST['permalink'] );
       if ( preg_match( '/^\d+(?:,\d+)*$/', $post_ids ) ) {
         $wpdb->query( "DELETE FROM $wpdb->postmeta WHERE post_id IN ($post_ids) AND meta_key = 'permalink_customizer'" );
+        $permalink = count( $_POST['permalink'] );
+        printf( '<div id="message" class="updated notice notice-success is-dismissible"><p>' .
+          _n( '%s Permalink is deleted.',
+            '%s Permalinks are deleted.',
+            $permalink,
+            'permalinks-customizer'
+          ) . '</p></div>', $permalink );
       } else {
         $error = '<div id="message" class="error">' .
                     '<p>' . __( 'There is some error to proceed your request. Please retry with your request or contact to the plugin author.', 'permalinks-customizer' ) . '</p>' .

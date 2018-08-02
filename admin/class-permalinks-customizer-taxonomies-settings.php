@@ -36,6 +36,12 @@ class Permalinks_Customizer_Taxonomies_Settings {
       update_option(
         'permalinks_customizer_taxonomy_settings', $permalinks_customizer_taxes
       );
+      print '<div id="message" class="updated notice notice-success is-dismissible">' .
+                '<p>' . __(
+                  'Taxonomies Permalinks Settings are updated.',
+                  'permalinks-customizer'
+                ) . '</p>' .
+              '</div>';
     }
     $permalinks_customizer_settings = unserialize(
       get_option( 'permalinks_customizer_taxonomy_settings' )
