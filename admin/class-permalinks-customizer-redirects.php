@@ -36,14 +36,35 @@ class Permalinks_Customizer_Redirects {
       if ( 'delete' === $_POST['action'] || 'delete' === $_POST['action2'] ) {
         if ( preg_match( '/^\d+(?:,\d+)*$/', $rids ) ) {
           $wpdb->query( "DELETE FROM {$wpdb->prefix}permalinks_customizer_redirects WHERE id IN ($rids)" );
+          $permalink = count( $_POST['permalink'] );
+          printf( '<div id="message" class="updated notice notice-success is-dismissible"><p>' .
+            _n( '%s Redirect is deleted.',
+              '%s Redirects are deleted.',
+              $permalink,
+              'permalinks-customizer'
+            ) . '</p></div>', $permalink );
         }
       } elseif ( 'disable' === $_POST['action'] || 'disable' === $_POST['action2'] ) {
         if ( preg_match( '/^\d+(?:,\d+)*$/', $rids ) ) {
           $wpdb->query( "UPDATE {$wpdb->prefix}permalinks_customizer_redirects SET enable = 0 WHERE id IN ($rids)" );
+          $permalink = count( $_POST['permalink'] );
+          printf( '<div id="message" class="updated notice notice-success is-dismissible"><p>' .
+            _n( '%s Redirect is disabled.',
+              '%s Redirects are disabled.',
+              $permalink,
+              'permalinks-customizer'
+            ) . '</p></div>', $permalink );
         }
       } elseif ( 'enable' === $_POST['action'] || 'enable' === $_POST['action2'] ) {
         if ( preg_match( '/^\d+(?:,\d+)*$/', $rids ) ) {
           $wpdb->query( "UPDATE {$wpdb->prefix}permalinks_customizer_redirects SET enable = 1 WHERE id IN ($rids)" );
+          $permalink = count( $_POST['permalink'] );
+          printf( '<div id="message" class="updated notice notice-success is-dismissible"><p>' .
+            _n( '%s Redirect is enabled.',
+              '%s Redirects are enabled.',
+              $permalink,
+              'permalinks-customizer'
+            ) . '</p></div>', $permalink );
         }
       } else {
         echo '<div id="message" class="error">' .
