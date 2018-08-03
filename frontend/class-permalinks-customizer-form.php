@@ -311,6 +311,15 @@ final class Permalinks_Customizer_Form {
       return;
     }
 
+    $args = array(
+      'public' => true
+    );
+
+    $post_types = get_post_types( $args, 'objects' );
+    if ( ! isset( $post_types[$post->post_type] ) ) {
+      return;
+    }
+
     $post_status = $post->post_status;
     if ( 'inherit' == $post_status && 'attachment' != $post->post_type ) {
       $post_id = $post->post_parent;
