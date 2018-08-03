@@ -1108,7 +1108,10 @@ final class Permalinks_Customizer_Form {
     $post_types = get_post_types( $args, 'objects' );
     foreach ( $post_types as $post_type ) {
       if ( 'attachment' == $post_type->name ) {
-        continue;
+        add_filter( 'bulk_actions-upload', array( $this, 'bulk_option' ) );
+        add_filter( 'handle_bulk_actions-upload',
+          array( $this, 'bulk_posttype_regenerate' ), 10, 3
+        );
       }
       add_filter( 'bulk_actions-edit-' . $post_type->name,
         array( $this, 'bulk_option' )
@@ -1253,12 +1256,14 @@ final class Permalinks_Customizer_Form {
     }
 
     if ( 2 === $error ) {
-      $redirect_to = remove_query_arg( 'regenerated_permalink' );
+      $redirect_to = remove_query_arg( 'regenerated_permalink', $redirect_to );
       $redirect_to = add_query_arg(
         'regenerated_permalink_error', $error, $redirect_to
       );
     } else {
-      $redirect_to = remove_query_arg( 'regenerated_permalink_error' );
+      $redirect_to = remove_query_arg(
+        'regenerated_permalink_error', $redirect_to
+      );
       $redirect_to = add_query_arg(
         'regenerated_permalink', $generated, $redirect_to
       );

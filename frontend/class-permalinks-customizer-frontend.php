@@ -360,6 +360,21 @@ final class Permalinks_Customizer_Frontend {
    */
   public function customized_attachment_link( $permalink, $id ) {
     $permalinks_customizer = get_post_meta( $id, 'permalink_customizer', true );
+    if ( $permalinks_customizer ) {
+      $language_code = apply_filters(
+        'wpml_element_language_code', null,
+        array( 'element_id' => $id, 'element_type' => 'attachment' )
+      );
+      if ( $language_code ) {
+        return apply_filters( 'wpml_permalink',
+          trailingslashit( home_url() ) . $permalinks_customizer, $language_code
+        );
+      } else {
+        return apply_filters( 'wpml_permalink',
+          trailingslashit( home_url() ) . $permalinks_customizer
+        );
+      }
+    }
     return $permalink;
   }
 
