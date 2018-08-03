@@ -168,6 +168,15 @@ final class Permalinks_Customizer_Form {
       return $html;
     }
 
+    $args = array(
+      'public' => true
+    );
+
+    $post_types = get_post_types( $args, 'objects' );
+    if ( ! isset( $post_types[$post->post_type] ) ) {
+      return $html;
+    }
+
     // Filter to excluding PostTypes to be worked on by the plugin
     $exclude_post_types = $post->post_type;
     $excluded           = apply_filters(
@@ -1036,7 +1045,10 @@ final class Permalinks_Customizer_Form {
    * @return void
    */
   public function register_taxonomies_form() {
-    $taxonomies = get_taxonomies();
+    $args = array(
+      'public' => true
+    );
+    $taxonomies = get_taxonomies( $args, 'names' );
     foreach ( $taxonomies as $taxonomy ) {
       if ( 'nav_menu' == $taxonomy ) {
         continue;
