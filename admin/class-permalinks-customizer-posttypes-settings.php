@@ -51,9 +51,6 @@ class Permalinks_Customizer_PostTypes_Settings {
         <table class="form-table">
           <?php
           foreach ( $post_types as $post_type ) {
-            if ( 'attachment' == $post_type->name ) {
-              continue;
-            }
             $perm_struct = 'permalinks_customizer_' . $post_type->name;
             $value       = esc_attr( get_option( $perm_struct, '' ) );
           ?>

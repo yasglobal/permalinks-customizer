@@ -14,15 +14,12 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 }
 
 $args = array(
-  'public'   => true
+  'public' => true
 );
 
 // Delete PostType Settings
 $post_types = get_post_types( $args, 'objects' );
 foreach ( $post_types as $post_type ) {
-  if ( 'attachment' == $post_type->name ) {
-    continue;
-  }
   delete_option( 'permalinks_customizer_' . $post_type->name );
 }
 

@@ -19,6 +19,12 @@ final class Permalinks_Customizer_Form {
     add_action( 'pmxi_saved_post',
       array( $this, 'pmxi_post_permalink' ), 10, 1
     );
+    add_action( 'add_attachment',
+      array( $this, 'save_attachment_post' ), 10, 1
+    );
+    add_action( 'edit_attachment',
+      array( $this, 'save_attachment_post' ), 10, 1
+    );
 
     add_action( 'delete_post',
       array( $this, 'delete_post_permalink' ), 10
@@ -158,8 +164,7 @@ final class Permalinks_Customizer_Form {
     $permalink = get_post_meta( $id, 'permalink_customizer', true );
     $post      = get_post( $id );
 
-    if ( 'attachment' == $post->post_type
-      || $post->ID == get_option( 'page_on_front' ) ) {
+    if ( $post->ID == get_option( 'page_on_front' ) ) {
       return $html;
     }
 
@@ -178,6 +183,9 @@ final class Permalinks_Customizer_Form {
     if ( 'page' == $post->post_type ) {
       $original_permalink = $pc_frontend->original_page_link( $id );
       $view_post = __( 'View Page', 'permalinks-customizer' );
+    } elseif ( 'attachment' == $post->post_type ) {
+      $original_permalink = $pc_frontend->original_attachment_link( $id );
+      $view_post = __( 'View Attachment', 'permalinks-customizer' );
     } else {
       $original_permalink = $pc_frontend->original_post_link( $id );
       $view_post = __( 'View ' . ucfirst( $post->post_type ), 'permalinks-customizer' );
@@ -304,7 +312,7 @@ final class Permalinks_Customizer_Form {
     }
 
     $post_status = $post->post_status;
-    if ( 'inherit' == $post_status ) {
+    if ( 'inherit' == $post_status && 'attachment' != $post->post_type ) {
       $post_id = $post->post_parent;
       $post    = '';
       $post    = get_post( $post_id );
@@ -385,7 +393,7 @@ final class Permalinks_Customizer_Form {
       }
 
       $permalink = preg_replace( '/(\/+)/', '/', $permalink );
-      $permalink = preg_replace( '/(\-+)/', '-', $permalink );
+      $permalink = preg_replace( '/(\-+)/', '-', $permalink );  
       update_post_meta( $post_id, 'permalink_customizer', $permalink );
       $_REQUEST['permalinks_customizer'] = $permalink;
       if ( 'publish' == $post_status ) {
@@ -427,6 +435,24 @@ final class Permalinks_Customizer_Form {
 
       // Add Redirect on manually updating the post
       $this->add_auto_redirect( $prev_url, $permalink, $post_type, $post_id );
+    }
+  }
+
+  /**
+   * This Function call when the Attachment Post is created/updated.
+   *
+   * @access public
+   * @since 2.2.0
+   *
+   * @param integer $post_id
+   *   Post ID
+   *
+   * @return void
+   */
+  public function save_attachment_post( $post_id ) {
+    $post = get_post( $post_id );
+    if ( is_object( $post ) && isset( $post->post_type ) ) {
+      $this->save_post_permalink( $post_id, $post, true );
     }
   }
 
