@@ -320,6 +320,15 @@ final class Permalinks_Customizer_Form {
       return;
     }
 
+    // Filter to excluding PostTypes to be worked on by the plugin
+    $exclude_post_types = $post->post_type;
+    $excluded           = apply_filters(
+      'permalinks_customizer_exclude_post_type', $exclude_post_types
+    );
+    if ( '__true' === $excluded ) {
+      return;
+    }
+
     $post_status = $post->post_status;
     if ( 'inherit' == $post_status && 'attachment' != $post->post_type ) {
       $post_id = $post->post_parent;
