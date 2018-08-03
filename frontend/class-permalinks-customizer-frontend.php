@@ -297,14 +297,15 @@ final class Permalinks_Customizer_Frontend {
         'wpml_element_language_code', null,
         array( 'element_id' => $post->ID, 'element_type' => $post_type )
       );
-      if ( $language_code )
-        return apply_filters(
-          'wpml_permalink', trailingslashit( home_url() ) . $permalinks_customizer, $language_code
+      if ( $language_code ) {
+        return apply_filters( 'wpml_permalink',
+          trailingslashit( home_url() ) . $permalinks_customizer, $language_code
         );
-      else
-        return apply_filters(
-          'wpml_permalink', trailingslashit( home_url() ) . $permalinks_customizer
+      } else {
+        return apply_filters( 'wpml_permalink',
+          trailingslashit( home_url() ) . $permalinks_customizer
         );
+      }
     }
     return $permalink;
   }
@@ -318,7 +319,7 @@ final class Permalinks_Customizer_Frontend {
    * @param string $permalink
    *   Default WordPress Permalink of Page
    * @param integer $page
-   *   Page Details
+   *   Page ID
    *
    * @return string $permalink
    *   Returns the customized Page Permalink
@@ -330,31 +331,32 @@ final class Permalinks_Customizer_Frontend {
         'wpml_element_language_code', null,
         array( 'element_id' => $page, 'element_type' => 'page' )
       );
-      if ( $language_code )
-        return apply_filters(
-          'wpml_permalink', trailingslashit( home_url() ) . $permalinks_customizer, $language_code
+      if ( $language_code ) {
+        return apply_filters( 'wpml_permalink',
+          trailingslashit( home_url() ) . $permalinks_customizer, $language_code
         );
-      else
-        return apply_filters(
-          'wpml_permalink', trailingslashit( home_url() ) . $permalinks_customizer
+      } else {
+        return apply_filters( 'wpml_permalink',
+          trailingslashit( home_url() ) . $permalinks_customizer
         );
+      }
     }
     return $permalink;
   }
 
   /**
-   * Filter to replace the page permalink with the custom one.
+   * Filter to replace the attachment permalink with the custom one.
    *
    * @access public
    * @since 2.2.0
    *
    * @param string $permalink
-   *   Default WordPress Permalink of Page
+   *   Default WordPress Permalink of Attachment
    * @param integer $id
-   *   Page Details
+   *   Attachment ID
    *
    * @return string $permalink
-   *   Returns the customized Page Permalink
+   *   Returns the customized Attachment Permalink
    */
   public function customized_attachment_link( $permalink, $id ) {
     $permalinks_customizer = get_post_meta( $id, 'permalink_customizer', true );
@@ -389,12 +391,12 @@ final class Permalinks_Customizer_Frontend {
           'wpml_element_language_code', null,
           array( 'element_id' => $taxonomy->term_taxonomy_id, 'element_type' => $term_type )
         );
-        return apply_filters(
-          'wpml_permalink', trailingslashit( home_url() ) . $permalinks_customizer, $language_code
+        return apply_filters( 'wpml_permalink',
+          trailingslashit( home_url() ) . $permalinks_customizer, $language_code
         );
       } else {
-        return apply_filters(
-          'wpml_permalink', trailingslashit( home_url() ) . $permalinks_customizer
+        return apply_filters( 'wpml_permalink',
+          trailingslashit( home_url() ) . $permalinks_customizer
         );
       }
     }
