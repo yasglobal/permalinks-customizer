@@ -4,11 +4,11 @@ Tags: Link, Permalink, URL, Redirects, Tags
 Requires at least: 3.5
 Requires PHP: 5.2.4
 Tested up to: 4.9
-Stable tag: 2.1.0
+Stable tag: 2.2.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl.html
 
-Set permalinks for default PostTypes, custom PostTypes, default Taxonomies (Category/Tags) and custom Taxonomies which can be changed from the edit page.
+Auto-generate Permalinks for PostTypes, Taxonomies and Attachments as per your desired structure defined in Settings. Permalink can also be changed manually or automatically using Regenerate Permalink button from the edit page. It can also be re-generated using Bulk Action.
 
 == Description ==
 
@@ -207,14 +207,18 @@ A. Yes, you can exclude any posttype from the plugin to be worked on. For this j
 
 == Changelog ==
 
-= 2.2.0 - Aug 01, 2018 =
+= 2.2.0 - Aug 10, 2018 =
 
   * Enhancement
+    * Added Media (Attachment) Support
+    * Added Regenerate Permalink in Bulk Action for Media (Attachment)
     * Added Filter to Exclude the PostType from the Plugin to be worked on
     * Added Support of `WP All Import` Plugin
+    * Removing Permalink Edit Form from Private PostTypes and Taxonomies
 
   * Bug
     * Plugin causing 504 gateway error when submitting a post for review
+    * Prevent Permalink to be created for the private PostTypes like Coupon, Order etc
 
 = 2.1.0 - July 16, 2018 =
 
