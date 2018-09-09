@@ -69,6 +69,8 @@ class Permalinks_Customizer_Admin {
     add_filter( 'plugin_action_links_' . PERMALINKS_CUSTOMIZER_BASENAME,
       array( $this, 'settings_link' )
     );
+
+    add_action( 'admin_init', array( $this, 'pc_privacy_policy' ) );
   }
 
   /**
@@ -256,6 +258,30 @@ class Permalinks_Customizer_Admin {
     array_unshift( $links, $about );
 
     return $links;
+  }
+
+  /**
+   * Add Privacy Policy about the Plugin.
+   *
+   * @access public
+   * @since 2.3.0
+   * @return void
+   */
+  public function pc_privacy_policy() {
+    if ( ! function_exists( 'wp_add_privacy_policy_content' ) ) {
+      return;
+    }
+     $content = sprintf(
+      __( 'This plugin doesn\'t collects/store any user related information.
+       To have any kind of further query please feel free to
+      <a href="%s" target="_blank">contact us</a>.',
+      'permalinks-customizer' ),
+      'https://www.yasglobal.com/#request-form'
+    );
+     wp_add_privacy_policy_content(
+      'Permalinks Customizer',
+      wp_kses_post( wpautop( $content, false ) )
+    );
   }
 
   /**
