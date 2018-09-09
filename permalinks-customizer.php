@@ -3,7 +3,7 @@
  * Plugin Name: Permalinks Customizer
  * Plugin URI: https://wordpress.org/plugins/permalinks-customizer/
  * Description: Set permalinks for default post-type and custom post-type which can be changed from the single post edit page.
- * Version: 2.2.0
+ * Version: 2.3.0
  * Author: YAS Global Team
  * Author URI: https://www.yasglobal.com/web-design-development/wordpress/permalinks-customizer/
  * License: GPLv3
@@ -62,7 +62,7 @@ final class Permalinks_Customizer {
     }
 
     if ( ! defined( 'PERMALINKS_CUSTOMIZER_PLUGIN_VERSION' ) ) {
-      define( 'PERMALINKS_CUSTOMIZER_PLUGIN_VERSION', '2.2.0' );
+      define( 'PERMALINKS_CUSTOMIZER_PLUGIN_VERSION', '2.3.0' );
     }
 
     if ( ! defined( 'PERMALINKS_CUSTOMIZER_PATH' ) ) {
@@ -104,7 +104,10 @@ final class Permalinks_Customizer {
       new Permalinks_Customizer_Admin();
 
       add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
-      register_activation_hook( PERMALINKS_CUSTOMIZER_FILE, array( 'Permalinks_Customizer', 'plugin_activate' ) );
+      register_activation_hook(
+        PERMALINKS_CUSTOMIZER_FILE,
+        array( 'Permalinks_Customizer', 'plugin_activate' )
+      );
     }
   }
 
