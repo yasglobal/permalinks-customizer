@@ -19,6 +19,10 @@ final class Permalinks_Customizer_Form {
       array( $this, 'permalink_edit_box' )
     );
 
+    add_filter( 'is_protected_meta',
+      array( $this, 'make_meta_protected' ), 10, 3
+    );
+
     add_action( 'save_post',
       array( $this, 'save_post_permalink' ), 10, 3
     );
@@ -70,6 +74,30 @@ final class Permalinks_Customizer_Form {
         '__back_compat_meta_box' => false,
       )
     );
+  }
+
+  /**
+   * Set the meta_keys to protected which is created by the plugin.
+   *
+   * @access public
+   * @since 2.3.1
+   *
+   * @param boolean $protected
+   *   Whether the key is protected or not
+   * @param string $meta_key
+   *   Meta key
+   * @param string $meta_type
+   *   Meta type
+   *
+   * @return boolean
+   *   return `true` for the permalinks_customizer key
+   */
+  public function make_meta_protected( $protected, $meta_key, $meta_type ) {
+    if ( 'permalink_customizer' === $meta_key
+      || 'permalink_customizer_regenerate_status' === $meta_key ) {
+      $protected = true;
+    }
+    return $protected;
   }
 
   /**

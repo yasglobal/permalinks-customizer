@@ -207,6 +207,11 @@ A. Yes, you can exclude any posttype from the plugin to be worked on. For this j
 
 == Changelog ==
 
+= 2.3.1 =
+
+  * Bug
+    * Set meta_keys to be protected to stop duplication in Custom Fields
+
 = 2.3.0 - Sept 10, 2018 =
 
   * Enhancement
