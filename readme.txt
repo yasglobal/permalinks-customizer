@@ -207,6 +207,12 @@ A. Yes, you can exclude any posttype from the plugin to be worked on. For this j
 
 == Changelog ==
 
+= 2.3.2 =
+
+  * Bug
+    * `View Post` button does not open expected URL (due to relative Path)
+      https://wordpress.org/support/topic/view-post-button-does-not-open-expected-url/
+
 = 2.3.1 - Oct 16, 2018 =
 
   * Enhancement

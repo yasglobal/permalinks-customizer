@@ -185,9 +185,11 @@ final class Permalinks_Customizer_Form {
     if ( $renderContainers ) {
       wp_enqueue_script( 'permalink-customizer-admin', plugins_url( '/js/script-form.min.js', __FILE__ ), array(), false, true );
       if ( isset( $permalink ) && ! empty( $permalink ) ) {
-        echo ' <span id="view-post-btn"><a href="/' . $permalink . '" class="button button-small" target="_blank">View</a></span> <span id="regenerate_permalink"><a href="javascript:void(0);" class="button button-small">Regenerate Permalink</a></span>';
+        $view_url = trailingslashit( home_url() ) . $permalink;
+        echo ' <span id="view-post-btn"><a href="' . $view_url . '" class="button button-small" target="_blank">View</a></span> <span id="regenerate_permalink"><a href="javascript:void(0);" class="button button-small">Regenerate Permalink</a></span>';
       } elseif ( isset( $original_permalink ) && ! empty( $original_permalink ) ) {
-        echo ' <span id="view-post-btn"><a href="/' . $original_permalink . '" class="button button-small" target="_blank">View</a></span> <span id="regenerate_permalink"><a href="javascript:void(0);" class="button button-small">Regenerate Permalink</a></span>';
+        $view_url = trailingslashit( home_url() ) . $original_permalink;
+        echo ' <span id="view-post-btn"><a href="' . $view_url . '" class="button button-small" target="_blank">View</a></span> <span id="regenerate_permalink"><a href="javascript:void(0);" class="button button-small">Regenerate Permalink</a></span>';
       }
       echo '</td></tr></table>';
     }
@@ -263,15 +265,17 @@ final class Permalinks_Customizer_Form {
         plugins_url( '/js/script-form.min.js', __FILE__ ), array(), false, true
       );
       if ( isset( $permalink ) && ! empty( $permalink ) ) {
+        $view_url = trailingslashit( home_url() ) . $permalink;
         $content .= ' <span id="view-post-btn">' .
-                    '<a href="/' . $permalink . '" class="button button-small" target="_blank">' . $view_post . '</a>' .
+                    '<a href="' . $view_url . '" class="button button-small" target="_blank">' . $view_post . '</a>' .
                     '</span>' .
                     ' <span id="regenerate_permalink">' .
                     '<a href="javascript:void(0);" class="button button-small">Regenerate Permalink</a>' .
                     '</span><br>';
       } else {
+        $view_url = trailingslashit( home_url() ) . $original_permalink;
         $content .= ' <span id="view-post-btn">' .
-                    '<a href="/' . $original_permalink . '" class="button button-small" target="_blank">' . $view_post .' </a>' .
+                    '<a href="' . $view_url . '" class="button button-small" target="_blank">' . $view_post .' </a>' .
                     '</span>' .
                     ' <span id="regenerate_permalink">' .
                     '<a href="javascript:void(0);" class="button button-small">Regenerate Permalink</a>' .
@@ -377,15 +381,17 @@ final class Permalinks_Customizer_Form {
         plugins_url( '/js/script-form.min.js', __FILE__ ), array(), false, true
       );
       if ( isset( $permalink ) && ! empty( $permalink ) ) {
+        $view_url = trailingslashit( home_url() ) . $permalink;
         $content .= ' <span id="view-post-btn">' .
-                    '<a href="/' . $permalink . '" class="button button-small" target="_blank">' . $view_post . '</a>' .
+                    '<a href="' . $view_url . '" class="button button-small" target="_blank">' . $view_post . '</a>' .
                     '</span>' .
                     ' <span id="regenerate_permalink">' .
                     '<a href="javascript:void(0);" class="button button-small">Regenerate Permalink</a>' .
                     '</span><br>';
       } else {
+        $view_url = trailingslashit( home_url() ) . $original_permalink;
         $content .= ' <span id="view-post-btn">' .
-                    '<a href="/' . $original_permalink . '" class="button button-small" target="_blank">' . $view_post .' </a>' .
+                    '<a href="' . $view_url . '" class="button button-small" target="_blank">' . $view_post .' </a>' .
                     '</span>' .
                     ' <span id="regenerate_permalink">' .
                     '<a href="javascript:void(0);" class="button button-small">Regenerate Permalink</a>' .
@@ -584,7 +590,7 @@ final class Permalinks_Customizer_Form {
       }
 
       $permalink = preg_replace( '/(\/+)/', '/', $permalink );
-      $permalink = preg_replace( '/(\-+)/', '-', $permalink );  
+      $permalink = preg_replace( '/(\-+)/', '-', $permalink );
       update_post_meta( $post_id, 'permalink_customizer', $permalink );
       $_REQUEST['permalinks_customizer'] = $permalink;
       if ( 'publish' == $post_status ) {
