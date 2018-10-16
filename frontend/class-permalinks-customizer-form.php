@@ -608,6 +608,9 @@ final class Permalinks_Customizer_Form {
 
         $this->add_auto_redirect( $prev_url, $permalink, $post_type, $post_id );
       }
+
+      // Remove rewrite rules and then recreate rewrite rules.
+      flush_rewrite_rules();
     } elseif ( isset( $_REQUEST['permalinks_customizer'] )
       && ! empty( $_REQUEST['permalinks_customizer'] )
       && $url != $_REQUEST['permalinks_customizer'] ) {
@@ -626,6 +629,9 @@ final class Permalinks_Customizer_Form {
 
       // Add Redirect on manually updating the post
       $this->add_auto_redirect( $prev_url, $permalink, $post_type, $post_id );
+
+      // Remove rewrite rules and then recreate rewrite rules.
+      flush_rewrite_rules();
     }
   }
 

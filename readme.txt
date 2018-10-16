@@ -209,6 +209,8 @@ A. Yes, you can exclude any posttype from the plugin to be worked on. For this j
 
 = 2.3.1 =
 
+  * Enhancement
+    * Flush rewrite rules to prevent permalink cache
   * Bug
     * Set meta_keys to be protected to stop duplication in Custom Fields
 
