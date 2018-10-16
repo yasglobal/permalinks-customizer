@@ -207,7 +207,7 @@ A. Yes, you can exclude any posttype from the plugin to be worked on. For this j
 
 == Changelog ==
 
-= 2.3.1 =
+= 2.3.1 - Oct 16, 2018 =
 
   * Enhancement
     * Flush rewrite rules to prevent permalink cache
@@ -245,37 +245,6 @@ A. Yes, you can exclude any posttype from the plugin to be worked on. For this j
     * Regenerate Status Issue on Post/Page
     * Fixed Permalinks Customizer Version issue on plugin update
     * Removed Convert URL Page
-
-= 2.0.1 - July 16, 2018 =
-
-  * Bugs
-    * Fixed subdomain URL issue
-    * Make the URLs to absolute on Admin Pages so, Permalinks for subdomain points to the correct URL
-
-= 2.0.0 - July 09, 2018 =
-
-  * Enhancements
-    * Added Custom Taxonomy Support for PostTypes
-      * Define the Custom Taxonomy tag in PostType permalink structure
-      * Define default taxonomy which is used in the permalink when no taxonomy is selected
-    * Added `Regenerate Permalinks` in Bulk for PostTypes
-    * Added `Regenerate Permalinks` in Bulk for Taxonomies
-    * Added Redirect Functionality
-      * Automatically create redirects on changing the permalink
-      * Automatically create redirects on creating post/taxonomy
-      * Automatically disable redirects if the newly created permalink was redireted before
-      * Enable / Disable redirects from Plugin redirects Page
-      * Delete redirects from Plugin redirects Page
-      * Added Filters to disable redirects functionality if needed
-    * Added Capabilities which allow users to view permalinks and manage settings without having administrator role
-    * Reduce Query over non-admin pages
-    * Avoid appending slashes and use trailingslashit instead
-    * Removed unused PostTypes and Taxonomies (Only Public PostTypes and Taxonomies are shown on Settings Page)
-  * Bugs
-    * Added a check for create term, to reduce undesired notifications.
-    * Fixed undefined variable warning in PostType Permalinks and Taxonomies Permalinks Page
-    * Fixed PHP warning on Bulk update over PostType Permalinks and Taxonomies Permalinks Page when no post/category is selected
-    * Print `$view_post` varaible value
 
 = Earlier versions =
 
