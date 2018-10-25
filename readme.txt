@@ -3,8 +3,8 @@ Contributors: aliya-yasir, sasiddiqui
 Tags: Link, Permalink, URL, Redirects, Tags
 Requires at least: 3.5
 Requires PHP: 5.2.4
-Tested up to: 4.9
-Stable tag: 2.3.1
+Tested up to: 5.0
+Stable tag: 2.4.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl.html
 
@@ -207,7 +207,7 @@ A. Yes, you can exclude any posttype from the plugin to be worked on. For this j
 
 == Changelog ==
 
-= 2.4.0 =
+= 2.4.0 - Oct 25, 2018 =
 
   * Enhancement
     * Add `Flush Permalink Cache` option in Admin Toolbar
