@@ -30,11 +30,22 @@ class Permalinks_Customizer_PostTypes_Settings {
         update_option( $key, $value );
       }
       print '<div id="message" class="updated notice notice-success is-dismissible">' .
-                '<p>' . __(
-                  'PostTypes Permalinks Settings are updated.',
-                  'permalinks-customizer'
-                ) . '</p>' .
-              '</div>';
+              '<p>' . __(
+                'PostTypes Permalinks Settings are updated.',
+                'permalinks-customizer'
+              ) . '</p>' .
+            '</div>';
+    }
+    if ( isset( $_GET['cache'] ) && 1 == $_GET['cache'] ) {
+      // Remove rewrite rules and then recreate rewrite rules.
+      flush_rewrite_rules();
+
+      print '<div id="message" class="updated notice notice-success is-dismissible">' .
+              '<p>' . __(
+                'Permalinks cache cleared.',
+                'permalinks-customizer'
+              ) . '</p>' .
+            '</div>';
     }
     $args = array(
       'public' => true

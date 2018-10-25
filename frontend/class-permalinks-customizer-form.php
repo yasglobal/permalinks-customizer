@@ -56,6 +56,10 @@ final class Permalinks_Customizer_Form {
     add_action( 'init', array( $this, 'register_taxonomies_form' ) );
 
     add_action( 'admin_init', array( $this, 'add_bulk_option' ) );
+
+    add_action( 'admin_bar_menu',
+      array( $this, 'flush_permalink_cache' ), 999
+    );
   }
 
   /**
@@ -614,9 +618,6 @@ final class Permalinks_Customizer_Form {
 
         $this->add_auto_redirect( $prev_url, $permalink, $post_type, $post_id );
       }
-
-      // Remove rewrite rules and then recreate rewrite rules.
-      flush_rewrite_rules();
     } elseif ( isset( $_REQUEST['permalinks_customizer'] )
       && ! empty( $_REQUEST['permalinks_customizer'] )
       && $url != $_REQUEST['permalinks_customizer'] ) {
@@ -635,9 +636,6 @@ final class Permalinks_Customizer_Form {
 
       // Add Redirect on manually updating the post
       $this->add_auto_redirect( $prev_url, $permalink, $post_type, $post_id );
-
-      // Remove rewrite rules and then recreate rewrite rules.
-      flush_rewrite_rules();
     }
   }
 
@@ -1549,5 +1547,30 @@ final class Permalinks_Customizer_Form {
       );
     }
     return $redirect_to;
+  }
+
+  /**
+   * Add `Flush Permalinks Cache` link in Admin Toolbar.
+   *
+   * @access public
+   * @since 2.4.0
+   *
+   * @param object $wp_admin_bar
+   *   Contain Toolbar links
+   *
+   * @return void
+   */
+  public function flush_permalink_cache( $wp_admin_bar ) {
+    $cache = 'wp-admin/admin.php?page=permalinks-customizer-posts-settings&cache=1';
+
+    $wp_admin_bar->add_node([
+      'id' => 'permalinks-customizer',
+      'title' => 'Flush Permalinks Cache',
+      'href' => trailingslashit( home_url() ) . $cache,
+      'meta'  => array(
+        'target' => '_blank',
+        'title' => 'Flush Permalinks Cache'
+      )
+    ]);
   }
 }

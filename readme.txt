@@ -207,11 +207,14 @@ A. Yes, you can exclude any posttype from the plugin to be worked on. For this j
 
 == Changelog ==
 
-= 2.3.2 =
+= 2.4.0 =
 
+  * Enhancement
+    * Add `Flush Permalink Cache` option in Admin Toolbar
   * Bug
     * `View Post` button does not open expected URL (due to relative Path)
       https://wordpress.org/support/topic/view-post-button-does-not-open-expected-url/
+    * Removed auto flush rewrite rules to prevent permalink cache
 
 = 2.3.1 - Oct 16, 2018 =
 
