@@ -57,6 +57,8 @@ final class Permalinks_Customizer_Form {
 
     add_action( 'admin_init', array( $this, 'add_bulk_option' ) );
 
+    add_action( 'rest_api_init', array( $this, 'rest_edit_form' ) );
+
     add_action( 'admin_bar_menu',
       array( $this, 'flush_permalink_cache' ), 999
     );
@@ -323,10 +325,7 @@ final class Permalinks_Customizer_Form {
 
     $screen = get_current_screen();
     if ( 'add' === $screen->action ) {
-      wp_enqueue_script( 'permalink-customizer-admin',
-        plugins_url( '/js/script-form.min.js', __FILE__ ), array(), false, true
-      );
-      return;
+      echo '<input value="add" type="hidden" name="permalinks_customizer_add" id="permalinks_customizer_add" />';
     }
 
     if ( $post->ID == get_option( 'page_on_front' ) ) {
@@ -1547,6 +1546,52 @@ final class Permalinks_Customizer_Form {
       );
     }
     return $redirect_to;
+  }
+
+  /**
+   * Added Custom Endpoints for refreshing the permalink
+   *
+   * @access public
+   * @since 2.4.0
+   *
+   * @return void
+   */
+  public function rest_edit_form() {
+    register_rest_route( 'permalinks-customizer/v1',
+      '/get-permalink/(?P<id>\d+)', array(
+        'methods' => 'GET',
+        'callback' => array( $this, 'refresh_meta_form' )
+      )
+    );
+  }
+
+  /**
+   * Refresh Permalink using AJAX Call
+   *
+   * @access public
+   * @since 2.4.0
+   *
+   * @param object $data
+   *   Contains post id with some default REST Values
+   *
+   * @return void
+   */
+  public function refresh_meta_form( $data ) {
+    if ( isset( $data['id'] ) && is_numeric( $data['id'] ) ) {
+      $post = get_post( $data['id'] );
+      $all_permalinks = array();
+      $all_permalinks['permalink_customizer'] = get_post_meta( $data['id'], 'permalink_customizer', true );
+      $pc_frontend = new Permalinks_Customizer_Frontend;
+      if ( 'page' == $post->post_type ) {
+        $all_permalinks['original_permalink'] = $pc_frontend->original_page_link( $data['id'] );
+      } elseif ( 'attachment' == $post->post_type ) {
+        $all_permalinks['original_permalink'] = $pc_frontend->original_attachment_link( $data['id'] );
+      } else {
+        $all_permalinks['original_permalink'] = $pc_frontend->original_post_link( $data['id'] );
+      }
+      echo json_encode( $all_permalinks );
+      exit;
+    }
   }
 
   /**

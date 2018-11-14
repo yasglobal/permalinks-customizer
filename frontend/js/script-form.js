@@ -4,6 +4,9 @@ var savePost = document.getElementById("save-post");
 var getHomeURL = document.getElementById("permalinks_customizer_home_url");
 var getPermalink = document.getElementById("permalinks_customizer");
 var checkYoastSEO = document.getElementById("wpseo_meta");
+var editPost = "";
+var isSaving = "";
+var lastIsSaving = false;
 
 function regenratePermalinkOption() {
     "use strict";
@@ -43,7 +46,7 @@ function regenratePermalinkOption() {
     }
 }
 
-if ( regeneratePermalink && regenerateValue ) {
+if (regeneratePermalink && regenerateValue) {
     regeneratePermalink.addEventListener("click", regenratePermalinkOption);
     if (!savePost) {
         savePost = document.getElementById("publish");
@@ -66,7 +69,7 @@ function changeSEOLinkOnBlur() {
     }
 }
 
-function changeSEOLink () {
+function changeSEOLink() {
     "use strict";
 
     var snippetCiteBase = document.getElementById("snippet_citeBase");
@@ -97,10 +100,57 @@ function changeSEOLink () {
         }
     }
 }
+/**
+ * Update Permalink Value in View Button
+ */
+function updateMetaBox() {
+    "use strict";
 
-if (checkYoastSEO) {
-    window.addEventListener("load", changeSEOLink);
+    if (!editPost) {
+      return;
+    }
+
+    isSaving = editPost.isSavingMetaBoxes();
+
+    if (isSaving !== lastIsSaving && !isSaving) {
+        lastIsSaving = isSaving;
+        var postId = wp.data.select("core/editor").getEditedPostAttribute("id");
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var setPermlinks = JSON.parse(this.responseText);
+                getPermalink.value = setPermlinks.permalink_customizer;
+                document.getElementById("permalinks-customizer-post-slug").value = setPermlinks.permalink_customizer;
+                document.getElementById("original_permalink").value = setPermlinks.original_permalink;
+                document.querySelector("#view-post-btn a").href = getHomeURL.value + "/" + setPermlinks.permalink_customizer;
+                if (document.getElementById("permalinks_customizer_add") && document.getElementById("permalinks_customizer_add").value == "add") {
+                    document.getElementById("permalinks-customizer-edit-box").style.display = "";
+                }
+                if (document.querySelector(".components-notice__content a")) {
+                    document.querySelector(".components-notice__content a").href = "/" + setPermlinks.permalink_customizer;
+                }
+            }
+        };
+        xhttp.open("GET", getHomeURL.value + "/wp-json/permalinks-customizer/v1/get-permalink/" + postId, true);
+        xhttp.send();
+    }
+
+    lastIsSaving = isSaving;
 }
-if ( document.querySelector("#permalinks-customizer-edit-box .inside").innerHTML.trim() === "" ) {
-    document.getElementById("permalinks-customizer-edit-box").style.display = "none";
+
+function permalinkContentLoaded() {
+    "use strict";
+
+    editPost = wp.data.select("core/edit-post");
+    if (checkYoastSEO) {
+        window.addEventListener("load", changeSEOLink);
+    }
+    if ( document.querySelector("#permalinks-customizer-edit-box .inside").innerHTML.trim() === "" ) {
+        document.getElementById("permalinks-customizer-edit-box").style.display = "none";
+    }
+    if (document.getElementById("permalinks_customizer_add") && document.getElementById("permalinks_customizer_add").value == "add") {
+        document.getElementById("permalinks-customizer-edit-box").style.display = "none";
+    }
+    wp.data.subscribe(updateMetaBox);
 }
+document.addEventListener("DOMContentLoaded", permalinkContentLoaded);
