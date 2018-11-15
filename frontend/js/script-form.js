@@ -36,13 +36,6 @@ function regenratePermalinkOption() {
     }
 }
 
-if (regeneratePermalink && regenerateValue) {
-    regeneratePermalink.addEventListener("click", regenratePermalinkOption);
-    if (!savePost) {
-        savePost = document.getElementById("publish");
-    }
-}
-
 function changeSEOLinkOnBlur() {
     "use strict";
 
@@ -90,6 +83,7 @@ function changeSEOLink() {
         }
     }
 }
+
 /**
  * Update Permalink Value in View Button
  */
@@ -131,6 +125,13 @@ function updateMetaBox() {
 
 function permalinkContentLoaded() {
     "use strict";
+
+    if (regeneratePermalink && regenerateValue) {
+        regeneratePermalink.addEventListener("click", regenratePermalinkOption);
+        if (!savePost) {
+            savePost = document.getElementById("publish");
+        }
+    }
 
     editPost = wp.data.select("core/edit-post");
     if (checkYoastSEO) {
