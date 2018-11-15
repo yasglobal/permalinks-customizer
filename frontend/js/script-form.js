@@ -12,27 +12,17 @@ function regenratePermalinkOption() {
     "use strict";
 
     var confirmBox = confirm("Are you sure, you want to regenerete Permalink?");
-    var gutenberg = 0;
     if (!savePost) {
         if (document.querySelector("#editor .editor-post-save-draft")) {
             savePost = document.querySelector("#editor .editor-post-save-draft");
-            gutenberg = 1;
         } else if (document.querySelector("#editor .editor-post-publish-button")) {
             savePost = document.querySelector("#editor .editor-post-publish-button");
-            gutenberg = 1;
         }
     }
     if (savePost) {
         if (confirmBox) {
             regenerateValue.value = "true";
             savePost.click();
-            if (gutenberg === 1) {
-                setInterval( function () {
-                    if (document.querySelector(".components-notice.is-success.is-dismissible")) {
-                        location.reload();
-                    }
-                }, 1000);
-            }
         }
     } else {
         var bodyClasses = document.querySelector("body");
