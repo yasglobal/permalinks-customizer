@@ -292,9 +292,11 @@ final class Permalinks_Customizer_Form {
       $permalink = $matches[1];
     } else {
       list( $permalink, $post_name ) = get_sample_permalink( $post->ID, $new_title, $new_slug );
-      if ( false !== strpos( $permalink, '%postname%' )
-        || false !== strpos( $permalink, '%pagename%' ) ) {
-        $permalink = str_replace( array( '%pagename%','%postname%' ), $post_name, $permalink );
+      if ( false !== strpos( $permalink, '%pagename%' ) ) {
+        $permalink = str_replace( '%pagename%', $post_name, $permalink );
+      }
+      if ( false !== strpos( $permalink, '%postname%' ) ) {
+        $permalink = str_replace( '%postname%', $post_name, $permalink );
       }
     }
 
@@ -321,11 +323,6 @@ final class Permalinks_Customizer_Form {
         plugins_url( '/js/script-form.min.js', __FILE__ ), array(), false, true
       );
       return;
-    }
-
-    $screen = get_current_screen();
-    if ( 'add' === $screen->action ) {
-      echo '<input value="add" type="hidden" name="permalinks_customizer_add" id="permalinks_customizer_add" />';
     }
 
     if ( $post->ID == get_option( 'page_on_front' ) ) {
@@ -359,7 +356,18 @@ final class Permalinks_Customizer_Form {
       return;
     }
 
+    $screen = get_current_screen();
+    if ( 'add' === $screen->action ) {
+      echo '<input value="add" type="hidden" name="permalinks_customizer_add" id="permalinks_customizer_add" />';
+    }
+
     $permalink = get_post_meta( $post->ID, 'permalink_customizer', true );
+    if ( false !== strpos( $permalink, '%pagename%' ) ) {
+      $permalink = str_replace( '%pagename%', $post_name, $permalink );
+    }
+    if ( false !== strpos( $permalink, '%postname%' ) ) {
+      $permalink = str_replace( '%postname%', $post_name, $permalink );
+    }
 
     ob_start();
     $pc_frontend = new Permalinks_Customizer_Frontend;
@@ -400,11 +408,6 @@ final class Permalinks_Customizer_Form {
                     '<a href="javascript:void(0);" class="button button-small">Regenerate Permalink</a>' .
                     '</span><br>';
       }
-    }
-
-    if ( false !== strpos( $permalink, '%postname%' )
-      || false !== strpos( $permalink, '%pagename%' ) ) {
-      $permalink = str_replace( array( '%pagename%','%postname%' ), $post_name, $permalink );
     }
 
     echo $content;
