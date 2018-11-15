@@ -91,7 +91,7 @@ function updateMetaBox() {
     "use strict";
 
     if (!editPost) {
-      return;
+        return;
     }
 
     isSaving = editPost.isSavingMetaBoxes();
@@ -103,11 +103,12 @@ function updateMetaBox() {
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var setPermlinks = JSON.parse(this.responseText);
+                var permalinkAdd = document.getElementById("permalinks_customizer_add");
                 getPermalink.value = setPermlinks.permalink_customizer;
                 document.getElementById("permalinks-customizer-post-slug").value = setPermlinks.permalink_customizer;
                 document.getElementById("original_permalink").value = setPermlinks.original_permalink;
                 document.querySelector("#view-post-btn a").href = getHomeURL.value + "/" + setPermlinks.permalink_customizer;
-                if (document.getElementById("permalinks_customizer_add") && document.getElementById("permalinks_customizer_add").value == "add") {
+                if (permalinkAdd && permalinkAdd.value == "add") {
                     document.getElementById("permalinks-customizer-edit-box").style.display = "";
                 }
                 if (document.querySelector(".components-notice__content a")) {
@@ -126,6 +127,7 @@ function updateMetaBox() {
 function permalinkContentLoaded() {
     "use strict";
 
+    var permalinkEdit = document.getElementById("permalinks-customizer-edit-box");
     if (regeneratePermalink && regenerateValue) {
         regeneratePermalink.addEventListener("click", regenratePermalinkOption);
         if (!savePost) {
@@ -133,16 +135,19 @@ function permalinkContentLoaded() {
         }
     }
 
-    editPost = wp.data.select("core/edit-post");
     if (checkYoastSEO) {
         window.addEventListener("load", changeSEOLink);
     }
-    if ( document.querySelector("#permalinks-customizer-edit-box .inside").innerHTML.trim() === "" ) {
-        document.getElementById("permalinks-customizer-edit-box").style.display = "none";
+    if (document.querySelector("#permalinks-customizer-edit-box .inside").innerHTML.trim() === "") {
+        permalinkEdit.style.display = "none";
     }
-    if (document.getElementById("permalinks_customizer_add") && document.getElementById("permalinks_customizer_add").value == "add") {
-        document.getElementById("permalinks-customizer-edit-box").style.display = "none";
+    if (wp.data) {
+        var permalinkAdd = document.getElementById("permalinks_customizer_add");
+        if (permalinkAdd && permalinkAdd.value == "add") {
+            permalinkEdit.style.display = "none";
+        }
+        editPost = wp.data.select("core/edit-post");
+        wp.data.subscribe(updateMetaBox);
     }
-    wp.data.subscribe(updateMetaBox);
 }
 document.addEventListener("DOMContentLoaded", permalinkContentLoaded);
