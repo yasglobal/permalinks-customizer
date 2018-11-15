@@ -132,6 +132,7 @@ function updateMetaBox() {
             }
         };
         xhttp.open("GET", getHomeURL.value + "/wp-json/permalinks-customizer/v1/get-permalink/" + postId, true);
+        xhttp.setRequestHeader("Cache-Control", "private, max-age=0, no-cache");
         xhttp.send();
     }
 
