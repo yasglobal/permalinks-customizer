@@ -4,7 +4,7 @@ Tags: Link, Permalink, URL, Redirects, Tags
 Requires at least: 3.5
 Requires PHP: 5.2.4
 Tested up to: 5.0
-Stable tag: 2.4.0
+Stable tag: 2.5.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl.html
 
@@ -206,6 +206,13 @@ A. Yes, you can disable/delete the redirects from the Redirects Page using Bulk 
 A. Yes, you can exclude any posttype from the plugin to be worked on. For this just add the filter as shown in the Filters Section with the name of *Exclude PostType from the Plugin*.
 
 == Changelog ==
+
+= 2.5.0 - Nov 28, 2018 =
+
+  * Enhancement
+    * Auto refreshing permalink in Gutenberg
+    * Removing need of Page refresh on `Regenerate Permalink` button
+    * Added Permalink in Sidebar to Support Latest Gutenberg
 
 = 2.4.0 - Oct 25, 2018 =
 
