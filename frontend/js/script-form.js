@@ -128,6 +128,7 @@ function permalinkContentLoaded() {
     "use strict";
 
     var permalinkEdit = document.getElementById("permalinks-customizer-edit-box");
+    var defaultPerm = document.getElementsByClassName("edit-post-post-link__preview-label");
     if (regeneratePermalink && regenerateValue) {
         regeneratePermalink.addEventListener("click", regenratePermalinkOption);
         if (!savePost) {
@@ -148,6 +149,13 @@ function permalinkContentLoaded() {
         }
         editPost = wp.data.select("core/edit-post");
         wp.data.subscribe(updateMetaBox);
+        if (defaultPerm && defaultPerm[0]) {
+            console.log('22')
+            defaultPerm[0].parentNode.classList.add("pc-permalink-hidden");
+        }
+        if (permalinkEdit.classList.contains("closed")) {
+            permalinkEdit.classList.remove("closed")
+        }
     }
 }
 document.addEventListener("DOMContentLoaded", permalinkContentLoaded);
