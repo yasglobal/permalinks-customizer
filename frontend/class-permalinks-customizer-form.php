@@ -875,8 +875,9 @@ final class Permalinks_Customizer_Form {
       && false !== strpos( $replace_tag, '%&gt;' ) ) {
       preg_match_all('/&lt;%ctax_(.*?)%&gt;/s', $replace_tag, $matches);
       foreach ( $matches[1] as $row ) {
-        $ctax_name = $row;
-        $category  = '';
+        $ctax_name    = $row;
+        $category     = '';
+        $primary_term = '';
         if ( false !== strpos( $row, '??' ) ) {
           $split_ctax = explode( '??', $row );
           if ( isset( $split_ctax[0] ) && isset( $split_ctax[1] ) ) {
@@ -885,17 +886,27 @@ final class Permalinks_Customizer_Form {
           }
         }
 
-        $ctax_tag   = '&lt;%ctax_' . $row . '%&gt;';
+        $ctax_tag = '&lt;%ctax_' . $row . '%&gt;';
+
+        if ( class_exists('WPSEO_Primary_Term') ) {
+          $wpseo_primary_term = new WPSEO_Primary_Term( $ctax_name, $post_id );
+          $primary_term       = $wpseo_primary_term->get_primary_term();
+        }
+
         $categories = get_the_terms( $post_id, $ctax_name );
         if ( ! is_wp_error( $categories ) && false !== $categories ) {
           if ( count( $categories ) > 0 && is_array( $categories ) ) {
             $tid = '';
             foreach ( $categories as $cat ) {
-              if ( $cat->term_id < $tid || empty( $tid ) ) {
+              if ( $cat->term_id < $tid || empty( $tid )
+                || $cat->term_id == $primary_term ) {
                 $tid = $cat->term_id;
                 $pid = '';
                 if ( ! empty( $cat->parent ) ) {
                   $pid = $cat->parent;
+                }
+                if ( $tid == $primary_term ) {
+                  break;
                 }
               }
             }
