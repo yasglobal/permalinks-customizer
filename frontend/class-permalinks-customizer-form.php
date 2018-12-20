@@ -922,6 +922,70 @@ final class Permalinks_Customizer_Form {
       }
     }
 
+    // Replace <%ctaxparents_category_name%> with it's appropriate selected category
+    if ( false !== strpos( $replace_tag, '&lt;%ctaxparents_' )
+      && false !== strpos( $replace_tag, '%&gt;' ) ) {
+      preg_match_all('/&lt;%ctaxparents_(.*?)%&gt;/s', $replace_tag, $matches);
+      foreach ( $matches[1] as $row ) {
+        $ctax_name    = $row;
+        $category     = '';
+        $primary_term = '';
+        if ( false !== strpos( $row, '??' ) ) {
+          $split_ctax = explode( '??', $row );
+          if ( isset( $split_ctax[0] ) && isset( $split_ctax[1] ) ) {
+            $ctax_name = $split_ctax[0];
+            $category  = $split_ctax[1];
+          }
+        }
+
+        $ctax_tag = '&lt;%ctaxparents_' . $row . '%&gt;';
+
+        if ( class_exists('WPSEO_Primary_Term') ) {
+          $wpseo_primary_term = new WPSEO_Primary_Term( $ctax_name, $post_id );
+          $primary_term       = $wpseo_primary_term->get_primary_term();
+        }
+
+        $categories = get_the_terms( $post_id, $ctax_name );
+        if ( ! is_wp_error( $categories ) && false !== $categories ) {
+          if ( count( $categories ) > 0 && is_array( $categories ) ) {
+            $tid = '';
+            foreach ( $categories as $cat ) {
+              if ( $cat->term_id < $tid || empty( $tid )
+                || $cat->term_id == $primary_term ) {
+                $tid = $cat->term_id;
+                $pid = '';
+                if ( ! empty( $cat->parent ) ) {
+                  $pid = $cat->parent;
+                }
+                if ( $tid == $primary_term ) {
+                  break;
+                }
+              }
+            }
+            $term_category = get_term( $tid );
+            $category      = is_object( $term_category ) ? $term_category->slug : '';
+            if ( ! empty( $pid ) ) {
+              $parents      = get_ancestors( $tid, $ctax_name, 'taxonomy' );
+              $parent_slugs = '';
+              if ( $parents && ! empty( $parents ) && 1 <= count( $parents ) ) {
+                $i            = count( $parents ) - 1;
+                $parent_slugs = '';
+                for ( $i; $i >= 0; $i-- ) {
+                  $parent        = get_term( $parents[$i] );
+                  $parent_slugs .= $parent->slug . '/';
+                }
+              }
+
+              if ( ! empty( $parent_slugs ) ) {
+                $category = $parent_slugs . '/' . $category;
+              }
+            }
+          }
+        }
+        $replace_tag = str_replace( $ctax_tag, $category, $replace_tag );
+      }
+    }
+
     // Replace %author% with the author of the respective post
     if ( false !== strpos( $replace_tag, '%author%' ) ) {
       $author      = get_the_author_meta( 'user_login', $post->post_author );
