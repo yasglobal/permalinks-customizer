@@ -207,6 +207,14 @@ A. Yes, you can exclude any posttype from the plugin to be worked on. For this j
 
 == Changelog ==
 
+= 2.5.2 =
+
+  * Enhancement
+    * Added `<%ctaxparents_custom_taxonomy%>` tag for PostTypes
+  * Bug
+    * Fixed PHP Fatal error in `uninstall.php`
+      https://wordpress.org/support/topic/unable-to-uninstall-10/
+
 = 2.5.1 - Nov 30, 2018 =
 
   * Enhancement
