@@ -36,10 +36,10 @@ delete_option( 'permalinks_customizer_table' );
 global $wpdb;
 
 // Delete all terms with latest version style
-$wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->termmeta WHERE meta_key = 'permalink_customizer'" ) );
+$wpdb->query( "DELETE FROM $wpdb->termmeta WHERE meta_key = 'permalink_customizer'" );
 
 // Drop Redirects Table if Exist
-$wpdb->query( $wpdb->prepare( "DROP TABLE IF EXISTS {$wpdb->prefix}permalinks_customizer_redirects" ) );
+$wpdb->query( "DROP TABLE IF EXISTS {$wpdb->prefix}permalinks_customizer_redirects" );
 
 $get_capability = get_option( 'permalinks_customizer_capabilities', -1 );
 if ( -1 !== $get_capability ) {
