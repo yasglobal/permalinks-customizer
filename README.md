@@ -128,14 +128,14 @@ This filter only stop redirects to be work but the automatically create redirect
 
 This process defines you the steps to follow either you are installing through WordPress or Manually from FTP.
 
-## From within WordPress
+### From within WordPress
 
 1. Visit 'Plugins > Add New'
 2. Search for Permalinks Customizer
 3. Activate Permalinks Customizer from your Plugins page.
 4. Go to [after activation](#after-activation) below.
 
-## Manually
+### Manually
 
 1. Upload the `permalinks-customizer` folder to the `/wp-content/plugins/` directory
 2. Activate Permalinks Customizer through the 'Plugins' menu in WordPress
