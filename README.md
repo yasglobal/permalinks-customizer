@@ -8,7 +8,7 @@ By using **Permalinks Customizer** you can set the different permalink structure
 
 ### How to set the Permalinks for the PostTypes separately
 
-Let's assume that you have 6 <strong>PostTypes</strong> and they all have different style of <strong>permalinks</strong>. Like:
+Let's assume that you have 6 **PostTypes** and they all have different style of **permalinks**. Like:
 
 * **Blog** : For this post type you want to create a **permalink** which looks like this: http://www.example.com/blog/year-month-date-postname/
 * **Customers** : For this post type you want to create a **permalink** which looks like this: http://www.example.com/customers/postname/
@@ -27,7 +27,7 @@ If you leave any PostType field empty. So, **Permalinks Customizer** would creat
 
 ## Structure Tags
 
-### Default WordPress Tags
+### Default WordPress Tags for PostTypes
 
 | Tag Name  | Description |
 | ------------ | ------------- |
@@ -42,22 +42,22 @@ If you leave any PostType field empty. So, **Permalinks Customizer** would creat
 | %category% | A sanitized version of the category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI. |
 | %author% | A sanitized version of the author name. |
 
-### Custom Tags for PostTypes 
+### Custom Tags for PostTypes
 
 | Tag Name  | Description |
 | ------------ | ------------- |
 | %title% | Title of the post. let's say the title is "This Is A Great Post!" so, it becomes this-is-a-great-post in the URI. |
-| %parent_postname% | A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So "This Is A Great Post!" becomes this-is-a-great-post in the URI. This <strong>Tag</strong> contains Immediate <strong>Parent Page Slug</strong> if any parent page is selected before publishing. |
+| %parent_postname% | A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So "This Is A Great Post!" becomes this-is-a-great-post in the URI. This **Tag** contains Immediate **Parent Page Slug** if any parent page is selected before publishing. |
 | %child-category% | A sanitized version of the category name (category slug field on New/Edit Category panel). |
-| %product_cat% | A sanitized version of the product category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI. <i>This <strong>tag</strong> is specially used for WooCommerce Products.</i> |
-| &lt;%ctax_custom_taxonomy%&gt; | A sanitized version of the custom taxonomy where the taxonomy name is **_custom_taxonomy_**. Replace the _custom_taxonomy_ with your appropriate created taxonomy name. If you want to provide the default slug which is used when the category/taxonomy doesn\'t be selected so, make sure to provide default name/slug which looks like this: **_&lt;%ctax_custom_taxonomy??sales%&gt;_**. Value which is written between the **_??_** and **_%&gt;_** is used as default slug. |
-| &lt;%ctaxparents_custom_taxonomy%&gt; | A sanitized version of the custom taxonomy where the taxonomy name is **_custom_taxonomy_**. Replace the _custom_taxonomy_ with your appropriate created taxonomy name. If you want to provide the default slug which is used when the category/taxonomy doesn\'t be selected so, make sure to provide default name/slug which looks like this: **_&lt;%ctaxparents_custom_taxonomy??sales%&gt;_**. Value which is written between the **_??_** and **_%&gt;_** is used as default slug. This tag almost has the same functionality as _&lt;%ctax_custom_taxonomy%&gt;_ the only difference is that it appends all the parent slugs of the selected category/term which doesn\'t be the case in _&lt;%ctax_custom_taxonomy%&gt;_. |
-| %author_firstname% | A sanitized version of the author first name. If author first name is not available so, it uses the author\'s username. |
-| %author_lastname% | A sanitized version of the author last name. If author last name is not available so, it uses the author\'s username. |
+| %product_cat% | A sanitized version of the product category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI.<br><br> *This `tag` is specially used in WooCommerce Products.* |
+| &lt;%ctax_custom_taxonomy%&gt; | A sanitized version of the custom taxonomy where the taxonomy name is `custom_taxonomy`. Replace the _custom_taxonomy_ with your appropriate created taxonomy name. If you want to provide the default slug which is used when the category/taxonomy doesn't be selected so, make sure to provide default name/slug which looks like this: `&lt;%ctax_custom_taxonomy??sales%&gt;`. Value which is written between the `??` and `%&gt;` is used as default slug. |
+| &lt;%ctaxparents_custom_taxonomy%&gt; | This tag is similar as `&lt;%ctax_custom_taxonomy%&gt;`. Only difference is that it appends all the parent slugs of the selected category/term. |
+| %author_firstname% | A sanitized version of the author first name. If author first name is not available so, it uses the author's username. |
+| %author_lastname% | A sanitized version of the author last name. If author last name is not available so, it uses the author's username. |
 
-**Note**: *%postname%* is similar as of the *%title%* tag but the difference is that *%postname%* can only be set once whereas *%title%* can be changed. let's say the title is "This Is A Great Post!" so, it becomes "this-is-a-great-post" in the URI(At the first time, *%postname%* and *%title%* works same) but if you edit and change title let's say "This Is A WordPress Post!" so, *%postname%* in the URI remains same "this-is-a-great-post" whereas *%title%* in the URI becomes "this-is-a-wordpress-post"
+**Note**: `%title%` is similar as `%postname%` tag but the difference is that `%postname%` can only be set once by WordPress whereas `%title%` can be changed by user at multiple times. let's say the title is "This Is A Great Post!" so, it becomes "this-is-a-great-post" in the URI(At the first time, `%postname%` and `%title%` works same) but if you edit and change title let's say "This Is A WordPress Post!" so, `%postname%` in the URI remains same "this-is-a-great-post" whereas `%title%` in the URI becomes "this-is-a-wordpress-post"
 
-### Custom Tags for Taxonomies 
+### Custom Tags for Taxonomies
 
 | Tag Name  | Description |
 | ------------ | ------------- |
@@ -66,8 +66,6 @@ If you leave any PostType field empty. So, **Permalinks Customizer** would creat
 | %slug% | A sanitized version of the name of the Term/Category. So "External API" becomes external-api in the URI. |
 | %parent_slug% | A sanitized version of the name of the Term/Category. So "External API" becomes external-api in the URI. This Tag contains Immediate Parent Term/Category Slug if any parent Term/Category is selected before adding it. |
 | %all_parents_slug% | A sanitized version of the name of the Term/Category. So "External API" becomes external-api in the URI. This Tag contains all the Parent Term/Category Slug if any parent Term/Category is selected before adding it. |
-
-**Be warned**: *This plugin is not a replacement for WordPress's built-in permalink system*. Check your WordPress administration's "Permalinks" settings page first, to make sure that this doesn't already meet your needs.
 
 ## Filters
 
@@ -156,11 +154,11 @@ A. Go to WordPress Dashboard under Permalinks Customizer, Go to PostTypes Settin
 
 **Q. Can i use tags in PostType Settings?**
 
-A. Yes, you can use any tag as defined on the [Permalinks Customizer page](https://wordpress.org/plugins/permalinks-customizer/) under the *TAGS FOR POSTTYPES* heading.
+A. Yes, you can use any tag which are defined in [Default WordPress Tags for PostTypes](#default-wordpress-tags) and [Custom Tags for PostTypes](#custom-tags-for-posttypes).
 
 **Q. Does the plugin supports custom taxonomy tag?**
 
-A. Yes, it supports custom taxonomy tag. You can define the tag as mentioned on the [Permalinks Customizer page](https://wordpress.org/plugins/permalinks-customizer/).
+A. Yes, it supports the custom taxonomy tag as defined [here](#custom-tags-for-posttypes).
 
 **Q. Can i see the created permalinks for the PostType?**
 
@@ -172,7 +170,7 @@ A. Go to WordPress Dashboard under Permalinks Customizer, Go to Taxonomies Setti
 
 **Q. Can i use tags in Taxonomies Settings?**
 
-A. Yes, you can use any tag as defined on the [Permalinks Customizer page](https://wordpress.org/plugins/permalinks-customizer/) under the *TAGS FOR TAXONOMIES* heading.
+A. Yes, you can use any tag which is defined [here](#custom-tags-for-taxonomies).
 
 **Q. Can i see the created permalinks for the Taxonomies?**
 
