@@ -27,7 +27,8 @@ If you leave any PostType field empty. So, **Permalinks Customizer** would creat
 
 ## Structure Tags
 
-### Default WordPress Tags for PostTypes
+### Default Tags for PostTypes
+Below mentioned tags are provided by the `WordPress`. These tags can be used on Default `WordPress Permalink` Settings Page as well as `Permalinks Customizer` Settings page.
 
 | Tag Name  | Description |
 | ------------ | ------------- |
@@ -37,27 +38,29 @@ If you leave any PostType field empty. So, **Permalinks Customizer** would creat
 | %hour% | Hour of the day, for example 15. |
 | %minute% | Minute of the hour, for example 43. |
 | %second% | Second of the minute, for example 33. |
-| %post_id% | The unique ID # of the post, for example 123. |
+| %post_id% | The unique ID of the post, for example 123. |
 | %postname% | A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So "This Is A Great Post!" becomes this-is-a-great-post in the URI. |
 | %category% | A sanitized version of the category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI. |
 | %author% | A sanitized version of the author name. |
 
 ### Custom Tags for PostTypes
+Below mentioned tags are provided by the `Permalinks Customizer` for PostTypes. These tags can not be used on the Default `WordPress Permalink` Settings Page.
 
 | Tag Name  | Description |
 | ------------ | ------------- |
 | %title% | Title of the post. let's say the title is "This Is A Great Post!" so, it becomes this-is-a-great-post in the URI. |
-| %parent_postname% | A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So "This Is A Great Post!" becomes this-is-a-great-post in the URI. This **Tag** contains Immediate **Parent Page Slug** if any parent page is selected before publishing. |
+| %parent_postname% | This tag is similar as `%postname%`.<br><br> Only difference is that it appends Immediate **Parent Page Slug** if any parent page is selected before publishing. |
 | %child-category% | A sanitized version of the category name (category slug field on New/Edit Category panel). |
 | %product_cat% | A sanitized version of the product category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI.<br><br> *This `tag` is specially used in WooCommerce Products.* |
 | &lt;%ctax_custom_taxonomy%&gt; | A sanitized version of the custom taxonomy where the taxonomy name is `custom_taxonomy`. Replace the `custom_taxonomy` with your appropriate created taxonomy name.<br><br> If you want to provide the default slug which is used when the category/taxonomy doesn't be selected so, make sure to provide default name/slug which looks like this: `<%ctax_custom_taxonomy??sales%>`. Value which is written between the `??` and `%>` is used as default slug. |
-| &lt;%ctaxparents_custom_taxonomy%&gt; | This tag is similar as `<%ctax_custom_taxonomy%>`. Only difference is that it appends all the parent slugs of the selected category/term. |
+| &lt;%ctaxparents_custom_taxonomy%&gt; | This tag is similar as `<%ctax_custom_taxonomy%>`.<br><br> Only difference is that it appends all the parent slugs of the selected category/term. |
 | %author_firstname% | A sanitized version of the author first name. If author first name is not available so, it uses the author's username. |
 | %author_lastname% | A sanitized version of the author last name. If author last name is not available so, it uses the author's username. |
 
 **Note**: `%title%` is similar as `%postname%` tag but the difference is that `%postname%` can only be set once by WordPress whereas `%title%` can be changed by user at multiple times. let's say the title is "This Is A Great Post!" so, it becomes "this-is-a-great-post" in the URI(At the first time, `%postname%` and `%title%` works same) but if you edit and change title let's say "This Is A WordPress Post!" so, `%postname%` in the URI remains same "this-is-a-great-post" whereas `%title%` in the URI becomes "this-is-a-wordpress-post"
 
 ### Custom Tags for Taxonomies
+Below mentioned tags are provided by the `Permalinks Customizer` for Taxonomies. These can not be used on the Default `WordPress Permalink` Settings Page.
 
 | Tag Name  | Description |
 | ------------ | ------------- |
@@ -154,7 +157,7 @@ A. Go to WordPress Dashboard under Permalinks Customizer, Go to PostTypes Settin
 
 **Q. Can i use tags in PostType Settings?**
 
-A. Yes, you can use any tag which are defined in [Default WordPress Tags for PostTypes](#default-wordpress-tags) and [Custom Tags for PostTypes](#custom-tags-for-posttypes).
+A. Yes, you can use any tag which are defined in [Default Tags for PostTypes](#default-tags-for-posttypes) and [Custom Tags for PostTypes](#custom-tags-for-posttypes).
 
 **Q. Does the plugin supports custom taxonomy tag?**
 
