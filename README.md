@@ -30,8 +30,8 @@ You can configure the plugin by navigating to the `Permalinks Customizer` menu f
 ### Default Tags for PostTypes
 Below mentioned tags are provided by the `WordPress`. These tags can be used on Default `WordPress Permalink` Settings Page as well as `Permalinks Customizer` Settings page.
 
-| Tag Name  | Description |
-| ------------ | ------------- |
+| Tag Name | Description |
+| ----------- | ------------- |
 | %year% | The year of the post, four digits, for example 2019. |
 | %monthnum% | Month of the year, for example 01. |
 | %day% | Day of the month, for example 02. |
@@ -46,8 +46,8 @@ Below mentioned tags are provided by the `WordPress`. These tags can be used on 
 ### Custom Tags for PostTypes
 Below mentioned tags are provided by the `Permalinks Customizer` for PostTypes. These tags can not be used on the Default `WordPress Permalink` Settings Page.
 
-| Tag Name  | Description |
-| ------------ | ------------- |
+| Tag Name | Description |
+| ----------- | ------------- |
 | %title% | Title of the post. let's say the title is "This Is A Great Post!" so, it becomes this-is-a-great-post in the URI. |
 | %parent_postname% | This tag is similar as `%postname%`.<br><br> Only difference is that it appends Immediate **Parent Page Slug** if any parent page is selected before publishing. |
 | %child-category% | A sanitized version of the category name (category slug field on New/Edit Category panel). |
@@ -62,8 +62,8 @@ Below mentioned tags are provided by the `Permalinks Customizer` for PostTypes. 
 ### Custom Tags for Taxonomies
 Below mentioned tags are provided by the `Permalinks Customizer` for Taxonomies. These can not be used on the Default `WordPress Permalink` Settings Page.
 
-| Tag Name  | Description |
-| ------------ | ------------- |
+| Tag Name | Description |
+| ----------- | ------------- |
 | %name% | Name of the Term/Category. let's say the name is "External API" so, it becomes external-api in the URI. |
 | %term_id% | The unique ID # of the Term/Category, for example 423 |
 | %slug% | A sanitized version of the name of the Term/Category. So "External API" becomes external-api in the URI. |
