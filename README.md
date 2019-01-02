@@ -2,28 +2,30 @@
 
 ## Description
 
-Customize your URL and set the slug. You can use basic keywords which is defined by the WordPress for defining the permalinks as well as someother new keywords which is defined by this plugin. All the keywords are defined on the Tags page under Permalinks Customizer.
+**Permalinks Customizer** helps you to set the different permalink structure for different PostTypes and Taxonomies which are publicly available. 
 
-By using **Permalinks Customizer** you can set the different permalink structure for each and every PostType and Taxonomy.
+You can use the tags which are defined by the WordPress as mentioned [here](#default-tags-for-posttypes). Also, you can use the tags which are customily defined by this plugin for [PostTypes](#custom-tags-for-posttypes) and [Taxonomies](#custom-tags-for-taxonomies). You can also find these tags in Permalinks Customizer menu on WordPress Dashboard (if the plugin is installed).
 
-### How to set the Permalinks for the PostTypes separately
+### How to set the Permalinks for different PostTypes
 
-Let's assume that you have 6 **PostTypes** and they all have different style of **permalinks**. Like:
+Let's assume that you have 6 **PostTypes** and you like to apply differnet **permalink** structure for them. Like:
 
-* **Blog** : For this post type you want to create a **permalink** which looks like this: http://www.example.com/blog/year-month-date-postname/
-* **Customers** : For this post type you want to create a **permalink** which looks like this: http://www.example.com/customers/postname/
-* **Events** : For this post type you want to create a **permalink** which looks like this: http://www.example.com/events/year-month-date-postname/
-* **Press** : For this post type you want to create a **permalink** which looks like this: http://www.example.com/press/category/year/postname/
-* **News** : For this post type you want to create a **permalink** which looks like this: http://www.example.com/news/year/postname/
-* **Sponsors** : For this post type you want to create a **permalink** which looks like this: http://www.example.com/company/sponsor/post_title/
+| PostType | Desired Permalink | Permalink Settings |
+| ---------- | --------------------- | ---------------------- |
+| Blog | http://www.example.com/blog/2019/01/02/this-is-a-first-post/ | blog/%year%/%monthnum%/%day%/%postname%/ |
+| Customers | http://www.example.com/customers/postname/ | customers/%postname%/ |
+| Events | http://www.example.com/events/2019-01-02-wordpress-meetup/ | events/%year%-%monthnum%-%day%-%postname%/ |
+| Press | http://www.example.com/press/2019/announce-collaboration/ | press/%year%/%postname%/ |
+| News | http://www.example.com/news/2019/this-is-a-news/ | news/%year%/%postname%/ |
+| Sponsors | http://www.example.com/company/sponsor/yasglobal/ | company/%title%/ |
+| Services | http://www.example.com/services/development/wordpress/ | services/%parent_postname%/ |
 
 This plugin allows you to do this very easily. You just need to go on **Permalinks Customizer** Settings Page. Where text fields are shown with PostType name. You can define your permalinks you want to create for each post type.
 
-If you leave any PostType field empty. So, **Permalinks Customizer** would create a permalink for that PostType by using the default **permalink** settings.
+If you leave any PostType field empty, **Permalinks Customizer** will create a permalink for that PostType by using the default **permalink** settings.
 
 ### How to Configure Permalinks Customizer
-
-> You can configure the plugin by going to the menu `Permalinks Customizer` that appears in your admin menu.<br><br>**OR**<br><br> You can directly access it from: http://www.example.com/wp-admin/admin.php?page=permalinks-customizer-posts-settings
+You can configure the plugin by navigating to the `Permalinks Customizer` menu from the WordPress Dashboard
 
 ## Structure Tags
 
