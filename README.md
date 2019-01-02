@@ -71,6 +71,7 @@ Below mentioned tags are provided by the `Permalinks Customizer` for Taxonomies.
 | %all_parents_slug% | A sanitized version of the name of the Term/Category. So "External API" becomes external-api in the URI. This Tag contains all the Parent Term/Category Slug if any parent Term/Category is selected before adding it. |
 
 ## Filters
+You can find all the filters below which are provided by `Permalinks Customizer` plugin. These filters can be used as per your Website requirement.
 
 ### Exclude Permalinks
 
@@ -122,10 +123,6 @@ To disable redirects to be applied , add this filter in your themes functions.ph
 add_filter( 'permalinks_customizer_disable_redirects', '__return_false');
 ```
 This filter only stop redirects to be work but the automatically create redirects still works. To stop automatically create redirects feature add [this](#disable-automatically-create-redirects) filter.
-
-### Thanks for the Support
-
-The support from the users that love Permalinks Customizer is huge. You can support Permalinks Customizer future development and help to make it even better by giving a [5 star rating with a nice message](https://wordpress.org/support/plugin/permalinks-customizer/reviews/?rate=5#new-post) to me :smiley:
 
 ## Installation
 
