@@ -1,12 +1,10 @@
 # Permalinks Customizer
 
-## Description
-
 **Permalinks Customizer** helps you to set the different permalink structure for different PostTypes and Taxonomies which are publicly available. 
 
 You can use the tags which are defined by the WordPress as mentioned [here](#default-tags-for-posttypes). Also, you can use the tags which are customily defined by this plugin for [PostTypes](#custom-tags-for-posttypes) and [Taxonomies](#custom-tags-for-taxonomies). You can also find these tags in Permalinks Customizer menu on WordPress Dashboard (if the plugin is installed).
 
-### How to set the Permalinks for different PostTypes
+## How to set the Permalinks for different PostTypes
 
 Let's assume that you have 6 **PostTypes** and you like to apply differnet **permalink** structure for them. Like:
 
@@ -24,7 +22,7 @@ This plugin allows you to do this very easily. You just need to go on **Permalin
 
 If you leave any PostType field empty, **Permalinks Customizer** will create a permalink for that PostType by using the default **permalink** settings.
 
-### How to Configure Permalinks Customizer
+## How to Configure Permalinks Customizer
 You can configure the plugin by navigating to the `Permalinks Customizer` menu from the WordPress Dashboard
 
 ## Structure Tags
