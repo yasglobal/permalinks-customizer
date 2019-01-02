@@ -4,7 +4,7 @@ Tags: Link, Permalink, URL, Redirects, Tags
 Requires at least: 3.5
 Requires PHP: 5.2.4
 Tested up to: 5.0
-Stable tag: 2.5.1
+Stable tag: 2.5.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl.html
 
@@ -213,7 +213,7 @@ A. Yes, you can exclude any posttype from the plugin to be worked on. For this j
 
 == Changelog ==
 
-= 2.5.2 =
+= 2.5.2 - Jan 02, 2019 =
 
   * Enhancement
     * Added `<%ctaxparents_custom_taxonomy%>` tag for PostTypes
