@@ -26,6 +26,7 @@ If you leave any PostType field empty, **Permalinks Customizer** will create a p
 You can configure the plugin by navigating to the `Permalinks Customizer` menu from the WordPress Dashboard
 
 ## Structure Tags
+You can find all the tags which are currently supported by the `Permalinks Customizer`.
 
 ### Default Tags for PostTypes
 Below mentioned tags are provided by the `WordPress`. These tags can be used on Default `WordPress Permalink` Settings Page as well as `Permalinks Customizer` Settings page.
@@ -154,7 +155,7 @@ A. Navigate on `Permalinks Customizer` Menu from the `WordPress Dashboard`, Open
 
 **Q. Can i use tags in PostType Settings?**
 
-A. Yes, you can use any tag which are defined in [Default Tags for PostTypes](#default-tags-for-posttypes) and [Custom Tags for PostTypes](#custom-tags-for-posttypes).
+A. Yes, you can use any tag which are defined in [Default Tags for PostTypes](#default-tags-for-posttypes) and [Custom Tags for Taxonomies](#custom-tags-for-taxonomies).
 
 **Q. Does the plugin supports custom taxonomy tag?**
 
@@ -170,7 +171,7 @@ A. Navigate on `Permalinks Customizer` Menu from the `WordPress Dashboard`, Open
 
 **Q. Can i use tags in Taxonomies Settings?**
 
-A. Yes, you can use any tag which is defined [here](#custom-tags-for-taxonomies).
+A. Yes, you can use any tag which are defined [here](#custom-tags-for-taxonomies).
 
 **Q. Can i see the created permalinks for the Taxonomies?**
 
