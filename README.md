@@ -153,7 +153,7 @@ This process defines you the steps to follow either you are installing through W
 
 **Q. How to define Settings for the PostType?**
 
-A. Go to WordPress Dashboard under Permalinks Customizer, Go to PostTypes Settings Page, there is a textfield for all the available PostType. On this field, you can define structure which is used for this PostType.
+A. Navigate on `Permalinks Customizer` Menu from the `WordPress Dashboard`, Open PostTypes Settings Page, there is a textfield for each and every PostType (if the PostType is available for `Public`) . On this field, you can define structure which is used for that PostType.
 
 **Q. Can i use tags in PostType Settings?**
 
@@ -169,7 +169,7 @@ A. Yes, you can see all the created permalinks on the PostType Permalinks Page u
 
 **Q. How to define Settings for the Taxonomies?**
 
-A. Go to WordPress Dashboard under Permalinks Customizer, Go to Taxonomies Settings Page, there is a textfield for every available Taxonomies. On this field, you can define structure which is used for this Taxonomy.
+A. Navigate on `Permalinks Customizer` Menu from the `WordPress Dashboard`, Open Taxonomies Settings Page, there is a textfield for each and every Taxonomy (if the Taxonomy is available for `Public`) . On this field, you can define structure which is used for that Taxonomy.
 
 **Q. Can i use tags in Taxonomies Settings?**
 
