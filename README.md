@@ -50,9 +50,7 @@ If you leave any PostType field empty. So, **Permalinks Customizer** would creat
 | %parent_postname% | A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So "This Is A Great Post!" becomes this-is-a-great-post in the URI. This **Tag** contains Immediate **Parent Page Slug** if any parent page is selected before publishing. |
 | %child-category% | A sanitized version of the category name (category slug field on New/Edit Category panel). |
 | %product_cat% | A sanitized version of the product category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI.<br><br> *This `tag` is specially used in WooCommerce Products.* |
-| &lt;%ctax_custom_taxonomy%&gt; | A sanitized version of the custom taxonomy where the taxonomy name is `custom_taxonomy`. Replace the `custom_taxonomy` with your appropriate created taxonomy name. 
-
-If you want to provide the default slug which is used when the category/taxonomy doesn't be selected so, make sure to provide default name/slug which looks like this: `<%ctax_custom_taxonomy??sales>`. Value which is written between the `??` and `>` is used as default slug. |
+| &lt;%ctax_custom_taxonomy%&gt; | A sanitized version of the custom taxonomy where the taxonomy name is `custom_taxonomy`. Replace the `custom_taxonomy` with your appropriate created taxonomy name.<br><br> If you want to provide the default slug which is used when the category/taxonomy doesn't be selected so, make sure to provide default name/slug which looks like this: `<%ctax_custom_taxonomy??sales>`. Value which is written between the `??` and `>` is used as default slug. |
 | &lt;%ctaxparents_custom_taxonomy%&gt; | This tag is similar as `<%ctax_custom_taxonomy>`. Only difference is that it appends all the parent slugs of the selected category/term. |
 | %author_firstname% | A sanitized version of the author first name. If author first name is not available so, it uses the author's username. |
 | %author_lastname% | A sanitized version of the author last name. If author last name is not available so, it uses the author's username. |
