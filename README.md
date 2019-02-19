@@ -6,7 +6,7 @@ You can use the tags which are defined by the WordPress as mentioned [here](#def
 
 ## How to set the Permalinks for different PostTypes
 
-Let's assume that you have 6 **PostTypes** and you like to apply differnet **permalink** structure for them. Like:
+Let's assume that you have 7 **PostTypes** and you like to apply different **permalink** structure for them. Like:
 
 | PostType | Desired Permalink | Permalink Settings |
 | ---------- | --------------------- | ---------------------- |
@@ -23,13 +23,13 @@ This plugin allows you to do this very easily. You just need to go on **Permalin
 If you leave any PostType field empty, **Permalinks Customizer** will create a permalink for that PostType by using the default **permalink** settings.
 
 ## How to Configure Permalinks Customizer
-You can configure the plugin by navigating to the `Permalinks Customizer` menu from the WordPress Dashboard
+You can configure the plugin by navigating to the **Permalinks Customizer** menu from the WordPress Dashboard
 
 ## Structure Tags
-You can find all the tags which are currently supported by the `Permalinks Customizer`.
+You can find all the tags which are currently supported by the **Permalinks Customizer**.
 
 ### Default Tags for PostTypes
-Below mentioned tags are provided by the `WordPress`. These tags can be used on Default `WordPress Permalink` Settings Page as well as `Permalinks Customizer` Settings page.
+Below mentioned tags are provided by the **WordPress**. These tags can be used on Default **WordPress Permalink** Settings Page as well as **Permalinks Customizer** Settings page.
 
 | Tag Name | Description |
 | ----------- | ------------- |
@@ -45,7 +45,7 @@ Below mentioned tags are provided by the `WordPress`. These tags can be used on 
 | %author% | A sanitized version of the author name. |
 
 ### Custom Tags for PostTypes
-Below mentioned tags are provided by the `Permalinks Customizer` for PostTypes. These tags can not be used on the Default `WordPress Permalink` Settings Page.
+Below mentioned tags are provided by the **Permalinks Customizer** for PostTypes. These tags can not be used on the Default **WordPress Permalink** Settings Page.
 
 | Tag Name | Description |
 | ----------- | ------------- |
@@ -61,7 +61,7 @@ Below mentioned tags are provided by the `Permalinks Customizer` for PostTypes. 
 **Note**: `%title%` is similar as `%postname%` tag but the difference is that `%postname%` can only be set once by WordPress whereas `%title%` can be changed by user at multiple times. let's say the title is "This Is A Great Post!" so, it becomes "this-is-a-great-post" in the URI(At the first time, `%postname%` and `%title%` works same) but if you edit and change title let's say "This Is A WordPress Post!" so, `%postname%` in the URI remains same "this-is-a-great-post" whereas `%title%` in the URI becomes "this-is-a-wordpress-post"
 
 ### Custom Tags for Taxonomies
-Below mentioned tags are provided by the `Permalinks Customizer` for Taxonomies. These can not be used on the Default `WordPress Permalink` Settings Page.
+Below mentioned tags are provided by the **Permalinks Customizer** for Taxonomies. These can not be used on the Default **WordPress Permalink** Settings Page.
 
 | Tag Name | Description |
 | ----------- | ------------- |
@@ -72,7 +72,7 @@ Below mentioned tags are provided by the `Permalinks Customizer` for Taxonomies.
 | %all_parents_slug% | A sanitized version of the name of the Term/Category. So "External API" becomes external-api in the URI. This Tag contains all the Parent Term/Category Slug if any parent Term/Category is selected before adding it. |
 
 ## Filters
-You can find all the filters below which are provided by `Permalinks Customizer` plugin. These filters can be used as per your Website requirement.
+You can find all the filters below which are provided by **Permalinks Customizer** plugin. These filters can be used as per your Website requirement.
 
 ### Exclude Permalinks
 
@@ -151,7 +151,7 @@ This process defines you the steps to follow either you are installing through W
 
 **Q. How to define Settings for the PostType?**
 
-A. Navigate on `Permalinks Customizer` Menu from the `WordPress Dashboard`, Open PostTypes Settings Page, there is a textfield for each and every PostType (if the PostType is available for `Public`) . On this field, you can define structure which is used for that PostType.
+A. Navigate on **Permalinks Customizer** Menu from the **WordPress Dashboard**, Open PostTypes Settings Page, there is a textfield for each and every PostType (if the PostType is available for **Public**) . On this field, you can define structure which is used for that PostType.
 
 **Q. Can i use tags in PostType Settings?**
 
@@ -167,7 +167,7 @@ A. Yes, you can see all the created permalinks on the PostType Permalinks Page u
 
 **Q. How to define Settings for the Taxonomies?**
 
-A. Navigate on `Permalinks Customizer` Menu from the `WordPress Dashboard`, Open Taxonomies Settings Page, there is a textfield for each and every Taxonomy (if the Taxonomy is available for `Public`) . On this field, you can define structure which is used for that Taxonomy.
+A. Navigate on **Permalinks Customizer** Menu from the **WordPress Dashboard**, Open Taxonomies Settings Page, there is a textfield for each and every Taxonomy (if the Taxonomy is available for **Public**) . On this field, you can define structure which is used for that Taxonomy.
 
 **Q. Can i use tags in Taxonomies Settings?**
 
@@ -179,7 +179,7 @@ A. Yes, you can see all the created permalinks on the Taxonomies Permalinks Page
 
 **Q. Can i regenerate all the permalinks according to the defined structure?**
 
-A. Yes, you can regenerate all the permalinks according to the defined structure. To have a bulk permalink update, Go to the *All Post* page there is a a option in the bulk action drop down with the name of `Regenerate Permalinks`. Use that option for regenerating the Permalinks.
+A. Yes, you can regenerate all the permalinks according to the defined structure. To have a bulk permalink update, Go to the *All Post* page there is an option in the bulk action drop down with the name of `Regenerate Permalinks`. Use that option for regenerating the Permalinks.
 
 **Q. Does *Regenerate Permalinks* damage my site SEO?**
 
