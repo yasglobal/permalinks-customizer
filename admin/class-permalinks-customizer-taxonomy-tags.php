@@ -1,8 +1,15 @@
 <?php
 /**
- * @package PermalinksCustomizer\Admin
+ * @package PermalinksCustomizer
  */
 
+/**
+ * Create available Post tags page.
+ *
+ * Create available Post tags page HTML and display the page.
+ *
+ * @since 1.3.3
+ */
 class Permalinks_Customizer_Taxonomy_Tags {
 
   /**
@@ -15,10 +22,10 @@ class Permalinks_Customizer_Taxonomy_Tags {
   /**
    * Shows all the Tags which this Plugin Supports for Taxonomies.
    *
+   * @since 1.3.3
    * @access private
-   * @since 1.1
    *
-   * @return void
+   * @return void.
    */
   private function available_taxonomy_tags() {
     ?>

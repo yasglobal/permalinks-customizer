@@ -1,8 +1,15 @@
 <?php
 /**
- * @package PermalinksCustomizer\Admin
+ * @package PermalinksCustomizer
  */
 
+/**
+ * Create Redirects page.
+ *
+ * Create Redirects page HTML and display the page.
+ *
+ * @since 2.0.0
+ */
 class Permalinks_Customizer_Redirects {
 
   /**
@@ -16,10 +23,10 @@ class Permalinks_Customizer_Redirects {
    * Shows all the Redirects created by using this Plugin with Pager
    * and Search Functionality.
    *
-   * @access private
    * @since 2.0.0
+   * @access private
    *
-   * @return void
+   * @return void.
    */
   private function show_redirects() {
   

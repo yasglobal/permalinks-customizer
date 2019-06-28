@@ -38,6 +38,13 @@ if ( ! defined( 'ABSPATH' ) ) {
   exit;
 }
 
+/**
+ * Main Class
+ *
+ * Define contants, include relevant files, create databse tables if required.
+ *
+ * @since 2.0.0
+ */
 final class Permalinks_Customizer {
 
   /**
@@ -49,12 +56,12 @@ final class Permalinks_Customizer {
   }
 
   /**
-   * Setup plugin constants
+   * Setup plugin constants.
    *
-   * @access private
    * @since 2.0.0
+   * @access private
    *
-   * @return void
+   * @return void.
    */
   private function setup_constants() {
     if ( ! defined( 'PERMALINKS_CUSTOMIZER_FILE' ) ) {
@@ -75,10 +82,10 @@ final class Permalinks_Customizer {
   }
 
   /**
-   * Include required files
+   * Include required files.
    *
-   * @access private
    * @since 2.0.0
+   * @access private
    *
    * @return void
    */
@@ -116,10 +123,10 @@ final class Permalinks_Customizer {
    * the plugin and create a custom role with the name of
    * `Permalinks Customizer Manager` and assign the capabilities to that role.
    *
-   * @access public
    * @since 2.0.0
+   * @access public
    *
-   * @return void
+   * @return void.
    */
   public static function plugin_activate() {
     $role = get_role( 'administrator' );
@@ -153,10 +160,10 @@ final class Permalinks_Customizer {
   /**
    * Creates a redirect table to the database.
    *
-   * @access private
    * @since 2.0.0
+   * @access private
    *
-   * @return void
+   * @return void.
    */
   private static function create_table() {
     global $wpdb;
@@ -186,12 +193,12 @@ final class Permalinks_Customizer {
   }
 
   /**
-   * Loads the plugin language files
+   * Loads the plugin language files.
    *
-   * @access public
    * @since 2.0.0
+   * @access public
    *
-   * @return void
+   * @return void.
    */
   public function load_textdomain() {
     load_plugin_textdomain( 'permalinks-customizer', FALSE,
@@ -207,12 +214,12 @@ final class Permalinks_Customizer {
 
   /**
    * Check Version if the version is not defined or less than to the current
-   * plugin function then update the permalinks_customizer_table
+   * plugin function then update the `permalinks_customizer_table`.
    *
-   * @access private
    * @since 2.0.0
+   * @access private
    *
-   * @return void
+   * @return void.
    */
   private function update_taxonomy_table() {
     $current_version = get_option( 'permalinks_customizer_plugin_version', -1 );

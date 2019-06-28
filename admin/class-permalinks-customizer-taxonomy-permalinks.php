@@ -1,8 +1,15 @@
 <?php
 /**
- * @package PermalinksCustomizer\Admin
+ * @package PermalinksCustomizer
  */
 
+/**
+ * Create Taxonomy Permalinks page.
+ *
+ * Create Taxonomy Permalinks page HTML and display the page.
+ *
+ * @since 1.3.3
+ */
 class Permalinks_Customizer_Taxonomy_Permalinks {
 
   /**
@@ -16,10 +23,10 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
    * Shows all the Permalinks created by using this Plugin with Pager
    * and Search Functionality of Taxonomies.
    *
+   * @since 1.3.3
    * @access private
-   * @since 1.3
    *
-   * @return void
+   * @return void.
    */
   private function tax_permalinks() {
     global $wpdb;

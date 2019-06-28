@@ -1,14 +1,27 @@
 <?php
 /**
- * @package PermalinksCustomizer\Frontend\Form
+ * @package PermalinksCustomizer
  */
 
+/**
+ * Show Permalink edit form.
+ *
+ * Show edit form with the current permalink on PostTypes and Taxonomies.
+ *
+ * @since 1.0.0
+ */
 final class Permalinks_Customizer_Form {
 
+  /**
+   * To make decision either to show metabox or override the default permalink box.
+   *
+   * @since 2.3.0
+   * @var int $permalink_metabox show metabox or override default permalink box.
+   */
   private $permalink_metabox = 0;
 
   /**
-   * Initialize WordPress Hooks
+   * Initialize WordPress Hooks.
    */
   public function init() {
     add_filter( 'get_sample_permalink_html',
@@ -67,10 +80,10 @@ final class Permalinks_Customizer_Form {
   /**
    * Register meta box(es).
    *
-   * @access public
    * @since 2.3.0
+   * @access public
    *
-   * @return void
+   * @return void.
    */
   public function permalink_edit_box() {
     add_meta_box( 'permalinks-customizer-edit-box',
@@ -85,18 +98,14 @@ final class Permalinks_Customizer_Form {
   /**
    * Set the meta_keys to protected which is created by the plugin.
    *
-   * @access public
    * @since 2.3.1
+   * @access public
    *
-   * @param boolean $protected
-   *   Whether the key is protected or not
-   * @param string $meta_key
-   *   Meta key
-   * @param string $meta_type
-   *   Meta type
+   * @param boolean $protected Whether the key is protected or not.
+   * @param string $meta_key Meta key.
+   * @param string $meta_type Meta type.
    *
-   * @return boolean
-   *   return `true` for the permalinks_customizer key
+   * @return boolean `true` for the permalinks_customizer key.
    */
   public function make_meta_protected( $protected, $meta_key, $meta_type ) {
     if ( 'permalink_customizer' === $meta_key
@@ -109,17 +118,13 @@ final class Permalinks_Customizer_Form {
   /**
    * Generate Form for editing the Permalinks for Post/Pages/Categories.
    *
+   * @since 1.0.0
    * @access private
-   * @since 0.1
    *
-   * @param string $permalink
-   *   Permalink which is created by the plugin
-   * @param string $original
-   *   Permalink which set by WordPress
-   * @param boolean $renderContainers
-   *   Shows Post/Term Edit
-   * @param string $postname
-   *   Post Name
+   * @param string $permalink Permalink which is created by the plugin
+   * @param string $original Permalink which set by WordPress
+   * @param boolean $renderContainers Shows Post/Term Edit
+   * @param string $postname Post Name
    *
    * @return void
    */
@@ -210,20 +215,15 @@ final class Permalinks_Customizer_Form {
    * This is the Main Function which gets the Permalink Edit form for the user
    * with validating the Post Types.
    *
+   * @since 1.0.0
    * @access public
-   * @since 0.1
    *
-   * @param string $html
-   *   WP Post Permalink HTML
-   * @param integer $id
-   *   Post ID
-   * @param string $new_title
-   *   Post Title
-   * @param string $new_slug
-   *   Post Slug
+   * @param string $html WP Post Permalink HTML.
+   * @param int $id Post ID.
+   * @param string $new_title Post Title.
+   * @param string $new_slug Post Slug.
    *
-   * @return string
-   *   Returns Edit Form string
+   * @return string Edit Form string.
    */
   public function post_edit_form( $html, $id, $new_title, $new_slug ) {
     $post                    = get_post( $id );
@@ -313,14 +313,12 @@ final class Permalinks_Customizer_Form {
    * for the user with validating the Post Types to make
    * compatibility with Gutenberg.
    *
+   * @since 1.0.0
    * @access public
-   * @since 2.3.0
    *
-   * @param object $post
-   *   WP Post Object
+   * @param object $post WP Post Object.
    *
-   * @return void
-   *   Add Permalink edit box
+   * @return void.
    */
   public function meta_edit_form( $post ) {
     if ( isset( $this->permalink_metabox ) && 1 === $this->permalink_metabox ) {
@@ -424,13 +422,12 @@ final class Permalinks_Customizer_Form {
    * This is the Main Function which gets the Permalink Edit form for the user
    * with validating the Taxonomy.
    *
+   * @since 1.0.0
    * @access public
-   * @since 1.3
    *
-   * @param object $object
-   *   Term Object
+   * @param object $object Term Object.
    *
-   * @return void
+   * @return void.
    */
   public function term_edit_form( $object ) {
     $permalink = '';
@@ -460,13 +457,12 @@ final class Permalinks_Customizer_Form {
   /**
    * This Function call when the Post/Page created by the WP All Import Plugin.
    *
+   * @since 1.0.0
    * @access public
-   * @since 2.2.0
    *
-   * @param integer $post_id
-   *   Post ID
+   * @param int $post_id Post ID.
    *
-   * @return void
+   * @return void.
    */
   public function pmxi_post_permalink( $post_id ) {
     $post = get_post( $post_id );
@@ -480,17 +476,14 @@ final class Permalinks_Customizer_Form {
    * generates the Permalink according the PostType Permalink Structure and
    * also saves the permalink if it is updated manually by user.
    *
+   * @since 1.0.0
    * @access public
-   * @since 0.1
    *
-   * @param integer $post_id
-   *   Post ID
-   * @param object $post
-   *   Post Object
-   * @param boolean $update
-   *   Whether this is an existing post being updated or not.
+   * @param int $post_id Post ID.
+   * @param object $post Post Object.
+   * @param bool $update  Whether this is an existing post being updated or not.
    *
-   * @return void
+   * @return void.
    */
   public function save_post_permalink( $post_id, $post, $update ) {
 
@@ -539,9 +532,11 @@ final class Permalinks_Customizer_Form {
       );
     }
 
-    // Make sure that the post saved from quick edit form so, just make the
-    // $_REQUEST['permalinks_customizer'] same as $url to regenerate permalink
-    // if applicable
+    /*
+     * Make sure that the post saved from quick edit form so, just make the
+     * $_REQUEST['permalinks_customizer'] same as $url to regenerate permalink
+     * if applicable.
+     */
     if ( ! isset( $_REQUEST['permalinks_customizer'] ) ) {
       $_REQUEST['permalinks_customizer'] = $url;
     }
@@ -561,7 +556,7 @@ final class Permalinks_Customizer_Form {
         $get_permalink = esc_attr( get_option('permalink_structure' ) );
       }
 
-      /**
+      /*
        * Permalink structure doesn't be defined in the Plugin Settings and
        * Permalink Settings of WordPress set to plain.
        */
@@ -607,12 +602,16 @@ final class Permalinks_Customizer_Form {
       update_post_meta( $post_id, 'permalink_customizer', $permalink );
       $_REQUEST['permalinks_customizer'] = $permalink;
       if ( 'publish' == $post_status ) {
-        // permalink_customizer_regenerate_status = 1 means Permalink won't be
-        // generated again on updating the post
+        /*
+         * permalink_customizer_regenerate_status = 1 means Permalink won't be
+         * generated again on updating the post.
+         */
         update_post_meta( $post_id, 'permalink_customizer_regenerate_status', 1 );
       } else {
-        // permalink_customizer_regenerate_status = 0 means Permalink will be
-        // generated again on updating the post
+        /*
+         * permalink_customizer_regenerate_status = 0 means Permalink will be
+         * generated again on updating the post.
+         */
         update_post_meta( $post_id, 'permalink_customizer_regenerate_status', 0 );
       }
 
@@ -634,8 +633,10 @@ final class Permalinks_Customizer_Form {
       $permalink = preg_replace( '/(\/+)/', '/', $permalink );
       $permalink = preg_replace( '/(\-+)/', '-', $permalink );
       update_post_meta( $post_id, 'permalink_customizer', $permalink );
-      // Permalink_customizer_regenerate_status = 1 means Permalink won't be
-      // generated again on updating the post (Once, user changed it)
+      /*
+       * Permalink_customizer_regenerate_status = 1 means Permalink won't be
+       * generated again on updating the post (Once, user changed it).
+       */
       update_post_meta( $post_id, 'permalink_customizer_regenerate_status', 1 );
 
       $post_type = 'post';
@@ -651,13 +652,12 @@ final class Permalinks_Customizer_Form {
   /**
    * This Function call when the Attachment Post is created/updated.
    *
-   * @access public
    * @since 2.2.0
+   * @access public
    *
-   * @param integer $post_id
-   *   Post ID
+   * @param int $post_id Post ID.
    *
-   * @return void
+   * @return void.
    */
   public function save_attachment_post( $post_id ) {
     $post = get_post( $post_id );
@@ -670,18 +670,14 @@ final class Permalinks_Customizer_Form {
    * Replace the tags with the respective value on generating the Permalink
    * for the Post types.
    *
+   * @since 1.0.0
    * @access private
-   * @since 0.1
    *
-   * @param integer $post_id
-   *   Post ID
-   * @param object $post
-   *   contains the list of saved values
-   * @param string $replace_tag
-   *   Structure which is used to create permalink
+   * @param int $post_id Post ID.
+   * @param object $post contains the list of saved values.
+   * @param string $replace_tag Structure which is used to create permalink.
    *
-   * @return string $replace_tag
-   *   Return permalink after replacing the appropriate tags with their values
+   * @return string permalink after replacing the appropriate tags with their values.
    */
   private function replace_posttype_tags( $post_id, $post, $replace_tag ) {
 
@@ -747,8 +743,10 @@ final class Permalinks_Customizer_Form {
       }
     }
 
-    // Replace %parent_postname% with the respective post name with the
-    // parent post name if parent post is selected
+    /*
+     * Replace %parent_postname% with the respective post name with the
+     * parent post name if parent post is selected.
+     */
     if ( false !== strpos( $replace_tag, '%parent_postname%' ) ) {
       $parents   = get_ancestors( $post_id, $post->post_type, 'post_type' );
       $postnames = '';
@@ -771,8 +769,10 @@ final class Permalinks_Customizer_Form {
       $replace_tag = str_replace( '%parent_postname%', $postnames, $replace_tag );
     }
 
-    // Replace %all_parents_postname% with the respective post name with the
-    // parents post name if parent post is selected
+    /*
+     * Replace %all_parents_postname% with the respective post name with the
+     * parents post name if parent post is selected.
+     */
     if ( false !== strpos( $replace_tag, '%all_parents_postname%' ) ) {
       $parents   = get_ancestors( $post_id, $post->post_type, 'post_type' );
       $postnames = '';
@@ -798,8 +798,10 @@ final class Permalinks_Customizer_Form {
       $replace_tag = str_replace( '%all_parents_postname%', $postnames, $replace_tag );
     }
 
-    // Replace %category% with the respective post category with their
-    // parent categories
+    /*
+     * Replace %category% with the respective post category with their
+     * parent categories.
+     */
     if (strpos( $replace_tag, '%category%' ) !== false ) {
       $categories = get_the_category( $post_id );
       $total_cat  = count( $categories );
@@ -843,8 +845,10 @@ final class Permalinks_Customizer_Form {
       $replace_tag   = str_replace( '%child-category%', $category, $replace_tag );
     }
 
-    // Replace %product_cat% with the respective post (Product Category).
-    // Used with WooCommerce
+    /*
+     * Replace %product_cat% with the respective post (Product Category).
+     * Used with WooCommerce.
+     */
     if ( false !== strpos( $replace_tag, '%product_cat%' ) ) {
       $categories = get_the_terms( $post_id, 'product_cat' );
       $total_cat  = count( $categories );
@@ -1024,15 +1028,13 @@ final class Permalinks_Customizer_Form {
   /**
    * Set `post_name` for the posts who doesn't have that.
    *
-   * @access private
    * @since 2.1.1
+   * @access private
    *
-   * @param integer $id
-   *   Post ID
-   * @param string $post_name
-   *   Post name which needs to be set
+   * @param int $id Post ID.
+   * @param string $post_name Post name which needs to be set.
    *
-   * @return void
+   * @return void.
    */
   private function update_post_name($id, $post_name) {
     global $wpdb;
@@ -1045,13 +1047,12 @@ final class Permalinks_Customizer_Form {
    * Delete Permalink when the Post is deleted or when the saving Post is
    * selected as Front Page.
    *
+   * @since 1.0.0
    * @access public
-   * @since 0.1
    *
-   * @param integer $id
-   *   Post ID
+   * @param int $id Post ID.
    *
-   * @return void
+   * @return void.
    */
   public function delete_post_permalink( $id ) {
     global $wpdb;
@@ -1063,13 +1064,12 @@ final class Permalinks_Customizer_Form {
    * This function generates the Permalink according to the Taxonomy settings
    * and also saves the permalink if it is updated manually by user.
    *
+   * @since 1.0.0
    * @access public
-   * @since 1.0
    *
-   * @param integer $id
-   *   Term ID
+   * @param int $id Term ID.
    *
-   * @return void
+   * @return void.
    */
   public function generate_term_permalink( $id ) {
     $new_permalink = '';
@@ -1116,16 +1116,13 @@ final class Permalinks_Customizer_Form {
    * Replace the tags with the respective value on generating the Permalink
    * for the Taxonmoies.
    *
+   * @since 1.0.0
    * @access private
-   * @since 1.0
    *
-   * @param object $term
-   *   contains the list of saved values
-   * @param string $replace_tag
-   *   Structure which is used to create permalink
+   * @param object $term contains the list of saved values.
+   * @param string $replace_tag Structure which is used to create permalink.
    *
-   * @return string $replace_tag
-   *   Return permalink after replacing the appropriate tags with their values
+   * @return string permalink after replacing the appropriate tags with their values.
    */
   private function replace_term_tags( $term, $replace_tag ) {
 
@@ -1192,19 +1189,15 @@ final class Permalinks_Customizer_Form {
   /**
    * Save Permalink for the Term.
    *
+   * @since 1.3.0
    * @access private
-   * @since 1.3
    *
-   * @param object $term
-   *   Term Object
-   * @param string $permalink
-   *   New permalink which needs to be saved
-   * @param string $prev
-   *   Previously saved permalink
-   * @param string $update
-   *   1 for Permaink Regenerating else for creating permalink
+   * @param object $term Term Object.
+   * @param string $permalink New permalink which needs to be saved.
+   * @param string $prev Previously saved permalink.
+   * @param string $update `1` for Permaink Regenerating else for creating permalink.
    *
-   * @return void
+   * @return void.
    */
   private function save_term_permalink( $term, $permalink, $prev, $update ) {
     $url = get_term_meta( $term->term_id, 'permalink_customizer' );
@@ -1250,15 +1243,14 @@ final class Permalinks_Customizer_Form {
   }
 
   /**
-   * Delete Permalink when the Term is deleted
+   * Delete Permalink when the Term is deleted.
    *
+   * @since 1.0.0
    * @access public
-   * @since 1.0
    *
-   * @param integer $id
-   *   Term ID
+   * @param int $id Term ID.
    *
-   * @return void
+   * @return void.
    */
   public function delete_term_permalink( $id ) {
     global $wpdb;
@@ -1280,15 +1272,13 @@ final class Permalinks_Customizer_Form {
   /**
    * Delete the Permalink for the Page selected as the Front Page.
    *
+   * @since 1.0.0
    * @access public
-   * @since 1.0
    *
-   * @param integer $prev_front_page_id
-   *   Page ID of previously set Front Page
-   * @param integer $new_front_page_id
-   *   Page ID of current Front Page
+   * @param int $prev_front_page_id Page ID of previously set Front Page.
+   * @param int $new_front_page_id Page ID of current Front Page.
    *
-   * @return void
+   * @return void.
    */
   public function static_front_page( $prev_front_page_id, $new_front_page_id ) {
     $this->delete_post_permalink( $new_front_page_id );
@@ -1297,10 +1287,10 @@ final class Permalinks_Customizer_Form {
   /**
    * Register Taxonomy to show Permalink Add/Edit Form.
    *
+   * @since 1.3.0
    * @access public
-   * @since 1.3
    *
-   * @return void
+   * @return void.
    */
   public function register_taxonomies_form() {
     $args = array(
@@ -1319,19 +1309,15 @@ final class Permalinks_Customizer_Form {
   /**
    * Add Redirect on regenerating or manual updating the permalink
    *
-   * @access private
    * @since 2.0.0
+   * @access private
    *
-   * @param string $redirect_from
-   *   Previous permalink or url
-   * @param string $redirect_to
-   *   Current permalink or url
-   * @param string $type
-   *   Post Name or Term Name
-   * @param integer $id
-   *   Post ID or Term ID
+   * @param string $redirect_from Previous permalink or url.
+   * @param string $redirect_to Current permalink or url.
+   * @param string $type Post Name or Term Name.
+   * @param int $id Post ID or Term ID.
    *
-   * @return void
+   * @return void.
    */
   private function add_auto_redirect( $redirect_from, $redirect_to, $type, $id ) {
     $redirect_filter = apply_filters(
@@ -1381,12 +1367,12 @@ final class Permalinks_Customizer_Form {
   }
 
   /**
-   * Add `Regenerate Permalink` option in Bulk Action
+   * Add `Regenerate Permalink` option in Bulk Action.
    *
-   * @access public
    * @since 2.0.0
+   * @access public
    *
-   * @return void
+   * @return void.
    */
   public function add_bulk_option() {
     $args = array(
@@ -1423,14 +1409,12 @@ final class Permalinks_Customizer_Form {
   /**
    * Add Regenerate Permalink option in bulk action.
    *
-   * @access public
    * @since 2.0.0
+   * @access public
    *
-   * @param array $actions
-   *   Contains the list of actions.
+   * @param array $actions Contains the list of actions.
    *
-   * @return array $actions
-   *   Returns the bulk actions with adding the Regenerate Permalink
+   * @return array the bulk actions with adding the Regenerate Permalink.
    */
   public function bulk_option( $actions ) {
     $action           = 'permalinks_customizer_regenerate';
@@ -1442,18 +1426,14 @@ final class Permalinks_Customizer_Form {
    * Regenerate Permalink only or with adding redirect against the old permalink
    * of the selected posts/taxonomies.
    *
-   * @access public
    * @since 2.0.0
+   * @access public
    *
-   * @param string $redirect_to
-   *   URL on which needs to be redirected
-   * @param string $doaction
-   *   Action that has been requested
-   * @param array $post_ids
-   *   List of Term IDs
+   * @param string $redirect_to URL on which needs to be redirected.
+   * @param string $doaction Action that has been requested.
+   * @param array $post_ids List of Term IDs.
    *
-   * @return string $redirect_to
-   *   Redirect URI or Redirect URI with adding query argument.
+   * @return string Redirect URI or Redirect URI with adding query argument.
    */
   public function bulk_posttype_regenerate( $redirect_to, $doaction, $post_ids ) {
     if ( 'permalinks_customizer_regenerate' !== $doaction ) {
@@ -1524,12 +1504,16 @@ final class Permalinks_Customizer_Form {
       }
       update_post_meta( $id, 'permalink_customizer', $permalink );
       if ( 'publish' == $post->post_status ) {
-        // permalink_customizer_regenerate_status = 1 means Permalink won't be
-        // generated again on updating the post
+        /*
+         * permalink_customizer_regenerate_status = 1 means Permalink won't be
+         * generated again on updating the post.
+         */
         update_post_meta( $id, 'permalink_customizer_regenerate_status', 1 );
       } else {
-        // permalink_customizer_regenerate_status = 0 means Permalink will be
-        // generated again on updating the post
+        /*
+         * permalink_customizer_regenerate_status = 0 means Permalink will be
+         * generated again on updating the post.
+         */
         update_post_meta( $id, 'permalink_customizer_regenerate_status', 0 );
       }
 
@@ -1563,18 +1547,14 @@ final class Permalinks_Customizer_Form {
    * Regenerate Permalink only or with adding redirect against the old permalink
    * of the selected posts/taxonomies.
    *
-   * @access public
    * @since 2.0.0
+   * @access public
    *
-   * @param string $redirect_to
-   *   URL on which needs to be redirected
-   * @param string $doaction
-   *   Action that has been requested
-   * @param array $term_ids
-   *   List of Term IDs
+   * @param string $redirect_to URL on which needs to be redirected.
+   * @param string $doaction Action that has been requested.
+   * @param array $term_ids List of Term IDs.
    *
-   * @return string $redirect_to
-   *   Redirect URI or Redirect URI with adding query argument.
+   * @return string Redirect URI or Redirect URI with adding query argument.
    */
   public function bulk_term_regenerate( $redirect_to, $doaction, $term_ids ) {
     if ( 'permalinks_customizer_regenerate' !== $doaction ) {
@@ -1634,12 +1614,12 @@ final class Permalinks_Customizer_Form {
   }
 
   /**
-   * Added Custom Endpoints for refreshing the permalink
+   * Added Custom Endpoints for refreshing the permalink.
    *
-   * @access public
    * @since 2.4.0
+   * @access public
    *
-   * @return void
+   * @return void.
    */
   public function rest_edit_form() {
     register_rest_route( 'permalinks-customizer/v1',
@@ -1651,15 +1631,14 @@ final class Permalinks_Customizer_Form {
   }
 
   /**
-   * Refresh Permalink using AJAX Call
+   * Refresh Permalink using AJAX Call.
    *
-   * @access public
    * @since 2.4.0
+   * @access public
    *
-   * @param object $data
-   *   Contains post id with some default REST Values
+   * @param object $data Contains post id with some default REST Values.
    *
-   * @return void
+   * @return void.
    */
   public function refresh_meta_form( $data ) {
     if ( isset( $data['id'] ) && is_numeric( $data['id'] ) ) {
@@ -1682,13 +1661,12 @@ final class Permalinks_Customizer_Form {
   /**
    * Add `Flush Permalinks Cache` link in Admin Toolbar.
    *
-   * @access public
    * @since 2.4.0
+   * @access public
    *
-   * @param object $wp_admin_bar
-   *   Contain Toolbar links
+   * @param object $wp_admin_bar Contain Toolbar links.
    *
-   * @return void
+   * @return void.
    */
   public function flush_permalink_cache( $wp_admin_bar ) {
     $cache = 'wp-admin/admin.php?page=permalinks-customizer-posts-settings&cache=1';

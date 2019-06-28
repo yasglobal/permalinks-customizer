@@ -1,8 +1,15 @@
 <?php
 /**
- * @package PermalinksCustomizer\Admin
+ * @package PermalinksCustomizer
  */
 
+/**
+ * Main Admin Class.
+ *
+ * Create Plugin menu, attach it's respective file and initialize it's class.
+ *
+ * @since 1.0.0
+ */
 class Permalinks_Customizer_Admin {
 
   /**
@@ -16,10 +23,10 @@ class Permalinks_Customizer_Admin {
   /**
    * Added Pages in Menu for Settings.
    *
+   * @since 1.0.0
    * @access public
-   * @since 0.1
    *
-   * @return void
+   * @return void.
    */
   public function admin_menu() {
     add_menu_page( 'Set Your Permalinks', 'Permalinks Customizer',
@@ -77,10 +84,10 @@ class Permalinks_Customizer_Admin {
    * This Function Calls the another Function which shows
    * the PostTypes Settings Page.
    *
+   * @since 1.0.0
    * @access public
-   * @since 0.1
    *
-   * @return void
+   * @return void.
    */
   public function posts_settings_page() {
     require_once(
@@ -91,13 +98,12 @@ class Permalinks_Customizer_Admin {
   }
 
   /**
-   * This Function Calls the another Function which shows
-   * the PostTypes Tags Page.
+   * Calls another Function which shows the PostTypes Tags Page.
    *
+   * @since 1.0.0
    * @access public
-   * @since 0.1
    *
-   * @return void
+   * @return void.
    */
   public function post_tags_page() {
     require_once(
@@ -108,13 +114,12 @@ class Permalinks_Customizer_Admin {
   }
 
   /**
-   * This Function Calls the another Function which shows
-   * the PostTypes Permalinks Page.
+   * Calls another Function which shows the PostTypes Permalinks Page.
    *
+   * @since 1.3.0
    * @access public
-   * @since 1.3
    *
-   * @return void
+   * @return void.
    */
   public function post_permalinks_page() {
     require_once(
@@ -125,13 +130,12 @@ class Permalinks_Customizer_Admin {
   }
 
   /**
-   * This Function Calls the another Function which shows
-   * the Taxonomies Settings Page.
+   * Calls another Function which shows the Taxonomies Settings Page.
    *
+   * @since 1.1.0
    * @access public
-   * @since 1.1
    *
-   * @return void
+   * @return void.
    */
   public function taxonomies_settings_page() {
     require_once(
@@ -142,13 +146,12 @@ class Permalinks_Customizer_Admin {
   }
 
   /**
-   * This Function Calls the another Function which shows
-   * the Taxonomies Tags Page.
+   * Calls another Function which shows the Taxonomies Tags Page.
    *
+   * @since 1.1.0
    * @access public
-   * @since 1.1
    *
-   * @return void
+   * @return void.
    */
   public function taxonomy_tags_page() {
     require_once(
@@ -159,13 +162,12 @@ class Permalinks_Customizer_Admin {
   }
 
   /**
-   * This Function Calls the another Function which shows
-   * the Taxonomies Permalinks Page.
+   * Calls another Function which shows the Taxonomies Permalinks Page.
    *
+   * @since 1.3.0
    * @access public
-   * @since 1.3
    *
-   * @return void
+   * @return void.
    */
   public function taxonomy_permalinks_page() {
     require_once(
@@ -176,13 +178,12 @@ class Permalinks_Customizer_Admin {
   }
 
   /**
-   * This Function Calls the another Function which shows
-   * the Redirects Page.
+   * Calls another Function which shows the Redirects Page.
    *
    * @access public
    * @since 2.0.0
    *
-   * @return void
+   * @return void.
    */
   public function redirects_page() {
     require_once(
@@ -195,10 +196,10 @@ class Permalinks_Customizer_Admin {
   /**
    * Add About Plugins Page.
    *
-   * @access public
    * @since 1.3.9
+   * @access public
    *
-   * @return void
+   * @return void.
    */
   public function about_plugin() {
     require_once(
@@ -211,10 +212,10 @@ class Permalinks_Customizer_Admin {
   /**
    * Add Plugin Support and Follow Message in the footer of Admin Pages.
    *
-   * @access public
    * @since 1.3.3
+   * @access public
    *
-   * @return string
+   * @return string Shows version, website link and twiiter.
    */
   public function admin_footer_text() {
     $footer_text = sprintf(
@@ -233,12 +234,10 @@ class Permalinks_Customizer_Admin {
    * @access public
    * @since 1.3.9
    *
-   * @param array $links
-   *   Contains the Plugin Basic Link (Activate/Deactivate/Delete)
+   * @param array $links Contains the Plugin Basic Link (Activate/Deactivate/Delete)
    *
-   * @return array $links
-   *   Returns the Plugin Basic Links and added some custome link for Settings,
-   *   Contact and About.
+   * @return array Plugin Basic Links and added some custome link for Settings,
+   *   Contact, and About.
    */
   public function settings_link( $links ) {
     $about = sprintf(
@@ -263,8 +262,9 @@ class Permalinks_Customizer_Admin {
   /**
    * Add Privacy Policy about the Plugin.
    *
-   * @access public
    * @since 2.3.0
+   * @access public
+   *
    * @return void
    */
   public function pc_privacy_policy() {
@@ -287,10 +287,10 @@ class Permalinks_Customizer_Admin {
   /**
    * Print the Admin Notice.
    *
-   * @access public
    * @since 2.0.0
+   * @access public
    *
-   * @return void
+   * @return void.
    */
   public function show_admin_notice() {
     if ( isset( $_REQUEST['regenerated_permalink_error'] ) ) {

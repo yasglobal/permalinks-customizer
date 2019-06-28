@@ -1,8 +1,15 @@
 <?php
 /**
- * @package PermalinksCustomizer\Admin
+ * @package PermalinksCustomizer
  */
 
+/**
+ * Create PostTypes Permalinks Settings page.
+ *
+ * Create PostTypes Permalinks Settings HTML and display the page.
+ *
+ * @since 1.0.0
+ */
 class Permalinks_Customizer_PostTypes_Settings {
 
   /**
@@ -16,10 +23,10 @@ class Permalinks_Customizer_PostTypes_Settings {
    * Shows the main Settings Page Where user can provide different
    * Permalink Structure for their PostTypes.
    *
+   * @since 1.0.0
    * @access public
-   * @since 0.1
    *
-   * @return void
+   * @return void.
    */
   private function post_settings() {
     if ( isset( $_POST['submit'] ) ) {

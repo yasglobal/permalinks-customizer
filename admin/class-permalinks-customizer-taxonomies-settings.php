@@ -1,8 +1,15 @@
 <?php
 /**
- * @package PermalinksCustomizer\Admin
+ * @package PermalinksCustomizer
  */
 
+/**
+ * Create Taxonomies Permalinks Settings page.
+ *
+ * Create Taxonomies Permalinks Settings page HTML and display the page.
+ *
+ * @since 1.3.3
+ */
 class Permalinks_Customizer_Taxonomies_Settings {
 
   /**
@@ -16,10 +23,10 @@ class Permalinks_Customizer_Taxonomies_Settings {
    * Shows the main Settings Page Where user can provide different
    * Permalink Structure for their Taxonomies.
    *
+   * @since 1.3.3
    * @access private
-   * @since 1.1
    *
-   * @return void
+   * @return void.
    */
   private function taxonomy_settings() {
     if ( isset( $_POST['submit'] ) ) {

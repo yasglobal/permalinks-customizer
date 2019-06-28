@@ -1,8 +1,15 @@
 <?php
 /**
- * @package PermalinksCustomizer\Admin\About
+ * @package PermalinksCustomizer
  */
 
+/**
+ * Display About page.
+ *
+ * Create the About page HTML and print it.
+ *
+ * @since 1.3.9
+ */
 class Permalinks_Customizer_About {
 
   /**
@@ -15,10 +22,10 @@ class Permalinks_Customizer_About {
   /**
    * More Plugins HTML.
    *
-   * @access private
    * @since 1.3.9
+   * @access private
    *
-   * @return void
+   * @return void.
    */
   private function more_plugins() {
     $plugin_url = plugins_url( '/admin', PERMALINKS_CUSTOMIZER_FILE );

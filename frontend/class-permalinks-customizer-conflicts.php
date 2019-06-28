@@ -1,21 +1,26 @@
 <?php
 /**
- * @package PermalinksCustomizer\Frontend\Conflicts
+ * @package PermalinksCustomizer
  */
 
+/**
+ * Class which checks conflict.
+ *
+ * Check the Polylang plugin is enabled if so, then try to make that fix.
+ *
+ * @since 1.0.0
+ */
 class Permalinks_Customizer_Conflicts {
 
   /**
    * Check Conflicts and resolve it (e.g: Polylang).
    *
+   * @since 1.0.0
    * @access public
-   * @since 1.3.3
    *
-   * @param string $requested_url
-   *   URL requested by User
+   * @param string $requested_url Optional. URL requested by User. ''.
    *
-   * @return string $requested_url
-   *   Return the requested URL by removing the language/ from it if exist.
+   * @return string requested URL by removing the language/ from it if exist.
    */
   public function check_conflicts ( $requested_url = '' ) {
     if ( '' == $requested_url ) {

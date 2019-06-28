@@ -1,8 +1,16 @@
 <?php
 /**
- * @package PermalinksCustomizer\Frontend
+ * @package PermalinksCustomizer
  */
 
+/**
+ * show correct post/page, redirect if found.
+ *
+ * Show the correct page, make redirects if available and return correct permalink
+ * for the different filters.
+ *
+ * @since 1.0.0
+ */
 final class Permalinks_Customizer_Frontend {
 
   /**
@@ -26,14 +34,12 @@ final class Permalinks_Customizer_Frontend {
   /**
    * Filter to rewrite the query if we have a matching post.
    *
+   * @since 1.0.0
    * @access public
-   * @since 0.1
    *
-   * @param string $query
-   *   Requested URL
+   * @param string $query Requested URL.
    *
-   * @return string $query
-   *   Return the URL which has to be parsed.
+   * @return string the URL which has to be parsed.
    */
   public function make_request( $query ) {
     global $wpdb;
@@ -215,10 +221,10 @@ final class Permalinks_Customizer_Frontend {
   /**
    * Action to redirect to the custom permalink.
    *
+   * @since 1.0.0
    * @access public
-   * @since 0.1
    *
-   * @return void
+   * @return void.
    */
   public function make_redirect() {
     $url     = parse_url( get_bloginfo( 'url' ) );
@@ -278,16 +284,13 @@ final class Permalinks_Customizer_Frontend {
   /**
    * Filter to replace the post permalink with the custom one.
    *
+   * @since 1.0.0
    * @access public
-   * @since 0.1
    *
-   * @param string $permalink
-   *   Default WordPress Permalink of Post
-   * @param object $post
-   *   Post Details
+   * @param string $permalink Default WordPress Permalink of Post.
+   * @param object $post Post Details.
    *
-   * @return string $permalink
-   *   Returns the customized Post Permalink
+   * @return string customized Post Permalink.
    */
   public function customized_post_link( $permalink, $post ) {
     $permalinks_customizer = get_post_meta( $post->ID, 'permalink_customizer', true );
@@ -313,16 +316,13 @@ final class Permalinks_Customizer_Frontend {
   /**
    * Filter to replace the page permalink with the custom one.
    *
+   * @since 1.0.0
    * @access public
-   * @since 0.1
    *
-   * @param string $permalink
-   *   Default WordPress Permalink of Page
-   * @param integer $page
-   *   Page ID
+   * @param string $permalink Default WordPress Permalink of Page.
+   * @param int $page Page ID.
    *
-   * @return string $permalink
-   *   Returns the customized Page Permalink
+   * @return string customized Page Permalink.
    */
   public function customized_page_link( $permalink, $page ) {
     $permalinks_customizer = get_post_meta( $page, 'permalink_customizer', true );
@@ -347,16 +347,13 @@ final class Permalinks_Customizer_Frontend {
   /**
    * Filter to replace the attachment permalink with the custom one.
    *
-   * @access public
    * @since 2.2.0
+   * @access public
    *
-   * @param string $permalink
-   *   Default WordPress Permalink of Attachment
-   * @param integer $id
-   *   Attachment ID
+   * @param string $permalink Default WordPress Permalink of Attachment.
+   * @param int $id Attachment ID.
    *
-   * @return string $permalink
-   *   Returns the customized Attachment Permalink
+   * @return string customized Attachment Permalink.
    */
   public function customized_attachment_link( $permalink, $id ) {
     $permalinks_customizer = get_post_meta( $id, 'permalink_customizer', true );
@@ -381,16 +378,13 @@ final class Permalinks_Customizer_Frontend {
   /**
    * Filter to replace the term permalink with the custom one.
    *
+   * @since 1.0.0
    * @access public
-   * @since 1.0
    *
-   * @param string $permalink
-   *   Default WordPress Permalink of Term
-   * @param object $term
-   *   Term Details
+   * @param string $permalink Default WordPress Permalink of Term.
+   * @param object $term Term Details.
    *
-   * @return string $permalink
-   *   Returns the customized Term Permalink.
+   * @return string customized Term Permalink.
    */
   public function customized_term_link( $permalink, $term ) {
     if ( is_object( $term ) ) {
@@ -421,14 +415,12 @@ final class Permalinks_Customizer_Frontend {
   /**
    * Find the Permalink for the provided term id.
    *
+   * @since 1.0.0
    * @access public
-   * @since 0.1
    *
-   * @param integer $id
-   *   Term ID
+   * @param int $id Term ID.
    *
-   * @return string $link or boolean
-   *   Returns Term Link if found otherwise returns false
+   * @return string or bool Term Link if found otherwise returns `false`.
    */
   public function find_permalink_by_id( $id ) {
 
@@ -453,15 +445,12 @@ final class Permalinks_Customizer_Frontend {
    * Remove the post_link and post_type_link Filter for getting the
    * original Permalink of the Posts and set it back.
    *
+   * @since 1.0.0
    * @access public
-   * @since 0.1
    *
-   * @param integer $post_id
-   *   Post ID
+   * @param int $post_id Post ID.
    *
-   * @return string $original_permalink
-   *   Returns the Original Permalink rather than the Permalink
-   *   generated by this plugin for Posts.
+   * @return string Original Permalink for Posts.
    */
   public function original_post_link( $post_id ) {
     remove_filter( 'post_link', array( $this, 'customized_post_link' ), 10, 2 );
@@ -480,15 +469,12 @@ final class Permalinks_Customizer_Frontend {
    * Remove the page_link Filter for getting the original Permalink
    * of the Page and set it back.
    *
+   * @since 1.0.0
    * @access public
-   * @since 0.1
    *
-   * @param integer $post_id
-   *   Page ID
+   * @param int $post_id Page ID.
    *
-   * @return string $original_permalink
-   *   Returns the Original Permalink rather than the Permalink
-   *   generated by this plugin for the Page.
+   * @return string Original Permalink for the Page.
    */
   public function original_page_link( $post_id ) {
     remove_filter( 'page_link', array( $this, 'customized_page_link' ), 10, 2 );
@@ -504,15 +490,12 @@ final class Permalinks_Customizer_Frontend {
    * Remove the attachment_link Filter for getting the original Permalink
    * of the Attachment Post and set it back.
    *
-   * @access public
    * @since 2.2.0
+   * @access public
    *
-   * @param integer $post_id
-   *   Attachment ID
+   * @param int $post_id Attachment ID.
    *
-   * @return string $original_permalink
-   *   Returns the Original Permalink rather than the Permalink
-   *   generated by this plugin for the Page.
+   * @return string Original Permalink for the Attachment.
    */
   public function original_attachment_link( $post_id ) {
     remove_filter( 'attachment_link',
@@ -532,15 +515,12 @@ final class Permalinks_Customizer_Frontend {
    * Remove the term_link and user_trailingslashit Filter for getting
    * the original Permalink of the Term and set it back.
    *
+   * @since 1.0.0
    * @access public
-   * @since 1.0
    *
-   * @param integer $term_id
-   *   Term ID
+   * @param int $term_id Term ID.
    *
-   * @return string $original_permalink
-   *   Returns the Original Permalink rather than the Permalink
-   *   generated by this plugin for the Term.
+   * @return string Original Permalink for the Term.
    */
   public function original_taxonomy_link( $term_id ) {
 
@@ -571,14 +551,13 @@ final class Permalinks_Customizer_Frontend {
   /**
    * Use to Add Trailing Slash.
    *
+   * @since 1.0.0
    * @access public
-   * @since 0.1
    *
-   * @param string $string
-   *   String on trailingslash needs needs to be applied
-   * @param integer $type
+   * @param string $string URL with or without a trailing slash.
+   * @param int $type The type of URL being considered (e.g. single, category, etc) for use in the filter.
    *
-   * @return string $string
+   * @return string Adds/removes a trailing slash based on the permalink structure.
    */
   public function apply_trailingslash( $string, $type ) {
     global $_CPRegisteredURL;
@@ -607,17 +586,14 @@ final class Permalinks_Customizer_Frontend {
   }
 
   /**
-   * Check the requested URL has redirect if it has
-   * then return the redirect URL.
+   * Check the requested URL has redirect if it has then return the redirect URL.
    *
-   * @access private
    * @since 2.0.0
+   * @access private
    *
-   * @param string $url
-   *   URL which is requested by user
+   * @param string $url URL which is requested by the user.
    *
-   * @return string $return_uri
-   *   Return URL on which it needs to be redirected or return empty string.
+   * @return string URL on which it needs to be redirected or return empty string.
    */
   private function check_redirect( $url ) {
     $return_uri = '';

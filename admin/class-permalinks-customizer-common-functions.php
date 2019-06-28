@@ -1,28 +1,30 @@
 <?php
 /**
- * @package PermalinksCustomizer\Admin
+ * @package PermalinksCustomizer
  */
 
+/**
+ * Common function which are used on different pages.
+ *
+ * Returns table header or pagination for settings page.
+ *
+ * @since 1.3.0
+ */
 class Permalinks_Customizer_Common_Functions {
 
   /**
    * Return the Navigation row HTML same as Default Posts page
    * for PostTypes/Taxonomies.
    *
+   * @since 1.3.0
    * @access public
-   * @since 1.3
    *
-   * @param string $order_by_class
-   *   Class either asc or desc
-   * @param string $order_by
-   *   set orderby for sorting
-   * @param string $search_permalink
-   *   Permalink which has been searched or an empty string
-   * @param string $page_url
-   *   Page Slug set by the Plugin
+   * @param string $order_by_class Class either asc or desc.
+   * @param string $order_by set orderby for sorting.
+   * @param string $search_permalink Permalink which has been searched or an empty string.
+   * @param string $page_url Page Slug set by the Plugin.
    *
-   * @return string $nav
-   *   Return table row according to the provided params.
+   * @return string table row according to the provided params.
    */
   public function get_tablenav( $order_by_class, $order_by, $search_permalink, $page_url ) {
     $nav = '<tr>' .
@@ -46,18 +48,14 @@ class Permalinks_Customizer_Common_Functions {
   /**
    * Return the Pager HTML.
    *
+   * @since 1.3.0
    * @access public
-   * @since 1.3
    *
-   * @param integer $total_permalinks
-   *   No. of total results found
-   * @param integer $current_pager_value
-   *   Current Page
-   * @param integer $total_pager
-   *   Total no. of pages
+   * @param int $total_permalinks No. of total results found.
+   * @param int $current_pager_value Optional. Current Page. 1.
+   * @param int $total_pager Optional. Total no. of pages. 0.
    *
-   * @return string $pagination_html
-   *   Return Pagination HTML if pager exist
+   * @return string Return Pagination HTML if pager exist.
    */
   public function get_pager( $total_permalinks, $current_pager_value = 1, $total_pager = 0 ) {
 

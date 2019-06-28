@@ -1,8 +1,15 @@
 <?php
 /**
- * @package PermalinksCustomizer\Admin\UpdateTaxonomy
+ * @package PermalinksCustomizer
  */
 
+/**
+ * Create PostTypes Permalinks page.
+ *
+ * Create available PostTypes Permalinks HTML and display the page.
+ *
+ * @since 1.3.3
+ */
 class Permalinks_Customizer_Update_Taxonomy {
 
   /**
@@ -15,10 +22,10 @@ class Permalinks_Customizer_Update_Taxonomy {
   /**
    * Add the Permalinks of the Taxonomy to the term table.
    *
+   * @since 1.3.3
    * @access private
-   * @since 1.3
    *
-   * @return void
+   * @return void.
    */
   private function update_taxonomy_terms() {
     $taxonomy_table = get_option( 'permalinks_customizer_table', -1 );

@@ -1,12 +1,19 @@
 <?php
 /**
- * @package PermalinksCustomizer\Admin
+ * @package PermalinksCustomizer
  */
 
+/**
+ * Display available Post tags.
+ *
+ * Create available Post tags page HTML and display the page.
+ *
+ * @since 1.3.3
+ */
 class Permalinks_Customizer_Post_Tags {
 
   /**
-   * Call Posy Tags Function.
+   * Call Post Tags Function.
    */
   function __construct() {
     $this->post_available_tags();
@@ -15,10 +22,10 @@ class Permalinks_Customizer_Post_Tags {
   /**
    * Shows all the Tags which this Plugin Supports for PostTypes.
    *
+   * @since 1.3.3
    * @access private
-   * @since 0.1
    *
-   * @return void
+   * @return void.
    */
   private function post_available_tags() {
     ?>
