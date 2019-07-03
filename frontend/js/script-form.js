@@ -94,6 +94,10 @@ function updateMetaBox() {
         return;
     }
 
+    var defaultPerm = document.getElementsByClassName("edit-post-post-link__preview-label");
+    if (defaultPerm && defaultPerm[0]) {
+        defaultPerm[0].parentNode.classList.add("pc-permalink-hidden");
+    }
     isSaving = editPost.isSavingMetaBoxes();
 
     if (isSaving !== lastIsSaving && !isSaving) {
@@ -124,6 +128,18 @@ function updateMetaBox() {
     lastIsSaving = isSaving;
 }
 
+/**
+ * Hide default Permalink metabox
+ */
+function hideDefaultPermalink() {
+    "use strict";
+
+    var defaultPerm = document.getElementsByClassName("edit-post-post-link__preview-label");
+    if (defaultPerm && defaultPerm[0]) {
+        defaultPerm[0].parentNode.classList.add("pc-permalink-hidden");
+    }
+}
+
 function permalinkContentLoaded() {
     "use strict";
 
@@ -144,17 +160,25 @@ function permalinkContentLoaded() {
     }
     if (wp.data) {
         var permalinkAdd = document.getElementById("permalinks_customizer_add");
+        var sidebar = document.querySelectorAll(".edit-post-sidebar .components-panel__header");
+        var i = 0;
+        var totalTabs = sidebar.length;
         if (permalinkAdd && permalinkAdd.value == "add") {
             permalinkEdit.style.display = "none";
         }
         editPost = wp.data.select("core/edit-post");
         wp.data.subscribe(updateMetaBox);
         if (defaultPerm && defaultPerm[0]) {
-            console.log('22')
             defaultPerm[0].parentNode.classList.add("pc-permalink-hidden");
         }
         if (permalinkEdit.classList.contains("closed")) {
             permalinkEdit.classList.remove("closed")
+        }
+        if (sidebar && totalTabs > 0) {
+            while (i < totalTabs) {
+                sidebar[i].addEventListener("click", hideDefaultPermalink);
+                i += 1;
+            }
         }
     }
 }
