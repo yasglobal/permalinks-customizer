@@ -234,6 +234,9 @@ final class Permalinks_Customizer_Frontend {
       }
       remove_filter( 'request', array( $this, 'make_request' ), 10, 1 );
       global $wp;
+      if ( isset( $wp->matched_rule ) ) {
+        $wp->matched_rule = NULL;
+      }
       $wp->parse_request();
       $query = $wp->query_vars;
       add_filter( 'request', array( $this, 'make_request' ), 10, 1 );
