@@ -87,15 +87,15 @@ final class Permalinks_Customizer_Frontend {
     $request_noslash = preg_replace( '@/+@', '/', trim( $request, '/' ) );
 
     $sql = $wpdb->prepare( "SELECT $wpdb->posts.ID, $wpdb->postmeta.meta_value, $wpdb->posts.post_type, $wpdb->posts.post_status FROM $wpdb->posts " .
-        " LEFT JOIN $wpdb->postmeta ON ($wpdb->posts.ID = $wpdb->postmeta.post_id) WHERE " .
-        " meta_key = 'permalink_customizer' AND meta_value != '' AND " .
-        " ( LOWER(meta_value) = LEFT(LOWER('%s'), LENGTH(meta_value)) OR " .
-        "   LOWER(meta_value) = LEFT(LOWER('%s'), LENGTH(meta_value)) ) " .
-        "  AND post_status != 'trash' AND post_type != 'nav_menu_item'" .
-        " ORDER BY LENGTH(meta_value) DESC, " .
-        " FIELD(post_status,'publish','private','draft','auto-draft','inherit')," .
-        " FIELD(post_type,'post','page'), $wpdb->posts.ID ASC LIMIT 1",
-        $request_noslash, $request_noslash . "/" );
+      " LEFT JOIN $wpdb->postmeta ON ($wpdb->posts.ID = $wpdb->postmeta.post_id) WHERE " .
+      " meta_key = 'permalink_customizer' AND meta_value != '' AND " .
+      " ( LOWER(meta_value) = LEFT(LOWER('%s'), LENGTH(meta_value)) OR " .
+      "   LOWER(meta_value) = LEFT(LOWER('%s'), LENGTH(meta_value)) ) " .
+      "  AND post_status != 'trash' AND post_type != 'nav_menu_item'" .
+      " ORDER BY LENGTH(meta_value) DESC, " .
+      " FIELD(post_status,'publish','private','draft','auto-draft','inherit')," .
+      " FIELD(post_type,'post','page'), $wpdb->posts.ID ASC LIMIT 1",
+      $request_noslash, $request_noslash . "/" );
 
     $posts = $wpdb->get_results( $sql );
 
@@ -123,15 +123,44 @@ final class Permalinks_Customizer_Frontend {
         $original_url = preg_replace( '@/+@', '/', str_replace( trim( strtolower( $posts[0]->meta_value ), '/' ), $original_link, strtolower( $request_noslash ) ) );
       }
     }
-    if ( NULL === $original_url ) {
+
+    $term_checked = 0;
+    if ( NULL !== $original_url && ( isset( $posts[0]->meta_value )
+      && ( $request !== $posts[0]->meta_value
+        && $request_noslash !== $posts[0]->meta_value
+      )
+    ) ) {
       $sql = $wpdb->prepare( "SELECT * FROM $wpdb->termmeta WHERE " .
+        " meta_key = 'permalink_customizer' AND meta_value != '' AND " .
+        " ( LOWER(meta_value) = LEFT(LOWER('%s'), LENGTH(meta_value)) OR " .
+        " LOWER(meta_value) = LEFT(LOWER('%s'), LENGTH(meta_value)) ) " .
+        " ORDER BY LENGTH(meta_value) DESC, $wpdb->termmeta.term_id ASC LIMIT 1",
+        $request_noslash, $request_noslash . "/" );
+
+      $taxonomy_term_data = $wpdb->get_results( $sql );
+
+      if ( is_array( $taxonomy_term_data )
+        && isset( $taxonomy_term_data[0]->meta_value )
+        && ( $request === $taxonomy_term_data[0]->meta_value
+          || $request_noslash === $taxonomy_term_data[0]->meta_value
+        )
+      ) {
+        $original_url = NULL;
+        $term_checked = 1;
+      }
+    }
+
+    if ( NULL === $original_url ) {
+      if ( 0 == $term_checked ) {
+        $sql = $wpdb->prepare( "SELECT * FROM $wpdb->termmeta WHERE " .
           " meta_key = 'permalink_customizer' AND meta_value != '' AND " .
           " ( LOWER(meta_value) = LEFT(LOWER('%s'), LENGTH(meta_value)) OR " .
           " LOWER(meta_value) = LEFT(LOWER('%s'), LENGTH(meta_value)) ) " .
           " ORDER BY LENGTH(meta_value) DESC, $wpdb->termmeta.term_id ASC LIMIT 1",
           $request_noslash, $request_noslash . "/" );
 
-      $taxonomy_term_data = $wpdb->get_results( $sql );
+        $taxonomy_term_data = $wpdb->get_results( $sql );
+      }
 
       $get_term_permalink = NULL;
       if ( is_array( $taxonomy_term_data ) && isset( $taxonomy_term_data[0]->term_id ) ) {
