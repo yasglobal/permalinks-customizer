@@ -17,6 +17,9 @@ $args = array(
   'public' => true
 );
 
+// Delete Plugin Version
+delete_option( 'permalinks_customizer_plugin_version' );
+
 // Delete PostType Settings
 $post_types = get_post_types( $args, 'objects' );
 foreach ( $post_types as $post_type ) {
