@@ -36,9 +36,29 @@ class Permalinks_Customizer_Conflicts {
           $requested_url = str_replace( 'language/', '', $requested_url );
         }
 
-        $remove_lang = ltrim( strstr( $requested_url, '/' ), '/' );
-        if ( '' != $remove_lang ) {
-          return $remove_lang;
+        /*
+         * Check if `hide_default` is true and the current language is not
+         * the default. If `true` the remove the lang code from the url.
+         */
+        if ( 1 == $polylang_config['hide_default'] ) {
+          $current_language = '';
+          if ( function_exists( 'pll_current_language' ) ) {
+            // get current language
+            $current_language = pll_current_language();
+          }
+          // get default language
+          $default_language = $polylang_config['default_lang'];
+          if ( $current_language !== $default_language ) {
+            $remove_lang = ltrim( strstr( $requested_url, '/' ), '/' );
+            if ( '' != $remove_lang ) {
+              return $remove_lang;
+            }
+          }
+        } else {
+          $remove_lang = ltrim( strstr( $requested_url, '/' ), '/' );
+          if ( '' != $remove_lang ) {
+            return $remove_lang;
+          }
         }
       }
     }

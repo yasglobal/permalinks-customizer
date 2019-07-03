@@ -5,7 +5,7 @@
  * Deletes Settings, Post Permalinks and Taxonomies Permalinks
  * on uninstalling the Plugin.
  *
- * @package PermalinksCustomizer/Uninstaller
+ * @package PermalinksCustomizer
  * @since 2.0.0
  */
 
