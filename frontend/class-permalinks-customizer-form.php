@@ -1651,16 +1651,17 @@ final class Permalinks_Customizer_Form {
    * @return void.
    */
   public function flush_permalink_cache( $wp_admin_bar ) {
-    $cache = 'wp-admin/admin.php?page=permalinks-customizer-posts-settings&cache=1';
-
-    $wp_admin_bar->add_node([
-      'id' => 'permalinks-customizer',
-      'title' => 'Flush Permalinks Cache',
-      'href' => trailingslashit( home_url() ) . $cache,
-      'meta'  => array(
-        'target' => '_blank',
-        'title' => 'Flush Permalinks Cache'
-      )
-    ]);
+    if ( is_user_logged_in() && current_user_can( 'manage_options' ) ) {
+      $cache = 'wp-admin/admin.php?page=permalinks-customizer-posts-settings&cache=1';
+      $wp_admin_bar->add_node([
+        'id'    => 'permalinks-customizer',
+        'title' => 'Flush Permalinks Cache',
+        'href'  => trailingslashit( home_url() ) . $cache,
+        'meta'  => array(
+          'target' => '_blank',
+          'title'  => 'Flush Permalinks Cache'
+        )
+      ]);
+    }
   }
 }
