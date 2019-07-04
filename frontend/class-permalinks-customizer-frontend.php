@@ -25,8 +25,8 @@ final class Permalinks_Customizer_Frontend {
     add_filter( 'post_type_link', array( $this, 'customized_post_link' ), 10, 2 );
     add_filter( 'page_link', array( $this, 'customized_page_link' ), 10, 2 );
     add_filter( 'attachment_link', array( $this, 'customized_attachment_link' ), 10, 2 );
-
     add_filter( 'term_link', array( $this, 'customized_term_link' ), 10, 3 );
+    add_filter( 'url_to_postid', array( $this, 'check_permalink' ), 10 );
 
     add_filter( 'user_trailingslashit', array( $this, 'apply_trailingslash' ), 10, 2 );
   }
@@ -578,6 +578,61 @@ final class Permalinks_Customizer_Frontend {
     );
 
     return $original_permalink;
+  }
+
+  /**
+   * Return default permalink against the customized permalink.
+   *
+   * @since 2.6.0
+   * @access public
+   *
+   * @param string $permalink URL Permalink to check.
+   *
+   * @return string Default Permalink or the same permalink if not found.
+   */
+  public function check_permalink( $permalink ) {
+    global $wpdb;
+
+    if ( ! isset( $permalink ) || empty( $permalink ) ) {
+      return $permalink;
+    }
+
+    $request = ltrim( $permalink, '/' );
+    if ( defined( 'POLYLANG_VERSION' ) ) {
+      require_once(
+        PERMALINKS_CUSTOMIZER_PATH . 'frontend/class-permalinks-customizer-conflicts.php'
+      );
+
+      $conflicts = new Permalinks_Customizer_Conflicts();
+      $request   = $conflicts->check_conflicts( $request );
+    }
+
+    $request_noslash = preg_replace( '@/+@', '/', trim( $request, '/' ) );
+
+    $sql = $wpdb->prepare( "SELECT $wpdb->posts.ID, $wpdb->postmeta.meta_value, $wpdb->posts.post_type, $wpdb->posts.post_status FROM $wpdb->posts " .
+      " LEFT JOIN $wpdb->postmeta ON ($wpdb->posts.ID = $wpdb->postmeta.post_id) WHERE " .
+      " meta_key = 'permalink_customizer' AND meta_value != '' AND " .
+      " ( LOWER(meta_value) = LEFT(LOWER('%s'), LENGTH(meta_value)) OR " .
+      "   LOWER(meta_value) = LEFT(LOWER('%s'), LENGTH(meta_value)) ) " .
+      "  AND post_status != 'trash' AND post_type != 'nav_menu_item'" .
+      " ORDER BY LENGTH(meta_value) DESC, " .
+      " FIELD(post_status,'publish','private','draft','auto-draft','inherit')," .
+      " FIELD(post_type,'post','page'), $wpdb->posts.ID ASC LIMIT 1",
+      $request_noslash, $request_noslash . "/" );
+
+    $post = $wpdb->get_row( $sql );
+
+    if ( isset( $post ) && isset( $post->post_type ) ) {
+      if ( 'page' === $post->post_type ) {
+        $permalink = $this->original_page_link( $post->ID );
+      } elseif ( 'attachment' === $post->post_type ) {
+        $permalink = $this->original_attachment_link( $post->ID );
+      } else {
+        $permalink = $this->original_post_link( $post->ID );
+      }
+    }
+
+    return $permalink;
   }
 
   /**
