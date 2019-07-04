@@ -175,31 +175,13 @@ final class Permalinks_Customizer_Form {
     $permalink_edit_field .= $home_url .
                               '<span id="editable-post-name" title="Click to edit this part of the permalink">' .
                               $postname_html .
-                              '<input type="text" id="permalinks-customizer-post-slug" class="text" value="' . $permalink_edit_value . '" style="width: 250px; color: #ddd;" onfocus="focusPermalinkField()" onblur="blurPermalinkField()" />' .
+                              '<input type="text" id="permalinks-customizer-post-slug" class="text" value="' . $permalink_edit_value . '" style="width: 250px; color: #ddd;" />' .
                               '<input type="hidden" value="' . $original_permalink . '" id="original_permalink" />' .
                               '</span>';
     echo apply_filters( 'edit_permalink_field', $permalink_edit_field );
 
-    echo '<script type="text/javascript">
-            var newPostSlug = document.getElementById("permalinks-customizer-post-slug"),
-                originalPermalink = document.getElementById("original_permalink");
-            function focusPermalinkField() {
-              if (!newPostSlug) return;
-              newPostSlug.style.color = "#000";
-            }
-
-            function blurPermalinkField() {
-              if (!newPostSlug) return;
-              document.getElementById("permalinks_customizer").value = newPostSlug.value;
-              if ( newPostSlug.value == "" || newPostSlug.value == originalPermalink.value ) {
-                newPostSlug.value = originalPermalink.value;
-                newPostSlug.style.color = "#ddd";
-              }
-            }
-          </script>';
-
     if ( $renderContainers ) {
-      wp_enqueue_script( 'permalink-customizer-admin', plugins_url( '/js/script-form.min.js', __FILE__ ), array(), false, true );
+      wp_enqueue_script( 'permalink-customizer-admin', plugins_url( '/js/script-form.js', __FILE__ ), array(), false, true );
       if ( isset( $permalink ) && ! empty( $permalink ) ) {
         $view_url = trailingslashit( home_url() ) . $permalink;
         echo ' <span id="view-post-btn"><a href="' . $view_url . '" class="button button-small" target="_blank">View</a></span> <span id="regenerate_permalink"><a href="javascript:void(0);" class="button button-small">Regenerate Permalink</a></span>';
@@ -273,7 +255,7 @@ final class Permalinks_Customizer_Form {
 
     if ( 'trash' != $post->post_status ) {
       wp_enqueue_script( 'permalink-customizer-admin',
-        plugins_url( '/js/script-form.min.js', __FILE__ ), array(), false, true
+        plugins_url( '/js/script-form.js', __FILE__ ), array(), false, true
       );
       if ( isset( $permalink ) && ! empty( $permalink ) ) {
         $view_url = trailingslashit( home_url() ) . $permalink;
@@ -323,14 +305,14 @@ final class Permalinks_Customizer_Form {
   public function meta_edit_form( $post ) {
     if ( isset( $this->permalink_metabox ) && 1 === $this->permalink_metabox ) {
       wp_enqueue_script( 'permalink-customizer-admin',
-        plugins_url( '/js/script-form.min.js', __FILE__ ), array(), false, true
+        plugins_url( '/js/script-form.js', __FILE__ ), array(), false, true
       );
       return;
     }
 
     if ( $post->ID == get_option( 'page_on_front' ) ) {
       wp_enqueue_script( 'permalink-customizer-admin',
-        plugins_url( '/js/script-form.min.js', __FILE__ ), array(), false, true
+        plugins_url( '/js/script-form.js', __FILE__ ), array(), false, true
       );
       return;
     }
@@ -342,7 +324,7 @@ final class Permalinks_Customizer_Form {
     $post_types = get_post_types( $args, 'objects' );
     if ( ! isset( $post_types[$post->post_type] ) ) {
       wp_enqueue_script( 'permalink-customizer-admin',
-        plugins_url( '/js/script-form.min.js', __FILE__ ), array(), false, true
+        plugins_url( '/js/script-form.js', __FILE__ ), array(), false, true
       );
       return;
     }
@@ -354,7 +336,7 @@ final class Permalinks_Customizer_Form {
     );
     if ( '__true' === $excluded ) {
       wp_enqueue_script( 'permalink-customizer-admin',
-        plugins_url( '/js/script-form.min.js', __FILE__ ), array(), false, true
+        plugins_url( '/js/script-form.js', __FILE__ ), array(), false, true
       );
       return;
     }
@@ -392,7 +374,7 @@ final class Permalinks_Customizer_Form {
 
     if ( 'trash' != $post->post_status ) {
       wp_enqueue_script( 'permalink-customizer-admin',
-        plugins_url( '/js/script-form.min.js', __FILE__ ), array(), false, true
+        plugins_url( '/js/script-form.js', __FILE__ ), array(), false, true
       );
       $content .= '<label style="display:block;">Actions</label>';
       if ( isset( $permalink ) && ! empty( $permalink ) ) {

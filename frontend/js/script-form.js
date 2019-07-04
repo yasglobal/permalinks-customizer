@@ -66,9 +66,9 @@ function changeSEOLink() {
             }
         }, 1000);
         var snippetEditorTitle = document.getElementById("snippet-editor-title");
-        var snippetEditorSlug  = document.getElementById("snippet-editor-slug");
-        var snippetEditorDesc  = document.getElementById("snippet-editor-meta-description");
-        var snippetCite        = document.getElementById("snippet_cite");
+        var snippetEditorSlug = document.getElementById("snippet-editor-slug");
+        var snippetEditorDesc = document.getElementById("snippet-editor-meta-description");
+        var snippetCite = document.getElementById("snippet_cite");
         if (snippetEditorTitle) {
             snippetEditorTitle.addEventListener("blur", changeSEOLinkOnBlur);
         }
@@ -81,6 +81,36 @@ function changeSEOLink() {
         if (snippetCite) {
             snippetCite.style.display = "none";
         }
+    }
+}
+
+/**
+ * Change color of edit box on focus.
+ */
+function focusPermalinkField() {
+    "use strict";
+
+    var newPostSlug = document.getElementById("permalinks-customizer-post-slug");
+    if (newPostSlug) {
+        newPostSlug.style.color = "#000";
+    }
+}
+
+/**
+ * Change color of edit box on blur.
+ */
+function blurPermalinkField() {
+    "use strict";
+
+    var newPostSlug = document.getElementById("permalinks-customizer-post-slug");
+    var originalPermalink = document.getElementById("original_permalink")
+    if (!newPostSlug) {
+        return;
+    }
+    document.getElementById("permalinks_customizer").value = newPostSlug.value;
+    if ( newPostSlug.value == "" || newPostSlug.value == originalPermalink.value ) {
+        newPostSlug.value = originalPermalink.value;
+        newPostSlug.style.color = "#ddd";
     }
 }
 
@@ -145,11 +175,18 @@ function permalinkContentLoaded() {
 
     var permalinkEdit = document.getElementById("permalinks-customizer-edit-box");
     var defaultPerm = document.getElementsByClassName("edit-post-post-link__preview-label");
+    var postSlug = document.getElementById("permalinks-customizer-post-slug");
+
     if (regeneratePermalink && regenerateValue) {
         regeneratePermalink.addEventListener("click", regenratePermalinkOption);
         if (!savePost) {
             savePost = document.getElementById("publish");
         }
+    }
+
+    if (postSlug) {
+        postSlug.addEventListener("focus", focusPermalinkField);
+        postSlug.addEventListener("blur", blurPermalinkField);
     }
 
     if (checkYoastSEO) {
