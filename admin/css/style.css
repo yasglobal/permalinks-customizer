@@ -1,0 +1,17 @@
+@media screen and (min-width: 1024px) {
+    .redirects .type {
+        width: 15%;
+    }
+
+    .redirects .status {
+        width: 10%;
+    }
+
+    .redirects .count {
+        width: 6%;
+    }
+
+    .redirects .accessed {
+        width: 13%;
+    }
+}

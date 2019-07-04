@@ -1,0 +1,237 @@
+# Translation of Plugins - Permalinks Customizer - Stable (latest release) in English (Canada)
+# This file is distributed under the same license as the Plugins - Permalinks Customizer - Stable (latest release) package.
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2017-10-15 11:27:25+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: GlotPress/2.4.0-alpha\n"
+"Language: en_CA\n"
+"Project-Id-Version: Plugins - Permalinks Customizer - Stable (latest release)\n"
+
+#: admin/class-permalinks-customizer-posttype-permalinks.php:32
+#: admin/class-permalinks-customizer-taxonomy-permalinks.php:32
+msgid "There is some error to proceed your request. Please retry with your request or contact to the plugin author."
+msgstr "There is some error to proceed your request. Please retry with your request or contact to the plugin author."
+
+#. Author URI of the plugin/theme
+msgid "https://www.yasglobal.com/web-design-development/wordpress/permalinks-customizer/"
+msgstr "https://www.yasglobal.com/web-design-development/wordpress/permalinks-customizer/"
+
+#. Author of the plugin/theme
+msgid "YAS Global Team"
+msgstr "YAS Global Team"
+
+#. Description of the plugin/theme
+msgid "Set permalinks for default post-type and custom post-type which can be changed from the single post edit page."
+msgstr "Set permalinks for default post-type and custom post-type which can be changed from the single post edit page."
+
+#. Plugin URI of the plugin/theme
+msgid "https://wordpress.org/plugins/permalinks-customizer/"
+msgstr "https://wordpress.org/plugins/permalinks-customizer/"
+
+#. Plugin Name of the plugin/theme
+msgid "Permalinks Customizer"
+msgstr "Permalinks Customizer"
+
+#: frontend/class-permalinks-customizer-form.php:136
+msgid "Permalink:"
+msgstr "Permalink:"
+
+#: frontend/class-permalinks-customizer-form.php:106
+msgid "View Page"
+msgstr "View Page"
+
+#: admin/class-permalinks-customizer-taxonomy-tags.php:42
+msgid "A sanitized version of the name of the Term/Category. So &quot;External API&quot; becomes external-api in the URI. This <strong>Tag</strong> contains all the <strong>Parent Term/Category Slug</strong> if any parent Term/Category is selected before adding it."
+msgstr "A sanitized version of the name of the Term/Category. So &quot;External API&quot; becomes external-api in the URI. This <strong>Tag</strong> contains all the <strong>Parent Term/Category Slug</strong> if any parent Term/Category is selected before adding it."
+
+#: admin/class-permalinks-customizer-taxonomy-tags.php:38
+msgid "A sanitized version of the name of the Term/Category. So &quot;External API&quot; becomes external-api in the URI. This <strong>Tag</strong> contains Immediate <strong>Parent Term/Category Slug</strong> if any parent Term/Category is selected before adding it."
+msgstr "A sanitized version of the name of the Term/Category. So &quot;External API&quot; becomes external-api in the URI. This <strong>Tag</strong> contains Immediate <strong>Parent Term/Category Slug</strong> if any parent Term/Category is selected before adding it."
+
+#: admin/class-permalinks-customizer-taxonomy-tags.php:34
+msgid "A sanitized version of the name of the Term/Category. So &quot;External API&quot; becomes external-api in the URI."
+msgstr "A sanitized version of the name of the Term/Category. So &quot;External API&quot; becomes external-api in the URI."
+
+#: admin/class-permalinks-customizer-taxonomy-tags.php:30
+msgid "The unique ID # of the Term/Category, for example 423"
+msgstr "The unique ID # of the Term/Category, for example 423"
+
+#: admin/class-permalinks-customizer-taxonomy-tags.php:26
+msgid "Name of the Term/Category. let&#039;s say the name is \"External API\" so, it becomes external-api in the URI."
+msgstr "Name of the Term/Category. let&#039;s say the name is \"External API\" so, it becomes external-api in the URI."
+
+#: admin/class-permalinks-customizer-taxonomy-tags.php:21
+msgid "Structure Tags for Taxonomies"
+msgstr "Structure Tags for Taxonomies"
+
+#: admin/class-permalinks-customizer-taxonomy-permalinks.php:40
+msgid "Taxonomy Permalinks"
+msgstr "Taxonomy Permalinks"
+
+#: admin/class-permalinks-customizer-taxonomies-settings.php:36
+msgid "Please check all the <a href=\"%1$s/wp-admin/admin.php?page=permalinks-customizer-taxonomy-tags\" title=\"structured tags\">structured tags</a> which can be used with this plugin, <a href=\"%1$s/wp-admin/admin.php?page=permalinks-customizer-taxonomy-tags\" title=\"here\">here</a>."
+msgstr "Please check all the <a href=\"%1$s/wp-admin/admin.php?page=permalinks-customizer-taxonomy-tags\" title=\"structured tags\">structured tags</a> which can be used with this plugin, <a href=\"%1$s/wp-admin/admin.php?page=permalinks-customizer-taxonomy-tags\" title=\"here\">here</a>."
+
+#: admin/class-permalinks-customizer-taxonomies-settings.php:35
+msgid "Define the Permalinks for each taxonomy type so, the Permalinks would be created automatically on creating the Term/Category. Otherwise, you need to create the Permalinks manually from the Edit Term/Category Page."
+msgstr "Define the Permalinks for each taxonomy type so, the Permalinks would be created automatically on creating the Term/Category. Otherwise, you need to create the Permalinks manually from the Edit Term/Category Page."
+
+#: admin/class-permalinks-customizer-taxonomies-settings.php:33
+msgid "Taxonomies Permalinks Settings"
+msgstr "Taxonomies Permalinks Settings"
+
+#: admin/class-permalinks-customizer-posttypes-settings.php:49
+#: admin/class-permalinks-customizer-taxonomies-settings.php:60
+msgid "Save Changes"
+msgstr "Save Changes"
+
+#: admin/class-permalinks-customizer-posttypes-settings.php:32
+msgid "Please check all the <a href=\"%1$s/wp-admin/admin.php?page=permalinks-customizer-post-tags\" title=\"structured tags\">structured tags</a> which can be used with this plugin, <a href=\"%2$s/wp-admin/admin.php?page=permalinks-customizer-post-tags\" title=\"here\">here</a>"
+msgstr "Please check all the <a href=\"%1$s/wp-admin/admin.php?page=permalinks-customizer-post-tags\" title=\"structured tags\">structured tags</a> which can be used with this plugin, <a href=\"%2$s/wp-admin/admin.php?page=permalinks-customizer-post-tags\" title=\"here\">here</a>"
+
+#: admin/class-permalinks-customizer-posttypes-settings.php:31
+msgid "Define the Permalinks for each post type. You can define different structures for each post type."
+msgstr "Define the Permalinks for each post type. You can define different structures for each post type."
+
+#: admin/class-permalinks-customizer-posttypes-settings.php:29
+msgid "PostTypes Permalinks Settings"
+msgstr "PostTypes Permalinks Settings"
+
+#: admin/class-permalinks-customizer-posttype-permalinks.php:139
+#: admin/class-permalinks-customizer-taxonomy-permalinks.php:85
+#: admin/class-permalinks-customizer-taxonomy-permalinks.php:139
+msgid "Select bulk action"
+msgstr "Select bulk action"
+
+#: admin/class-permalinks-customizer-posttype-permalinks.php:88
+#: admin/class-permalinks-customizer-posttype-permalinks.php:142
+#: admin/class-permalinks-customizer-taxonomy-permalinks.php:88
+#: admin/class-permalinks-customizer-taxonomy-permalinks.php:142
+msgid "Delete Permalinks"
+msgstr "Delete Permalinks"
+
+#: admin/class-permalinks-customizer-posttype-permalinks.php:87
+#: admin/class-permalinks-customizer-posttype-permalinks.php:141
+#: admin/class-permalinks-customizer-taxonomy-permalinks.php:87
+#: admin/class-permalinks-customizer-taxonomy-permalinks.php:141
+msgid "Bulk Actions"
+msgstr "Bulk Actions"
+
+#: admin/class-permalinks-customizer-posttype-permalinks.php:40
+msgid "PostTypes Permalinks"
+msgstr "PostTypes Permalinks"
+
+#: admin/class-permalinks-customizer-post-tags.php:93
+msgid "<b>Note:</b> &quot;%postname%&quot; is similar as of the &quot;%title%&quot; tag but the difference is that &quot;%postname%&quot; can only be set once whereas &quot;%title%&quot; can be changed. let&#039;s say the title is &quot;This Is A Great Post!&quot; so, it becomes &quot;this-is-a-great-post&quot; in the URI(At the first time, &quot;%postname%&quot; and &quot;%title%&quot; works same) but if you edit and change title let&#039;s say &quot;This Is A WordPress Post!&quot; so, &quot;%postname%&quot; in the URI remains same &quot;this-is-a-great-post&quot; whereas &quot;%title%&quot; in the URI becomes &quot;this-is-a-wordpress-post&quot;"
+msgstr "<b>Note:</b> &quot;%postname%&quot; is similar as of the &quot;%title%&quot; tag but the difference is that &quot;%postname%&quot; can only be set once whereas &quot;%title%&quot; can be changed. let&#039;s say the title is &quot;This Is A Great Post!&quot; so, it becomes &quot;this-is-a-great-post&quot; in the URI(At the first time, &quot;%postname%&quot; and &quot;%title%&quot; works same) but if you edit and change title let&#039;s say &quot;This Is A WordPress Post!&quot; so, &quot;%postname%&quot; in the URI remains same &quot;this-is-a-great-post&quot; whereas &quot;%title%&quot; in the URI becomes &quot;this-is-a-wordpress-post&quot;"
+
+#: admin/class-permalinks-customizer-post-tags.php:90
+msgid "A sanitized version of the author last name. If author last name is not available so, it uses the author&#39;s username."
+msgstr "A sanitized version of the author last name. If author last name is not available so, it uses the author&#39;s username."
+
+#: admin/class-permalinks-customizer-post-tags.php:86
+msgid "A sanitized version of the author first name. If author first name is not available so, it uses the author&#39;s username."
+msgstr "A sanitized version of the author first name. If author first name is not available so, it uses the author&#39;s username."
+
+#: admin/class-permalinks-customizer-post-tags.php:82
+msgid "A sanitized version of the author name."
+msgstr "A sanitized version of the author name."
+
+#: admin/class-permalinks-customizer-post-tags.php:78
+msgid "A sanitized version of the product category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI. <i>This <strong>tag</strong> is specially used for WooCommerce Products."
+msgstr "A sanitized version of the product category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI. <i>This <strong>tag</strong> is specially used for WooCommerce Products."
+
+#: admin/class-permalinks-customizer-post-tags.php:74
+msgid " A sanitized version of the category name (category slug field on New/Edit Category panel)."
+msgstr " A sanitized version of the category name (category slug field on New/Edit Category panel)."
+
+#: admin/class-permalinks-customizer-post-tags.php:70
+msgid "A sanitized version of the category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI."
+msgstr "A sanitized version of the category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI."
+
+#: admin/class-permalinks-customizer-post-tags.php:66
+msgid "A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So &quot;This Is A Great Post!&quot; becomes this-is-a-great-post in the URI. This <strong>Tag</strong> contains all the <strong>Parent Page Slugs</strong> if any parent page is selected before publishing."
+msgstr "A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So &quot;This Is A Great Post!&quot; becomes this-is-a-great-post in the URI. This <strong>Tag</strong> contains all the <strong>Parent Page Slugs</strong> if any parent page is selected before publishing."
+
+#: admin/class-permalinks-customizer-post-tags.php:62
+msgid "A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So &quot;This Is A Great Post!&quot; becomes this-is-a-great-post in the URI. This <strong>Tag</strong> contains Immediate <strong>Parent Page Slug</strong> if any parent page is selected before publishing."
+msgstr "A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So &quot;This Is A Great Post!&quot; becomes this-is-a-great-post in the URI. This <strong>Tag</strong> contains Immediate <strong>Parent Page Slug</strong> if any parent page is selected before publishing."
+
+#: admin/class-permalinks-customizer-post-tags.php:58
+msgid "A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So &quot;This Is A Great Post!&quot; becomes this-is-a-great-post in the URI."
+msgstr "A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So &quot;This Is A Great Post!&quot; becomes this-is-a-great-post in the URI."
+
+#: admin/class-permalinks-customizer-post-tags.php:54
+msgid "The unique ID # of the post, for example 423"
+msgstr "The unique ID # of the post, for example 423"
+
+#: admin/class-permalinks-customizer-post-tags.php:50
+msgid "Second of the minute, for example 33"
+msgstr "Second of the minute, for example 33"
+
+#: admin/class-permalinks-customizer-post-tags.php:46
+msgid "Minute of the hour, for example 43"
+msgstr "Minute of the hour, for example 43"
+
+#: admin/class-permalinks-customizer-post-tags.php:42
+msgid "Hour of the day, for example 15"
+msgstr "Hour of the day, for example 15"
+
+#: admin/class-permalinks-customizer-post-tags.php:38
+msgid "Day of the month, for example 28"
+msgstr "Day of the month, for example 28"
+
+#: admin/class-permalinks-customizer-post-tags.php:34
+msgid "Month of the year, for example 05"
+msgstr "Month of the year, for example 05"
+
+#: admin/class-permalinks-customizer-post-tags.php:30
+msgid "The year of the post, four digits, for example 2004"
+msgstr "The year of the post, four digits, for example 2004"
+
+#: admin/class-permalinks-customizer-post-tags.php:26
+msgid "Title of the post. let&#039;s say the title is &quot;This Is A Great Post!&quot; so, it becomes this-is-a-great-post in the URI."
+msgstr "Title of the post. let&#039;s say the title is &quot;This Is A Great Post!&quot; so, it becomes this-is-a-great-post in the URI."
+
+#: admin/class-permalinks-customizer-post-tags.php:22
+#: admin/class-permalinks-customizer-taxonomy-tags.php:22
+msgid "These tags can be used to create Permalink Customizers for each post type."
+msgstr "These tags can be used to create Permalink Customizers for each post type."
+
+#: admin/class-permalinks-customizer-post-tags.php:21
+msgid "Structure Tags for Posts"
+msgstr "Structure Tags for Posts"
+
+#: admin/class-permalinks-customizer-common-functions.php:16
+#: frontend/class-permalinks-customizer-form.php:38
+msgid "Permalink"
+msgstr "Permalink"
+
+#: admin/class-permalinks-customizer-common-functions.php:15
+msgid "Type"
+msgstr "Type"
+
+#: admin/class-permalinks-customizer-common-functions.php:14
+msgid "Title"
+msgstr "Title"
+
+#: admin/class-permalinks-customizer-batch-script.php:74
+msgid "Convert Permalink"
+msgstr "Convert Permalink"
+
+#: admin/class-permalinks-customizer-batch-script.php:69
+msgid "Click on the &quot;Convert Permalink&quot; button to convert custom permalink to Permalink Customizer. By doing this, all of your previous permalink which was created by custom permalink plugin would be converted to Permalink Customizer."
+msgstr "Click on the &quot;Convert Permalink&quot; button to convert custom permalink to Permalink Customizer. By doing this, all of your previous permalink which was created by custom permalink plugin would be converted to Permalink Customizer."
+
+#: admin/class-permalinks-customizer-admin.php:97
+msgid "Thanks :)"
+msgstr "Thanks :)"
+
+#. translators: %s: five stars
+#: admin/class-permalinks-customizer-admin.php:97
+msgid "If you like <strong>Permalinks Customizer</strong> please leave us a %s rating. A huge thanks in advance!"
+msgstr "If you like <strong>Permalinks Customizer</strong> please leave us a %s rating. A huge thanks in advance!"
