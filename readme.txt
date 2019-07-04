@@ -3,8 +3,8 @@ Contributors: aliya-yasir, sasiddiqui
 Tags: Link, Permalink, URL, Redirects, Tags
 Requires at least: 3.5
 Requires PHP: 5.2.4
-Tested up to: 5.0
-Stable tag: 2.5.2
+Tested up to: 5.2
+Stable tag: 2.6.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl.html
 
@@ -202,6 +202,16 @@ A. Yes, you can disable/delete the redirects from the Redirects Page using Bulk 
 A. Yes, you can exclude any posttype from the plugin to be worked on. For this just add the filter as shown in the Filters Section with the name of *Exclude PostType from the Plugin*.
 
 == Changelog ==
+
+= 2.6.0 - Jul 04, 2019 =
+
+  * Enhancement
+    * Fix issue of Polylang `Hide Default` language Setting
+    * Hide Default Permalink metabox when making changes in content
+    * Compatible with `url_to_postid()`
+  * Bug
+    * PHP Notice of [Undefined variable](https://github.com/yasglobal/permalinks-customizer/issues/26)
+    * [Taxonomy permalink not working under existing page](https://wordpress.org/support/topic/taxonomy-permalink-not-working-under-existing-page/)
 
 = 2.5.2 - Jan 02, 2019 =
 
