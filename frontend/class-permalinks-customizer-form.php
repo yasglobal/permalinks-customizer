@@ -665,54 +665,93 @@ final class Permalinks_Customizer_Form {
 
     $date = new DateTime( $post->post_date );
 
-    // Replace %title% with the respective Sanitize Value of the Title
+    // Replace %title% with the respective sanitize value of the post title.
     if ( false !== strpos( $replace_tag, '%title%' ) ) {
       $title       = sanitize_title( $post->post_title );
       $replace_tag = str_replace( '%title%', $title, $replace_tag );
     }
 
-    // Replace %year% with the respective post publish date year
+    /*
+     * Replace %parent_title% with the respective sanitize value of the post
+     * title and its parent post title if parent post is selected.
+     */
+    if ( false !== strpos( $replace_tag, '%parent_title%' ) ) {
+      $parents     = get_ancestors( $post_id, $post->post_type, 'post_type' );
+      $post_titles = '';
+      if ( $parents && is_array( $parents ) && ! empty( $parents )
+        && count( $parents ) >= 1
+      ) {
+        $parent      = get_post( $parents[0] );
+        $post_titles = sanitize_title( $parent->post_title ) . '/';
+      }
+      $post_titles .= sanitize_title( $post->post_title );
+
+      $replace_tag = str_replace( '%parent_title%', $post_titles, $replace_tag );
+    }
+
+    /*
+     * Replace %all_parents_title% with the respective sanitize value of the
+     * post title and its parents post title if parent post is selected.
+     */
+    if ( false !== strpos( $replace_tag, '%all_parents_title%' ) ) {
+      $parents     = get_ancestors( $post_id, $post->post_type, 'post_type' );
+      $post_titles = '';
+      if ( $parents && is_array( $parents ) && ! empty( $parents )
+        && count( $parents ) >= 1
+      ) {
+        $i = count( $parents ) - 1;
+        for ( $i; $i >= 0; $i-- ) {
+          $parent       = get_post( $parents[$i] );
+          $post_titles .= sanitize_title( $parent->post_title ) . '/';
+        }
+      }
+      $post_titles .= sanitize_title( $post->post_title );
+
+      $replace_tag = str_replace( '%all_parents_title%', $post_titles, $replace_tag );
+    }
+
+    // Replace %year% with the respective post publish date year.
     if ( false !== strpos( $replace_tag, '%year%' ) ) {
       $year        = $date->format( 'Y' );
       $replace_tag = str_replace( '%year%', $year, $replace_tag );
     }
 
-    // Replace %monthnum% with the respective post publish date month number
+    // Replace %monthnum% with the respective post publish date month number.
     if ( false !== strpos( $replace_tag, '%monthnum%' ) ) {
       $month       = $date->format( 'm' );
       $replace_tag = str_replace( '%monthnum%', $month, $replace_tag );
     }
 
-    // Replace %day% with the respective post publish date day
+    // Replace %day% with the respective post publish date day.
     if ( false !== strpos( $replace_tag, '%day%' ) ) {
       $day         = $date->format( 'd' );
       $replace_tag = str_replace( '%day%', $day, $replace_tag );
     }
 
-    // Replace %hour% with the respective post publish date hour
+    // Replace %hour% with the respective post publish date hour.
     if ( false !== strpos( $replace_tag, '%hour%' ) ) {
       $hour        = $date->format( 'H' );
       $replace_tag = str_replace( '%hour%', $hour, $replace_tag );
     }
 
-    // Replace %minute% with the respective post publish date minute
+    // Replace %minute% with the respective post publish date minute.
     if ( false !== strpos( $replace_tag, '%minute%' ) ) {
       $minute      = $date->format( 'i' );
       $replace_tag = str_replace( '%minute%', $minute, $replace_tag );
     }
 
-    // Replace %second% with the respective post publish date second
+    // Replace %second% with the respective post publish date second.
     if ( false !== strpos( $replace_tag, '%second%' ) ) {
       $second      = $date->format( 's' );
       $replace_tag = str_replace( '%second%', $second, $replace_tag );
     }
 
-    // Replace %post_id% with the respective post id
+    // Replace %post_id% with the respective post id.
     if ( false !== strpos( $replace_tag, '%post_id%' ) ) {
       $replace_tag = str_replace( '%post_id%', $post_id, $replace_tag );
     }
 
-    // Replace %postname% with the respective post name
+    // Replace %postname% with the respective post name.
     if ( false !== strpos( $replace_tag, '%postname%' ) ) {
       if ( ! empty( $post->post_name ) ) {
         $replace_tag = str_replace( '%postname%', $post->post_name, $replace_tag );
@@ -726,7 +765,7 @@ final class Permalinks_Customizer_Form {
     }
 
     /*
-     * Replace %parent_postname% with the respective post name with the
+     * Replace %parent_postname% with the respective post name and its
      * parent post name if parent post is selected.
      */
     if ( false !== strpos( $replace_tag, '%parent_postname%' ) ) {
@@ -752,7 +791,7 @@ final class Permalinks_Customizer_Form {
     }
 
     /*
-     * Replace %all_parents_postname% with the respective post name with the
+     * Replace %all_parents_postname% with the respective post name and its
      * parents post name if parent post is selected.
      */
     if ( false !== strpos( $replace_tag, '%all_parents_postname%' ) ) {
@@ -809,7 +848,7 @@ final class Permalinks_Customizer_Form {
       $replace_tag = str_replace( '%category%', $category, $replace_tag );
     }
 
-    // Replace %child-category% with the respective post category
+    // Replace %child-category% with the respective post category.
     if ( false !== strpos( $replace_tag, '%child-category%' ) ) {
       $categories = get_the_category( $post_id );
       $total_cat  = count( $categories );
@@ -856,7 +895,7 @@ final class Permalinks_Customizer_Form {
       $replace_tag = str_replace( '%product_cat%', $category, $replace_tag );
     }
 
-    // Replace <%ctax_category_name%> with it's appropriate selected category
+    // Replace <%ctax_custom_taxonomy%> with it's appropriate selected category.
     if ( false !== strpos( $replace_tag, '&lt;%ctax_' )
       && false !== strpos( $replace_tag, '%&gt;' ) ) {
       preg_match_all('/&lt;%ctax_(.*?)%&gt;/s', $replace_tag, $matches);
@@ -908,7 +947,7 @@ final class Permalinks_Customizer_Form {
       }
     }
 
-    // Replace <%ctaxparents_category_name%> with it's appropriate selected category
+    // Replace <%ctaxparents_custom_taxonomy%> with it's appropriate selected category.
     if ( false !== strpos( $replace_tag, '&lt;%ctaxparents_' )
       && false !== strpos( $replace_tag, '%&gt;' ) ) {
       preg_match_all('/&lt;%ctaxparents_(.*?)%&gt;/s', $replace_tag, $matches);
@@ -972,13 +1011,13 @@ final class Permalinks_Customizer_Form {
       }
     }
 
-    // Replace %author% with the author of the respective post
+    // Replace %author% with the author of the respective post.
     if ( false !== strpos( $replace_tag, '%author%' ) ) {
       $author      = get_the_author_meta( 'user_login', $post->post_author );
       $replace_tag = str_replace( '%author%', $author, $replace_tag );
     }
 
-    // Replace %author_firstname% with the first name of author of the respective post
+    // Replace %author_firstname% with the first name of author of the respective post.
     if ( false !== strpos( $replace_tag, '%author_firstname%' ) ) {
       $author_firstname = get_the_author_meta( 'first_name', $post->post_author );
       if ( $author_firstname && ! empty( $author_firstname ) ) {
@@ -991,7 +1030,7 @@ final class Permalinks_Customizer_Form {
       }
     }
 
-    // Replace %author_lastname% with the lastname of author of the respective post
+    // Replace %author_lastname% with the lastname of author of the respective post.
     if ( false !== strpos( $replace_tag, '%author_lastname%' ) ) {
       $author_lastname = get_the_author_meta( 'last_name', $post->post_author );
       if ( $author_lastname && ! empty( $author_lastname ) ) {

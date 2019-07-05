@@ -16,12 +16,12 @@ You can use the tags which are defined by the WordPress as mentioned [here](http
 
 Let's assume that you have 6 **PostTypes** and you like to apply differnet **permalink** structure for them. Like:
 
-1. **Blog :** For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/blog/year-month-date-postname/
-2. **Customers :** For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/customers/postname/
-3. **Events :** For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/events/year-month-date-postname/
-4. **Press :** For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/press/category/year/postname/
-5. **News :** For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/news/year/postname/
-6. **Sponsors :** For this post type you want to create a <strong>permalink</strong> which looks like this: http://www.example.com/company/sponsor/post_title/
+1. **Blog :** For this post type you want to create a **permalink** which looks like this: http://www.example.com/blog/year-month-date-postname/
+1. **Customers :** For this post type you want to create a **permalink** which looks like this: http://www.example.com/customers/postname/
+1. **Events :** For this post type you want to create a **permalink** which looks like this: http://www.example.com/events/year-month-date-postname/
+1. **Press :** For this post type you want to create a **permalink** which looks like this: http://www.example.com/press/category/year/postname/
+1. **News :** For this post type you want to create a **permalink** which looks like this: http://www.example.com/news/year/postname/
+1. **Sponsors :** For this post type you want to create a **permalink** which looks like this: http://www.example.com/company/sponsor/post_title/
 
 This plugin allows you to do this very easily. You just need to go on **Permalinks Customizer** Settings Page. Where text fields are shown with PostType name. You can define your permalinks you want to create for each post type.
 
@@ -36,28 +36,31 @@ You can find all the tags which are currently supported by the `Permalinks Custo
 === Default Tags for PostTypes ===
 Below mentioned tags are provided by the `WordPress`. These tags can be used on Default `WordPress Permalink` Settings Page as well as `Permalinks Customizer` Settings page.
 
-1. `%year%`:  The year of the post, four digits, for example 2019.
-2. `%monthnum%`: Month of the year, for example 01.
-3. `%day%`: Day of the month, for example 02.
-4. `%hour%`: Hour of the day, for example 15.
-5. `%minute%`: Minute of the hour, for example 43.
-6. `%second%`: Second of the minute, for example 33.
-7. `%post_id%`: The unique ID of the post, for example 123.
-8. `%postname%`: A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So "This Is A Great Post!" becomes this-is-a-great-post in the URI.
-9. `%category%`: A sanitized version of the category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI.
-10. `%author%`: A sanitized version of the author name.
+1. `%year%`:  The year of the post, four digits, for example 2019
+1. `%monthnum%`: Month of the year, for example 01
+1. `%day%`: Day of the month, for example 02
+1. `%hour%`: Hour of the day, for example 15
+1. `%minute%`: Minute of the hour, for example 43
+1. `%second%`: Second of the minute, for example 33
+1. `%post_id%`: The unique ID of the post, for example 123
+1. `%postname%`: A sanitized version of the title of the post (post slug field on Edit Post/Page panel). So "This Is A Great Post!" becomes this-is-a-great-post in the URI.
+1. `%category%`: A sanitized version of the category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI.
+1. `%author%`: A sanitized version of the author name.
 
 === Custom Tags for PostTypes ===
 Below mentioned tags are provided by the `Permalinks Customizer` for PostTypes. These tags can not be used on the Default `WordPress Permalink` Settings Page.
 
 1. `%title%`: Title of the post. let's say the title is "This Is A Great Post!" so, it becomes this-is-a-great-post in the URI.
-2. `%parent_postname%`: This tag is similar as `%postname%`.<br><br> Only difference is that it appends Immediate **Parent Page Slug** if any parent page is selected before publishing.
-3. `%child-category%`: A sanitized version of the category name (category slug field on New/Edit Category panel).
-4. `%product_cat%`: A sanitized version of the product category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI.<br><br> *This `tag` is specially used in WooCommerce Products.*
-5. `<%ctax_custom_taxonomy%>`: A sanitized version of the custom taxonomy where the taxonomy name is `custom_taxonomy`. Replace the `custom_taxonomy` with your appropriate created taxonomy name.<br><br> If you want to provide the default slug which is used when the category/taxonomy doesn't be selected so, make sure to provide default name/slug which looks like this: `<%ctax_custom_taxonomy??sales%>`. Value which is written between the `??` and `%>` is used as default slug.
-6. `<%ctaxparents_custom_taxonomy%>`: This tag is similar as `<%ctax_custom_taxonomy%>`.<br><br> Only difference is that it appends all the parent slugs of the selected category/term.
-7. `%author_firstname%`: A sanitized version of the author first name. If author first name is not available so, it uses the author's username.
-8. `%author_lastname%`: A sanitized version of the author last name. If author last name is not available so, it uses the author's username.
+1. `%parent_title%`: This tag is similar as `%title%`.<br>Only the difference is that it appends the immediate **Parent Page Title** in the URI if any parent page is selected.
+1. `%all_parents_title%`: This tag is similar as `%title%`.<br>Only the difference is that it appends all the **Parents Page Title** in the URI if any parent page is selected.
+1. `%parent_postname%`: This tag is similar as `%postname%`.<br>Only difference is that it appends the immediate **Parent Page Slug** if any parent page is selected.
+1. `%all_parents_postname%`: This tag is similar as `%postname%`.<br>Only the difference is that it appends all the **Parents Page Slug** in the URI if any parent page is selected.
+1. `%child-category%`: A sanitized version of the category name (category slug field on New/Edit Category panel).
+1. `%product_cat%`: A sanitized version of the product category name (category slug field on New/Edit Category panel). Nested sub-categories appear as nested directories in the URI.<br><br> *This `tag` is specially used in WooCommerce Products.*
+1. `<%ctax_custom_taxonomy%>`: A sanitized version of the custom taxonomy where the taxonomy name is `custom_taxonomy`. Replace the `custom_taxonomy` with your appropriate created taxonomy name.<br><br> If you want to provide the default slug which is used when the category/taxonomy doesn't be selected so, make sure to provide default name/slug which looks like this: `<%ctax_custom_taxonomy??sales%>`. Value which is written between the `??` and `%>` is used as default slug.
+1. `<%ctaxparents_custom_taxonomy%>`: This tag is similar as `<%ctax_custom_taxonomy%>`.<br>Only the difference is that it appends all the **Parents Slug** in the URI if any parent Term/Category is selected.
+1. `%author_firstname%`: A sanitized version of the author first name. If author first name is not available then it uses the author's username.
+1. `%author_lastname%`: A sanitized version of the author last name. If author last name is not available then it uses the author's username.
 
 **Note**: `%title%` is similar as `%postname%` tag but the difference is that `%postname%` can only be set once by WordPress whereas `%title%` can be changed by user at multiple times. let's say the title is "This Is A Great Post!" so, it becomes "this-is-a-great-post" in the URI(At the first time, `%postname%` and `%title%` works same) but if you edit and change title let's say "This Is A WordPress Post!" so, `%postname%` in the URI remains same "this-is-a-great-post" whereas `%title%` in the URI becomes "this-is-a-wordpress-post"
 
@@ -65,10 +68,10 @@ Below mentioned tags are provided by the `Permalinks Customizer` for PostTypes. 
 Below mentioned tags are provided by the `Permalinks Customizer` for Taxonomies. These can not be used on the Default `WordPress Permalink` Settings Page.
 
 1. `%name%`: Name of the Term/Category. let's say the name is "External API" so, it becomes external-api in the URI.
-2. `%term_id%`: The unique ID # of the Term/Category, for example 423
-3. `%slug%`: A sanitized version of the name of the Term/Category. So "External API" becomes external-api in the URI.
-4. `%parent_slug%`: A sanitized version of the name of the Term/Category. So "External API" becomes external-api in the URI. This Tag contains Immediate Parent Term/Category Slug if any parent Term/Category is selected before adding it.
-5. `%all_parents_slug%`: A sanitized version of the name of the Term/Category. So "External API" becomes external-api in the URI. This Tag contains all the Parent Term/Category Slug if any parent Term/Category is selected before adding it.
+1. `%term_id%`: The unique ID # of the Term/Category, for example 423
+1. `%slug%`: A sanitized version of the name of the Term/Category. So "External API" becomes external-api in the URI.
+1. `%parent_slug%`: This tag is similar as `%slug%`.<br><br> Only the difference is that it appends the immediate **Parent Term/Category Slug** in the URI if any parent Term/Category is selected.
+1. `%all_parents_slug%`: This tag is similar as `%slug%`.<br><br> Only the difference is that it appends all the **Parent Terms/Category Slugs** in the URI if any parent Term/Category is selected.
 
 == Filters ==
 You can find all the filters below which are provided by `Permalinks Customizer` plugin. These filters can be used as per your Website requirement.

@@ -39,24 +39,14 @@ class Permalinks_Customizer_Admin {
       array( $this, 'posts_settings_page' )
     );
     add_submenu_page( 'permalinks-customizer-posts-settings',
-      'Structure Tags for PostTypes', 'PostTypes Tags',
-      'pc_manage_permalink_settings', 'permalinks-customizer-post-tags',
-      array( $this, 'post_tags_page' )
-    );
-    add_submenu_page( 'permalinks-customizer-posts-settings',
-      'PostTypes Permalinks', 'PostTypes Permalinks', 'pc_manage_permalinks',
-      'permalinks-customizer-post-permalinks',
-      array( $this, 'post_permalinks_page' )
-    );
-    add_submenu_page( 'permalinks-customizer-posts-settings',
       'Set Taxonomies Permalinks', 'Taxonomies Settings',
       'pc_manage_permalink_settings', 'permalinks-customizer-taxonomies-settings',
       array( $this, 'taxonomies_settings_page' )
     );
     add_submenu_page( 'permalinks-customizer-posts-settings',
-      'Structure Tags for Taxonomies', 'Taxonomies Tags',
-      'pc_manage_permalink_settings', 'permalinks-customizer-taxonomy-tags',
-      array( $this, 'taxonomy_tags_page' )
+      'PostTypes Permalinks', 'PostTypes Permalinks', 'pc_manage_permalinks',
+      'permalinks-customizer-post-permalinks',
+      array( $this, 'post_permalinks_page' )
     );
     add_submenu_page( 'permalinks-customizer-posts-settings',
       'Taxonomies Permalinks', 'Taxonomies Permalinks', 'pc_manage_permalinks',
@@ -67,6 +57,10 @@ class Permalinks_Customizer_Admin {
       'Redirects', 'Redirects', 'pc_manage_permalink_redirects',
       'permalinks-customizer-redirects',
       array( $this, 'redirects_page' )
+    );
+    add_submenu_page( 'permalinks-customizer-posts-settings',
+      'Structure Tags', 'Tags', 'pc_manage_permalink_settings',
+      'permalinks-customizer-tags', array( $this, 'post_tags_page' )
     );
     add_submenu_page( 'permalinks-customizer-posts-settings',
       'About Permalinks Customizer', 'About', 'install_plugins',
@@ -98,38 +92,6 @@ class Permalinks_Customizer_Admin {
   }
 
   /**
-   * Calls another Function which shows the PostTypes Tags Page.
-   *
-   * @since 1.0.0
-   * @access public
-   *
-   * @return void.
-   */
-  public function post_tags_page() {
-    require_once(
-      PERMALINKS_CUSTOMIZER_PATH . 'admin/class-permalinks-customizer-post-tags.php'
-    );
-    new Permalinks_Customizer_Post_Tags();
-    add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 1 );
-  }
-
-  /**
-   * Calls another Function which shows the PostTypes Permalinks Page.
-   *
-   * @since 1.3.0
-   * @access public
-   *
-   * @return void.
-   */
-  public function post_permalinks_page() {
-    require_once(
-      PERMALINKS_CUSTOMIZER_PATH . 'admin/class-permalinks-customizer-posttype-permalinks.php'
-    );
-    new Permalinks_Customizer_PostType_Permalinks();
-    add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 1 );
-  }
-
-  /**
    * Calls another Function which shows the Taxonomies Settings Page.
    *
    * @since 1.1.0
@@ -146,18 +108,18 @@ class Permalinks_Customizer_Admin {
   }
 
   /**
-   * Calls another Function which shows the Taxonomies Tags Page.
+   * Calls another Function which shows the PostTypes Permalinks Page.
    *
-   * @since 1.1.0
+   * @since 1.3.0
    * @access public
    *
    * @return void.
    */
-  public function taxonomy_tags_page() {
+  public function post_permalinks_page() {
     require_once(
-      PERMALINKS_CUSTOMIZER_PATH . 'admin/class-permalinks-customizer-taxonomy-tags.php'
+      PERMALINKS_CUSTOMIZER_PATH . 'admin/class-permalinks-customizer-posttype-permalinks.php'
     );
-    new Permalinks_Customizer_Taxonomy_Tags();
+    new Permalinks_Customizer_PostType_Permalinks();
     add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 1 );
   }
 
@@ -190,6 +152,22 @@ class Permalinks_Customizer_Admin {
       PERMALINKS_CUSTOMIZER_PATH . 'admin/class-permalinks-customizer-redirects.php'
     );
     new Permalinks_Customizer_Redirects();
+    add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 1 );
+  }
+
+  /**
+   * Calls another Function which shows the Tags Page.
+   *
+   * @since 2.7.0
+   * @access public
+   *
+   * @return void.
+   */
+  public function post_tags_page() {
+    require_once(
+      PERMALINKS_CUSTOMIZER_PATH . 'admin/class-permalinks-customizer-tags.php'
+    );
+    new Permalinks_Customizer_Tags();
     add_filter( 'admin_footer_text', array( $this, 'admin_footer_text' ), 1 );
   }
 

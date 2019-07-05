@@ -61,8 +61,10 @@ class Permalinks_Customizer_Taxonomies_Settings {
     <div class="wrap">
       <h1><?php _e( 'Taxonomies Permalinks Settings', 'permalinks-customizer' ); ?></h1>
       <div>
-        <p><?php _e( 'Define the Permalinks for each taxonomy type so, the Permalinks would be created automatically on creating the Term/Category. Otherwise, you need to create the Permalinks manually from the Edit Term/Category Page.', 'permalinks-customizer' ); ?></p>
-        <p><?php printf( __( 'Please check all the <a href="%1$s/wp-admin/admin.php?page=permalinks-customizer-taxonomy-tags" title="structured tags">structured tags</a> which can be used with this plugin, <a href="%1$s/wp-admin/admin.php?page=permalinks-customizer-taxonomy-tags" title="here">here</a>.', 'permalinks-customizer' ), site_url(), site_url() ); ?></p>
+        <p>
+          <?php printf( __( 'You can define the structure of the permalinks for the Taxonomies. It can be the same or different as per your requirements. This structure is used when creating the Term/Category or using the Regenerate Permalink button on the Edit page.', 'permalinks-customizer' ), site_url() ); ?>
+        </p>
+        <p><?php printf( __( 'Please check the <a href="%1$s/wp-admin/admin.php?page=permalinks-customizer-tags&tab=taxonomies-tags" title="Structure Tags" target="_blank">Structure Tags</a> and use the appropriate tags for the Taxonomies according to your need.', 'permalinks-customizer' ), site_url(), site_url() ); ?></p>
       </div>
 
       <form enctype="multipart/form-data" action="" method="POST">

@@ -62,8 +62,12 @@ class Permalinks_Customizer_PostTypes_Settings {
     <div class="wrap">
       <h1><?php _e( 'PostTypes Permalinks Settings', 'permalinks-customizer' ); ?></h1>
       <div>
-        <p><?php _e( 'Define the Permalinks for each post type. You can define different structures for each post type.', 'permalinks-customizer' ); ?></p>
-        <p><?php printf( __( 'Please check all the <a href="%1$s/wp-admin/admin.php?page=permalinks-customizer-post-tags" title="structured tags">structured tags</a> which can be used with this plugin, <a href="%2$s/wp-admin/admin.php?page=permalinks-customizer-post-tags" title="here">here</a>', 'permalinks-customizer' ), site_url(), site_url() ); ?>.</p>
+        <p>
+          <?php printf( __( 'You can define the structure of the permalinks for the PostTypes. It can be the same or different as per your requirements. If you <strong>DO NOT</strong> define the structure for any PostType then the same structure is used as defined in the <a href="%1$s/wp-admin/options-permalink.php" title="WordPress Permalink" target="_blank">WordPress Permalink</a> page.', 'permalinks-customizer' ), site_url() ); ?>
+        </p>
+        <p>
+          <?php printf( __( 'Please check the <a href="%1$s/wp-admin/admin.php?page=permalinks-customizer-tags" title="Structure Tags" target="_blank">Structure Tags</a> and use the appropriate tags for the PostTypes according to your need.', 'permalinks-customizer' ), site_url(), site_url() ); ?>
+        </p>
       </div>
       <form enctype="multipart/form-data" action="" method="POST">
         <table class="form-table">

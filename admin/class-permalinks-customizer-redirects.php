@@ -86,7 +86,7 @@ class Permalinks_Customizer_Redirects {
     $common_functions = new Permalinks_Customizer_Common_Functions();
 
     $plugin_url = plugins_url( '/admin', PERMALINKS_CUSTOMIZER_FILE );
-    wp_enqueue_style( 'style', $plugin_url . '/css/style.css' );
+    wp_enqueue_style( 'style', $plugin_url . '/css/style.min.css' );
 
     $html .= '<div class="wrap">' .
               '<h1 class="wp-heading-inline">' .
