@@ -25,8 +25,6 @@ class Permalinks_Customizer_PostTypes_Settings {
    *
    * @since 1.0.0
    * @access public
-   *
-   * @return void.
    */
   private function post_settings() {
     if ( isset( $_POST['submit'] ) ) {

@@ -60,8 +60,6 @@ final class Permalinks_Customizer {
    *
    * @since 2.0.0
    * @access private
-   *
-   * @return void.
    */
   private function setup_constants() {
     if ( ! defined( 'PERMALINKS_CUSTOMIZER_FILE' ) ) {
@@ -86,8 +84,6 @@ final class Permalinks_Customizer {
    *
    * @since 2.0.0
    * @access private
-   *
-   * @return void
    */
   private function includes() {
     require_once(
@@ -125,8 +121,6 @@ final class Permalinks_Customizer {
    *
    * @since 2.0.0
    * @access public
-   *
-   * @return void.
    */
   public static function plugin_activate() {
     $role = get_role( 'administrator' );
@@ -162,8 +156,6 @@ final class Permalinks_Customizer {
    *
    * @since 2.0.0
    * @access private
-   *
-   * @return void.
    */
   private static function create_table() {
     global $wpdb;
@@ -197,8 +189,6 @@ final class Permalinks_Customizer {
    *
    * @since 2.0.0
    * @access public
-   *
-   * @return void.
    */
   public function load_textdomain() {
     load_plugin_textdomain( 'permalinks-customizer', FALSE,
@@ -218,8 +208,6 @@ final class Permalinks_Customizer {
    *
    * @since 2.0.0
    * @access private
-   *
-   * @return void.
    */
   private function update_taxonomy_table() {
     $current_version = get_option( 'permalinks_customizer_plugin_version', -1 );

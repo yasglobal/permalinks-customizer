@@ -25,8 +25,6 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
    *
    * @since 1.3.3
    * @access private
-   *
-   * @return void.
    */
   private function tax_permalinks() {
     global $wpdb;

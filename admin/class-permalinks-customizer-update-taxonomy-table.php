@@ -24,8 +24,6 @@ class Permalinks_Customizer_Update_Taxonomy {
    *
    * @since 1.3.3
    * @access private
-   *
-   * @return void.
    */
   private function update_taxonomy_terms() {
     $taxonomy_table = get_option( 'permalinks_customizer_table', -1 );

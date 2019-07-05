@@ -25,8 +25,6 @@ class Permalinks_Customizer_PostType_Permalinks {
    *
    * @since 1.3.3
    * @access private
-   *
-   * @return void.
    */
   private function post_permalinks() {
     global $wpdb;

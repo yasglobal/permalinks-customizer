@@ -25,8 +25,6 @@ class Permalinks_Customizer_Admin {
    *
    * @since 1.0.0
    * @access public
-   *
-   * @return void.
    */
   public function admin_menu() {
     add_menu_page( 'Set Your Permalinks', 'Permalinks Customizer',
@@ -80,8 +78,6 @@ class Permalinks_Customizer_Admin {
    *
    * @since 1.0.0
    * @access public
-   *
-   * @return void.
    */
   public function posts_settings_page() {
     require_once(
@@ -96,8 +92,6 @@ class Permalinks_Customizer_Admin {
    *
    * @since 1.1.0
    * @access public
-   *
-   * @return void.
    */
   public function taxonomies_settings_page() {
     require_once(
@@ -112,8 +106,6 @@ class Permalinks_Customizer_Admin {
    *
    * @since 1.3.0
    * @access public
-   *
-   * @return void.
    */
   public function post_permalinks_page() {
     require_once(
@@ -128,8 +120,6 @@ class Permalinks_Customizer_Admin {
    *
    * @since 1.3.0
    * @access public
-   *
-   * @return void.
    */
   public function taxonomy_permalinks_page() {
     require_once(
@@ -144,8 +134,6 @@ class Permalinks_Customizer_Admin {
    *
    * @access public
    * @since 2.0.0
-   *
-   * @return void.
    */
   public function redirects_page() {
     require_once(
@@ -160,8 +148,6 @@ class Permalinks_Customizer_Admin {
    *
    * @since 2.7.0
    * @access public
-   *
-   * @return void.
    */
   public function post_tags_page() {
     require_once(
@@ -176,8 +162,6 @@ class Permalinks_Customizer_Admin {
    *
    * @since 1.3.9
    * @access public
-   *
-   * @return void.
    */
   public function about_plugin() {
     require_once(
@@ -242,8 +226,6 @@ class Permalinks_Customizer_Admin {
    *
    * @since 2.3.0
    * @access public
-   *
-   * @return void
    */
   public function pc_privacy_policy() {
     if ( ! function_exists( 'wp_add_privacy_policy_content' ) ) {
@@ -267,8 +249,6 @@ class Permalinks_Customizer_Admin {
    *
    * @since 2.0.0
    * @access public
-   *
-   * @return void.
    */
   public function show_admin_notice() {
     if ( isset( $_REQUEST['regenerated_permalink_error'] ) ) {

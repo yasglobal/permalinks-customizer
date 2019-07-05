@@ -25,8 +25,6 @@ class Permalinks_Customizer_Taxonomies_Settings {
    *
    * @since 1.3.3
    * @access private
-   *
-   * @return void.
    */
   private function taxonomy_settings() {
     if ( isset( $_POST['submit'] ) ) {

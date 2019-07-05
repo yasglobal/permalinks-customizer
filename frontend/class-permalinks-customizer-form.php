@@ -85,8 +85,6 @@ final class Permalinks_Customizer_Form {
    *
    * @since 2.3.0
    * @access public
-   *
-   * @return void.
    */
   public function permalink_edit_box() {
     add_meta_box( 'permalinks-customizer-edit-box',
@@ -124,12 +122,10 @@ final class Permalinks_Customizer_Form {
    * @since 1.0.0
    * @access private
    *
-   * @param string $permalink Permalink which is created by the plugin
-   * @param string $original Permalink which set by WordPress
-   * @param boolean $renderContainers Shows Post/Term Edit
-   * @param string $postname Post Name
-   *
-   * @return void
+   * @param string $permalink Permalink which is created by the plugin.
+   * @param string $original Permalink which set by WordPress.
+   * @param boolean $renderContainers Shows Post/Term Edit.
+   * @param string $postname Post Name.
    */
   private function get_form( $permalink, $original = '', $renderContainers = true, $postname = '' ) {
     $encoded_permalink = htmlspecialchars( urldecode( $permalink ) );
@@ -302,8 +298,6 @@ final class Permalinks_Customizer_Form {
    * @access public
    *
    * @param object $post WP Post Object.
-   *
-   * @return void.
    */
   public function meta_edit_form( $post ) {
     if ( isset( $this->permalink_metabox ) && 1 === $this->permalink_metabox ) {
@@ -411,8 +405,6 @@ final class Permalinks_Customizer_Form {
    * @access public
    *
    * @param object $object Term Object.
-   *
-   * @return void.
    */
   public function term_edit_form( $object ) {
     $permalink = '';
@@ -446,8 +438,6 @@ final class Permalinks_Customizer_Form {
    * @access public
    *
    * @param int $post_id Post ID.
-   *
-   * @return void.
    */
   public function pmxi_post_permalink( $post_id ) {
     $post = get_post( $post_id );
@@ -463,8 +453,6 @@ final class Permalinks_Customizer_Form {
    * @access public
    *
    * @param int $post_id Post ID.
-   *
-   * @return void.
    */
   public function pc_post_permalink( $post_id ) {
     if ( $post_id ) {
@@ -486,8 +474,6 @@ final class Permalinks_Customizer_Form {
    * @param int $post_id Post ID.
    * @param object $post Post Object.
    * @param bool $update  Whether this is an existing post being updated or not.
-   *
-   * @return void.
    */
   public function save_post_permalink( $post_id, $post, $update ) {
 
@@ -660,8 +646,6 @@ final class Permalinks_Customizer_Form {
    * @access public
    *
    * @param int $post_id Post ID.
-   *
-   * @return void.
    */
   public function save_attachment_post( $post_id ) {
     $post = get_post( $post_id );
@@ -1076,8 +1060,6 @@ final class Permalinks_Customizer_Form {
    *
    * @param int $id Post ID.
    * @param string $post_name Post name which needs to be set.
-   *
-   * @return void.
    */
   private function update_post_name($id, $post_name) {
     global $wpdb;
@@ -1094,8 +1076,6 @@ final class Permalinks_Customizer_Form {
    * @access public
    *
    * @param int $id Post ID.
-   *
-   * @return void.
    */
   public function delete_post_permalink( $id ) {
     global $wpdb;
@@ -1111,8 +1091,6 @@ final class Permalinks_Customizer_Form {
    * @access public
    *
    * @param int $id Term ID.
-   *
-   * @return void.
    */
   public function generate_term_permalink( $id ) {
     $new_permalink = '';
@@ -1239,8 +1217,6 @@ final class Permalinks_Customizer_Form {
    * @param string $permalink New permalink which needs to be saved.
    * @param string $prev Previously saved permalink.
    * @param string $update `1` for Permaink Regenerating else for creating permalink.
-   *
-   * @return void.
    */
   private function save_term_permalink( $term, $permalink, $prev, $update ) {
     $url = get_term_meta( $term->term_id, 'permalink_customizer' );
@@ -1292,8 +1268,6 @@ final class Permalinks_Customizer_Form {
    * @access public
    *
    * @param int $id Term ID.
-   *
-   * @return void.
    */
   public function delete_term_permalink( $id ) {
     global $wpdb;
@@ -1320,8 +1294,6 @@ final class Permalinks_Customizer_Form {
    *
    * @param int $prev_front_page_id Page ID of previously set Front Page.
    * @param int $new_front_page_id Page ID of current Front Page.
-   *
-   * @return void.
    */
   public function static_front_page( $prev_front_page_id, $new_front_page_id ) {
     $this->delete_post_permalink( $new_front_page_id );
@@ -1332,8 +1304,6 @@ final class Permalinks_Customizer_Form {
    *
    * @since 1.3.0
    * @access public
-   *
-   * @return void.
    */
   public function register_taxonomies_form() {
     $args = array(
@@ -1359,8 +1329,6 @@ final class Permalinks_Customizer_Form {
    * @param string $redirect_to Current permalink or url.
    * @param string $type Post Name or Term Name.
    * @param int $id Post ID or Term ID.
-   *
-   * @return void.
    */
   private function add_auto_redirect( $redirect_from, $redirect_to, $type, $id ) {
     $redirect_filter = apply_filters(
@@ -1414,8 +1382,6 @@ final class Permalinks_Customizer_Form {
    *
    * @since 2.0.0
    * @access public
-   *
-   * @return void.
    */
   public function add_bulk_option() {
     $args = array(
@@ -1661,8 +1627,6 @@ final class Permalinks_Customizer_Form {
    *
    * @since 2.4.0
    * @access public
-   *
-   * @return void.
    */
   public function rest_edit_form() {
     register_rest_route( 'permalinks-customizer/v1',
@@ -1680,8 +1644,6 @@ final class Permalinks_Customizer_Form {
    * @access public
    *
    * @param object $data Contains post id with some default REST Values.
-   *
-   * @return void.
    */
   public function refresh_meta_form( $data ) {
     if ( isset( $data['id'] ) && is_numeric( $data['id'] ) ) {
@@ -1708,8 +1670,6 @@ final class Permalinks_Customizer_Form {
    * @access public
    *
    * @param object $wp_admin_bar Contain Toolbar links.
-   *
-   * @return void.
    */
   public function flush_permalink_cache( $wp_admin_bar ) {
     if ( is_user_logged_in() && current_user_can( 'manage_options' ) ) {

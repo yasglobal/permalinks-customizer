@@ -24,8 +24,6 @@ class Permalinks_Customizer_About {
    *
    * @since 1.3.9
    * @access private
-   *
-   * @return void.
    */
   private function more_plugins() {
     $plugin_url = plugins_url( '/admin', PERMALINKS_CUSTOMIZER_FILE );

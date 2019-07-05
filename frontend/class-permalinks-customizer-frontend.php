@@ -255,8 +255,6 @@ final class Permalinks_Customizer_Frontend {
    *
    * @since 1.0.0
    * @access public
-   *
-   * @return void.
    */
   public function make_redirect() {
     $url     = parse_url( get_bloginfo( 'url' ) );

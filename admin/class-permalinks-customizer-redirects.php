@@ -25,8 +25,6 @@ class Permalinks_Customizer_Redirects {
    *
    * @since 2.0.0
    * @access private
-   *
-   * @return void.
    */
   private function show_redirects() {
   
