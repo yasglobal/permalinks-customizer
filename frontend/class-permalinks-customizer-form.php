@@ -44,7 +44,7 @@ final class Permalinks_Customizer_Form {
     );
     add_action( 'pc_generate_permalink',
       array( $this, 'pc_post_permalink' ), 10, 1
-    )
+    );
     add_action( 'add_attachment',
       array( $this, 'save_attachment_post' ), 10, 1
     );
