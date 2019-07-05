@@ -61,7 +61,7 @@ Below mentioned tags are provided by the **Permalinks Customizer** for PostTypes
 | %author_firstname% | A sanitized version of the author first name. If author first name is not available then it uses the author's username. |
 | %author_lastname% | A sanitized version of the author last name. If author last name is not available then it uses the author's username. |
 
-**Note**: `%title%` is similar as `%postname%` tag but the difference is that `%postname%` can only be set once by WordPress whereas `%title%` can be changed by user at multiple times. let's say the title is "This Is A Great Post!" so, it becomes "this-is-a-great-post" in the URI(At the first time, `%postname%` and `%title%` works same) but if you edit and change title let's say "This Is A WordPress Post!" so, `%postname%` in the URI remains same "this-is-a-great-post" whereas `%title%` in the URI becomes "this-is-a-wordpress-post"
+**Note**: `%title%` is similar as `%postname%` tag but the difference is that `%postname%` can only be set once by WordPress whereas `%title%` can be changed by user at multiple times. let's say the title is "This Is A Great Post!" so, it becomes "this-is-a-great-post" in the URI(At the first time, `%postname%` and `%title%` works same) but if you edit and change title let's say "This Is A WordPress Post!" so, `%postname%` in the URI remains same "this-is-a-great-post" whereas `%title%` in the URI becomes "this-is-a-wordpress-post".
 
 ### Custom Tags for Taxonomies
 Below mentioned tags are provided by the **Permalinks Customizer** for Taxonomies. These can not be used on the Default **WordPress Permalink** Settings Page.

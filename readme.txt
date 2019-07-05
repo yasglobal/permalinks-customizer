@@ -4,7 +4,7 @@ Tags: Link, Permalink, URL, Redirects, Tags
 Requires at least: 3.5
 Requires PHP: 5.2.4
 Tested up to: 5.0
-Stable tag: 2.5.2
+Stable tag: 2.7.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl.html
 
@@ -206,6 +206,26 @@ A. Yes, you can exclude any posttype from the plugin to be worked on. For this j
 
 == Changelog ==
 
+= 2.7.0 - Jul 05, 2019 =
+
+  * Enhancement
+    * Added `%parent_title%` tag
+    * Added `%all_parents_title%` tag
+    * [Generate Permalink from code](https://wordpress.org/support/topic/how-to-regenerate-a-specific-post-id-in-my-function-php/)
+    * Revamp `Tags` page
+  * Bug
+    * [Flush Permalinks Cache](https://wordpress.org/support/topic/flush-permalinks-cache/)
+
+= 2.6.0 - Jul 04, 2019 =
+
+  * Enhancement
+    * Fix issue of Polylang `Hide Default` language Setting
+    * Hide Default Permalink metabox when making changes in content
+    * Compatible with `url_to_postid()`
+  * Bug
+    * PHP Notice of [Undefined variable](https://github.com/yasglobal/permalinks-customizer/issues/26)
+    * [Taxonomy permalink not working under existing page](https://wordpress.org/support/topic/taxonomy-permalink-not-working-under-existing-page/)
+
 = 2.5.2 - Jan 02, 2019 =
 
   * Enhancement
@@ -234,45 +254,6 @@ A. Yes, you can exclude any posttype from the plugin to be worked on. For this j
     * `View Post` button does not open expected URL (due to relative Path)
       [https://wordpress.org/support/topic/view-post-button-does-not-open-expected-url/](https://wordpress.org/support/topic/view-post-button-does-not-open-expected-url/)
     * Removed auto flush rewrite rules to prevent permalink cache
-
-= 2.3.1 - Oct 16, 2018 =
-
-  * Enhancement
-    * Flush rewrite rules to prevent permalink cache
-  * Bug
-    * Set meta_keys to be protected to stop duplication in Custom Fields
-
-= 2.3.0 - Sept 10, 2018 =
-
-  * Enhancement
-    * Added Support for Gutenberg
-    * Added Privacy Policy Content on Admin Panel
-
-= 2.2.0 - Aug 10, 2018 =
-
-  * Enhancement
-    * Added Media (Attachment) Support
-    * Added Regenerate Permalink in Bulk Action for Media (Attachment)
-    * Added Filter to Exclude the PostType from the Plugin to be worked on
-    * Added Support of `WP All Import` Plugin
-    * Removing Permalink Edit Form from Private PostTypes and Taxonomies
-
-  * Bug
-    * Plugin causing 504 gateway error when submitting a post for review
-    * Prevent Permalink to be created for the private PostTypes like Coupon, Order etc
-
-= 2.1.0 - July 16, 2018 =
-
-  * Enhancement
-    * Generate Post Permalink as soon as Post saved at the very first time
-    * Prevent to add auto-redirects for plain permalinks
-    * Regenerate Permalink on Quick Edit Post
-    * Added filter by which relative permalink can be shown on post edit page
-
-  * Bug
-    * Regenerate Status Issue on Post/Page
-    * Fixed Permalinks Customizer Version issue on plugin update
-    * Removed Convert URL Page
 
 = Earlier versions =
 
