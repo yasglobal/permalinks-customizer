@@ -42,6 +42,9 @@ final class Permalinks_Customizer_Form {
     add_action( 'pmxi_saved_post',
       array( $this, 'pmxi_post_permalink' ), 10, 1
     );
+    add_action( 'pc_generate_permalink',
+      array( $this, 'pc_post_permalink' ), 10, 1
+    )
     add_action( 'add_attachment',
       array( $this, 'save_attachment_post' ), 10, 1
     );
@@ -450,6 +453,25 @@ final class Permalinks_Customizer_Form {
     $post = get_post( $post_id );
     if ( is_object( $post ) && isset( $post->post_type ) ) {
       $this->save_post_permalink( $post_id, $post, false );
+    }
+  }
+
+  /**
+   * Generates the permalink for the provided post id.
+   *
+   * @since 2.7.0
+   * @access public
+   *
+   * @param int $post_id Post ID.
+   *
+   * @return void.
+   */
+  public function pc_post_permalink( $post_id ) {
+    if ( $post_id ) {
+      $post = get_post( $post_id );
+      if ( is_object( $post ) && isset( $post->post_type ) ) {
+        $this->save_post_permalink( $post_id, $post, false );
+      }
     }
   }
 
