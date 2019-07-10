@@ -76,25 +76,25 @@ class Permalinks_Customizer_Common_Functions {
                           '<span class="pagination-links">';
 
     if ( 1 == $current_pager_value ) {
-      $pagination_html .= '<span class="tablenav-pages-navspan" aria-hidden="true">&laquo; </span>' .
-                          '<span class="tablenav-pages-navspan" aria-hidden="true">&lsaquo; </span>';
+      $pagination_html .= '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&laquo; </span>' .
+                          ' <span class="tablenav-pages-navspan button disabled" aria-hidden="true">&lsaquo; </span>';
     } else {
       $prev_page = $current_pager_value - 1;
       if ( 1 == $prev_page ) {
-        $pagination_html .= '<span class="tablenav-pages-navspan" aria-hidden="true">&laquo;</span>';
+        $pagination_html .= ' <span class="tablenav-pages-navspan button disabled" aria-hidden="true">&laquo;</span>';
       } else {
-        $pagination_html .= '<a href="' . $remove_pager_uri[0] . '&paged=1" title="First page" class="first-page">' .
+        $pagination_html .= ' <a href="' . $remove_pager_uri[0] . '&paged=1" title="First page" class="first-page button">' .
                               '<span class="screen-reader-text">First page</span>' .
                               '<span aria-hidden="true">&laquo;</span>' .
                             '</a>';
       }
-      $pagination_html .= '<a href="' . $remove_pager_uri[0] . '&paged=' . $prev_page . '" title="Previous page" class="prev-page">' .
+      $pagination_html .= ' <a href="' . $remove_pager_uri[0] . '&paged=' . $prev_page . '" title="Previous page" class="prev-page button">' .
                             '<span class="screen-reader-text">Previous page</span>' .
                             '<span aria-hidden="true">&lsaquo;</span>' .
                            '</a>';
     }
 
-    $pagination_html .= '<span class="paging-input">' .
+    $pagination_html .= ' <span class="paging-input">' .
                           '<label for="current-page-selector" class="screen-reader-text">Current Page</label>' .
                           '<input class="current-page" id="current-page-selector" type="text" name="paged" value="' . $current_pager_value . '" size="1" aria-describedby="table-paging" />' .
                           '<span class="tablenav-paging-text"> of ' .
@@ -103,18 +103,18 @@ class Permalinks_Customizer_Common_Functions {
                         '</span>';
 
     if ( $current_pager_value == $total_pager ) {
-      $pagination_html .= '<span class="tablenav-pages-navspan" aria-hidden="true">&rsaquo; </span>' .
-                          '<span class="tablenav-pages-navspan" aria-hidden="true">&raquo; </span>';
+      $pagination_html .= '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">&rsaquo; </span>' .
+                          ' <span class="tablenav-pages-navspan button disabled" aria-hidden="true">&raquo; </span>';
     } else {
       $next_page = $current_pager_value + 1;
-      $pagination_html .= ' <a href="' . $remove_pager_uri[0] . '&paged=' . $next_page . '" title="Next page" class="next-page">' .
+      $pagination_html .= ' <a href="' . $remove_pager_uri[0] . '&paged=' . $next_page . '" title="Next page" class="next-page button">' .
                               '<span class="screen-reader-text">Next page</span>' .
                               '<span aria-hidden="true">&rsaquo;</span>' .
                             '</a>';
       if ( $total_pager == $next_page ) {
-        $pagination_html .= '<span class="tablenav-pages-navspan" aria-hidden="true">&raquo;</span>';
+        $pagination_html .= ' <span class="tablenav-pages-navspan button disabled" aria-hidden="true">&raquo;</span>';
       } else {
-        $pagination_html .= '<a href="' . $remove_pager_uri[0] . '&paged=' . $total_pager . '" title="Last page" class="last-page">' .
+        $pagination_html .= ' <a href="' . $remove_pager_uri[0] . '&paged=' . $total_pager . '" title="Last page" class="last-page button">' .
                               '<span class="screen-reader-text">Last page</span>' .
                               '<span aria-hidden="true">&raquo;</span>' .
                             '</a>';
