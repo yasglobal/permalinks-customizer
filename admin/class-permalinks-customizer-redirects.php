@@ -93,16 +93,22 @@ class Permalinks_Customizer_Redirects {
 
     $search_value     = '';
     $filter_permalink = '';
+    $page_limit       = 'LIMIT 0, 20';
+    $current_page     = 1;
+
     if ( isset( $_GET['s'] ) && ! empty( $_GET['s'] ) ) {
       $search_value     = htmlspecialchars( ltrim( $_GET['s'], '/' ) );
       $filter_permalink = 'WHERE redirect_from LIKE "%' . $search_value . '%" OR redirect_to LIKE "%' . $search_value . '%"';
       $search_permalink = '&s=' . $search_value . '';
       $html            .= '<span class="subtitle">Search results for "' . $search_value . '"</span>';
     }
-    $page_limit = 'LIMIT 0, 20';
-    if ( isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] )
-      && $_GET['paged'] > 1 ) {
-      $pager      = 20 * ( $_GET['paged'] - 1 );
+
+    if ( isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] ) ) {
+      $current_page = $_GET['paged'];
+    }
+
+    if ( 1 < $current_page ) {
+      $pager      = 20 * ( $current_page - 1 );
       $page_limit = 'LIMIT ' . $pager . ', 20';
     }
     $sorting_by     = 'ORDER By id DESC';
@@ -161,37 +167,40 @@ class Permalinks_Customizer_Redirects {
                 '<input type="submit" id="doaction" class="button action" value="Apply">' .
               '</div>';
 
-    $redirects       = 0;
-    $pagination_html = '';
-    if ( isset( $count_posts->total_rids ) && $count_posts->total_rids > 0 ) {
+    $redirects         = 0;
+    $top_pagination    = '';
+    $bottom_pagination = '';
+    if ( isset( $count_posts->total_rids ) && 0 < $count_posts->total_rids ) {
       $html .= '<h2 class="screen-reader-text">' .
                   __( "Permalinks Customizer navigation", "permalinks-customizer" ) .
                 '</h2>';
       $query = "SELECT * FROM {$wpdb->prefix}permalinks_customizer_redirects " .
         " $filter_permalink $sorting_by $page_limit";
 
-      $redirects   = $wpdb->get_results( $query );
-      $total_pages = ceil( $count_posts->total_rids / 20 );
-      if ( isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] )
-        && $_GET['paged'] > 0 ) {
-        $pagination_html = $common_functions->get_pager(
-          $count_posts->total_rids, $_GET['paged'], $total_pages
+      $redirects      = $wpdb->get_results( $query );
+      $total_pages    = ceil( $count_posts->total_rids / 20 );
+      $top_pagination = $common_functions->get_pager(
+        $count_posts->total_rids, $current_page, $total_pages, 'top'
+      );
+      $bottom_pagination = $common_functions->get_pager(
+        $count_posts->total_rids, $current_page, $total_pages, 'bottom'
+      );
+
+      if ( $current_page > $total_pages ) {
+        $redirect_uri = explode(
+          '&paged=' . $current_page, $_SERVER['REQUEST_URI']
         );
-        if ( $_GET['paged'] > $total_pages ) {
-          $redirect_uri = explode( '&paged=' . $_GET['paged'] . '', $_SERVER['REQUEST_URI'] );
-          header( 'Location: ' . $redirect_uri[0], 301 );
-          exit();
-        }
-      } elseif ( ! isset( $_GET['paged'] ) ) {
-        $pagination_html = $common_functions->get_pager(
-          $count_posts->total_rids, 1, $total_pages
-        );
+        header( 'Location: ' . $redirect_uri[0], 301 );
+        exit();
       }
 
-      $html .= $pagination_html;
+      $html .= $top_pagination;
     }
     $table_navigation = $this->redirect_nav(
-      $order_by_class, $order_by, $search_permalink, $_GET['page']
+      $order_by_class, $order_by, $search_permalink, $_GET['page'], 'top'
+    );
+    $table_navigation = $this->redirect_nav(
+      $order_by_class, $order_by, $search_permalink, $_GET['page'], 'bottom'
     );
 
     $html .= '</div>';
@@ -256,7 +265,7 @@ class Permalinks_Customizer_Redirects {
                 '</select>' .
                 '<input type="submit" id="doaction2" class="button action" value="Apply">' .
                 '</div>' .
-                $pagination_html .
+                $bottom_pagination .
               '</div>';
     $html .= '</form></div>';
     echo $html;
@@ -268,43 +277,103 @@ class Permalinks_Customizer_Redirects {
    * @access private
    * @since 2.0.0
    *
-   * @param string $order_by_class
-   *   Class either asc or desc
-   * @param string $order_by
-   *   set orderby for sorting
-   * @param string $search_permalink
-   *   Permalink which has been searched or an empty string
-   * @param string $page_url
-   *   Page Slug set by the Plugin
+   * @param string $order_by_class Class either asc or desc.
+   * @param string $order_by set orderby for sorting.
+   * @param string $search_permalink Permalink which has been searched or an empty string.
+   * @param string $page_url Page Slug set by the Plugin.
+   * @param string $position Define the position header/footer row.
    *
-   * @return string $nav
-   *   Return table row according to the provided params.
+   * @return string table row according to the provided params.
    */
-  private function redirect_nav( $order_by_class, $order_by, $search_permalink, $page_url ) {
-    $nav = '<tr>' .
-              '<td id="cb" class="column-cb check-column">' .
-                '<label class="screen-reader-text" for="cb-select-all-1">Select All</label>' .
-                '<input id="cb-select-all-1" type="checkbox">' .
-              '</td>' .
-              '<th scope="col" id="redirect_from" class="manage-column sortable ' . $order_by_class . '">' .
-                '<a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=redirect_from&order=' .  $order_by . $search_permalink . '"><span>' . __( "Redirect From", "permalinks-customizer" ) . '</span><span class="sorting-indicator"></span></a>' .
-              '</th>' .
-              '<th scope="col" id="redirect_to" class="manage-column sortable ' . $order_by_class . '">' .
-                '<a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=redirect_to&order=' .  $order_by . $search_permalink . '"><span>' . __( "Redirect To", "permalinks-customizer" ) . '</span><span class="sorting-indicator"></span></a>' .
-              '</th>' .
-              '<th scope="col" id="type" class="manage-column sortable ' . $order_by_class . ' type">' .
-                '<a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=type&order=' .  $order_by . $search_permalink . '"><span>' . __( "Type", "permalinks-customizer" ) . '</span><span class="sorting-indicator"></span></a>' .
-              '</th>' .
-              '<th scope="col" id="enable" class="manage-column sortable ' . $order_by_class . ' status">' .
-                '<a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=enable&order=' .  $order_by . $search_permalink . '"><span>' . __( "Status", "permalinks-customizer" ) . '</span><span class="sorting-indicator"></span></a>' .
-              '</th>' .
-              '<th scope="col" id="count" class="manage-column sortable ' . $order_by_class . ' count">' .
-                '<a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=count&order=' .  $order_by . $search_permalink . '"><span>' . __( "Count", "permalinks-customizer" ) . '</span><span class="sorting-indicator"></span></a>' .
-              '</th>' .
-              '<th scope="col" id="last_accessed" class="manage-column sortable ' . $order_by_class . ' accessed">' .
-                '<a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=last_accessed&order=' .  $order_by . $search_permalink . '"><span>' . __( "Last Accessed", "permalinks-customizer" ) . '</span><span class="sorting-indicator"></span></a>' .
-              '</th>' .
-            '</tr>';
+  private function redirect_nav( $order_by_class, $order_by, $search_permalink, $page_url, $position ) {
+    if ( 'top' === $position ) {
+      $nav = '<tr>' .
+                '<td id="cb" class="column-cb check-column">' .
+                  '<label class="screen-reader-text" for="cb-select-all-1">Select All</label>' .
+                  '<input id="cb-select-all-1" type="checkbox">' .
+                '</td>' .
+                '<th scope="col" id="redirect_from" class="manage-column sortable ' . $order_by_class . '">' .
+                  '<a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=redirect_from&order=' .  $order_by . $search_permalink . '">' .
+                    '<span>' . __( "Redirect From", "permalinks-customizer" ) . '</span>' .
+                    '<span class="sorting-indicator"></span>' .
+                  '</a>' .
+                '</th>' .
+                '<th scope="col" id="redirect_to" class="manage-column sortable ' . $order_by_class . '">' .
+                  '<a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=redirect_to&order=' .  $order_by . $search_permalink . '">' .
+                    '<span>' . __( "Redirect To", "permalinks-customizer" ) . '</span>' .
+                    '<span class="sorting-indicator"></span>' .
+                  '</a>' .
+                '</th>' .
+                '<th scope="col" id="type" class="manage-column sortable ' . $order_by_class . ' type">' .
+                  '<a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=type&order=' .  $order_by . $search_permalink . '">' .
+                    '<span>' . __( "Type", "permalinks-customizer" ) . '</span>' .
+                    '<span class="sorting-indicator"></span>' .
+                  '</a>' .
+                '</th>' .
+                '<th scope="col" id="enable" class="manage-column sortable ' . $order_by_class . ' status">' .
+                  '<a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=enable&order=' .  $order_by . $search_permalink . '">' .
+                    '<span>' . __( "Status", "permalinks-customizer" ) . '</span>' .
+                    '<span class="sorting-indicator"></span>' .
+                  '</a>' .
+                '</th>' .
+                '<th scope="col" id="count" class="manage-column sortable ' . $order_by_class . ' count">' .
+                  '<a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=count&order=' .  $order_by . $search_permalink . '">' .
+                    '<span>' . __( "Count", "permalinks-customizer" ) . '</span>' .
+                    '<span class="sorting-indicator"></span>' .
+                  '</a>' .
+                '</th>' .
+                '<th scope="col" id="last_accessed" class="manage-column sortable ' . $order_by_class . ' accessed">' .
+                  '<a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=last_accessed&order=' .  $order_by . $search_permalink . '">' .
+                    '<span>' . __( "Last Accessed", "permalinks-customizer" ) . '</span>' .
+                    '<span class="sorting-indicator"></span>' .
+                  '</a>' .
+                '</th>' .
+              '</tr>';
+    } else {
+      $nav = '<tr>' .
+                '<td class="column-cb check-column">' .
+                  '<label class="screen-reader-text" for="cb-select-all-1">Select All</label>' .
+                  '<input id="cb-select-all-2" type="checkbox">' .
+                '</td>' .
+                '<th scope="col" class="manage-column sortable ' . $order_by_class . '">' .
+                  '<a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=redirect_from&order=' .  $order_by . $search_permalink . '">' .
+                    '<span>' . __( "Redirect From", "permalinks-customizer" ) . '</span>' .
+                    '<span class="sorting-indicator"></span>' .
+                  '</a>' .
+                '</th>' .
+                '<th scope="col" class="manage-column sortable ' . $order_by_class . '">' .
+                  '<a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=redirect_to&order=' .  $order_by . $search_permalink . '">' .
+                    '<span>' . __( "Redirect To", "permalinks-customizer" ) . '</span>' .
+                    '<span class="sorting-indicator"></span>' .
+                  '</a>' .
+                '</th>' .
+                '<th scope="col" class="manage-column sortable ' . $order_by_class . ' type">' .
+                  '<a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=type&order=' .  $order_by . $search_permalink . '">' .
+                    '<span>' . __( "Type", "permalinks-customizer" ) . '</span>' .
+                    '<span class="sorting-indicator"></span>' .
+                  '</a>' .
+                '</th>' .
+                '<th scope="col" class="manage-column sortable ' . $order_by_class . ' status">' .
+                  '<a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=enable&order=' .  $order_by . $search_permalink . '">' .
+                    '<span>' . __( "Status", "permalinks-customizer" ) . '</span>' .
+                    '<span class="sorting-indicator"></span>' .
+                  '</a>' .
+                '</th>' .
+                '<th scope="col" class="manage-column sortable ' . $order_by_class . ' count">' .
+                  '<a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=count&order=' .  $order_by . $search_permalink . '">' .
+                    '<span>' . __( "Count", "permalinks-customizer" ) . '</span>' .
+                    '<span class="sorting-indicator"></span>' .
+                  '</a>' .
+                '</th>' .
+                '<th scope="col" class="manage-column sortable ' . $order_by_class . ' accessed">' .
+                  '<a href="/wp-admin/admin.php?page=' . $page_url . '&orderby=last_accessed&order=' .  $order_by . $search_permalink . '">' .
+                    '<span>' . __( "Last Accessed", "permalinks-customizer" ) . '</span>' .
+                    '<span class="sorting-indicator"></span>' .
+                  '</a>' .
+                '</th>' .
+              '</tr>';
+    }
+
     return $nav;
   }
 }

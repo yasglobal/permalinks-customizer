@@ -35,7 +35,8 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
     // Handle Bulk Operations
     if ( ( ( isset( $_POST['action'] ) && 'delete' == $_POST['action'] )
       || ( isset( $_POST['action2'] ) && 'delete' == $_POST['action2'] ) )
-      && isset( $_POST['permalink'] ) && ! empty( $_POST['permalink'] ) ) {
+      && isset( $_POST['permalink'] ) && ! empty( $_POST['permalink'] )
+    ) {
       $taxonomy_ids =  implode( ',', $_POST['permalink'] );
       if ( preg_match( '/^\d+(?:,\d+)*$/', $taxonomy_ids ) ) {
         $wpdb->query( "DELETE FROM $wpdb->termmeta WHERE term_id IN ($taxonomy_ids) AND meta_key = 'permalink_customizer'" );
@@ -61,24 +62,31 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
 
     $search_value     = '';
     $filter_permalink = '';
+    $page_limit       = 'LIMIT 0, 20';
+    $current_page     = 1;
+
     if ( isset( $_GET['s'] ) && ! empty( $_GET['s'] ) ) {
       $search_value     = htmlspecialchars( ltrim( $_GET['s'], '/' ) );
       $filter_permalink = 'AND tm.meta_value LIKE "%' . $search_value . '%"';
       $search_permalink = '&s=' . $search_value . '';
       $html            .= '<span class="subtitle">Search results for "' . $search_value . '"</span>';
     }
-    $page_limit = 'LIMIT 0, 20';
-    if ( isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] )
-      && $_GET['paged'] > 1 ) {
-      $pager      = 20 * ( $_GET['paged'] - 1 );
+
+    if ( isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] ) ) {
+      $current_page = $_GET['paged'];
+    }
+
+    if ( 1 < $current_page ) {
+      $pager      = 20 * ( $current_page - 1 );
       $page_limit = 'LIMIT ' . $pager . ', 20';
     }
+
     $sorting_by     = 'ORDER By t.term_id DESC';
     $order_by       = 'asc';
     $order_by_class = 'desc';
-    if ( isset( $_GET['orderby'] ) && $_GET['orderby'] == 'title' ) {
+    if ( isset( $_GET['orderby'] ) && 'title' == $_GET['orderby'] ) {
       $filter_options .= '<input type="hidden" name="orderby" value="title" />';
-      if ( isset( $_GET['order'] ) && $_GET['order'] == 'desc' ) {
+      if ( isset( $_GET['order'] ) && 'desc' == $_GET['order'] ) {
         $sorting_by      = 'ORDER By t.name DESC';
         $order_by        = 'asc';
         $order_by_class  = 'desc';
@@ -91,7 +99,8 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
       }
     }
     if ( isset( $_GET['orderby'] ) && ( 'title' === $_GET['orderby']
-      || 'permalink' === $_GET['orderby'] || 'type' === $_GET['orderby'] ) ) {
+      || 'permalink' === $_GET['orderby'] || 'type' === $_GET['orderby'] )
+    ) {
       if ( 'permalink' === $_GET['orderby'] ) {
         $set_orderby = 'tm.meta_value';
       } elseif ( 'type' === $_GET['orderby'] ) {
@@ -100,7 +109,7 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
         $set_orderby = 't.name';
       }
       $filter_options .= '<input type="hidden" name="orderby" value="' . $set_orderby . '" />';
-      if ( isset( $_GET['order'] ) && $_GET['order'] == 'desc' ) {
+      if ( isset( $_GET['order'] ) && 'desc' == $_GET['order'] ) {
         $sorting_by      = 'ORDER By ' . $set_orderby . ' DESC';
         $order_by        = 'asc';
         $order_by_class  = 'desc';
@@ -137,10 +146,11 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
                 '<input type="submit" id="doaction" class="button action" value="Apply">' .
               '</div>';
 
-    $taxonomies      = 0;
-    $pagination_html = '';
+    $taxonomies        = 0;
+    $top_pagination    = '';
+    $bottom_pagination = '';
     if ( isset( $count_tax->total_permalinks )
-      && $count_tax->total_permalinks > 0 ) {
+      && 0 < $count_tax->total_permalinks ) {
       $html .= '<h2 class="screen-reader-text">Permalinks Customizer navigation</h2>';
 
       $query = "SELECT t.term_id, t.name, tm.meta_value, tt.taxonomy FROM $wpdb->terms AS t " .
@@ -150,34 +160,34 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
                 $filter_permalink . " " . $sorting_by . " " . $page_limit . "";
       $taxonomies = $wpdb->get_results( $query );
 
-      $total_pages     = ceil( $count_tax->total_permalinks / 20 );
-      if ( isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] )
-        && $_GET['paged'] > 0 ) {
-        $pagination_html = $common_functions->get_pager(
-          $count_tax->total_permalinks, $_GET['paged'], $total_pages
+      $total_pages    = ceil( $count_tax->total_permalinks / 20 );
+      $top_pagination = $common_functions->get_pager(
+        $count_tax->total_permalinks, $current_page, $total_pages, 'top'
+      );
+      $bottom_pagination = $common_functions->get_pager(
+        $count_tax->total_permalinks, $current_page, $total_pages, 'bottom'
+      );
+
+      if ( $current_page > $total_pages ) {
+        $redirect_uri = explode(
+          '&paged=' . $current_page, $_SERVER['REQUEST_URI']
         );
-        if ( $_GET['paged'] > $total_pages ) {
-          $redirect_uri = explode(
-            '&paged=' . $_GET['paged'] . '', $_SERVER['REQUEST_URI']
-          );
-          header( 'Location: ' . $redirect_uri[0], 301 );
-          exit();
-        }
-      } elseif ( ! isset( $_GET['paged'] ) ) {
-        $pagination_html = $common_functions->get_pager(
-          $count_tax->total_permalinks, 1, $total_pages
-        );
+        header( 'Location: ' . $redirect_uri[0], 301 );
+        exit();
       }
 
-      $html .= $pagination_html;
+      $html .= $top_pagination;
     }
-    $table_navigation = $common_functions->get_tablenav(
-      $order_by_class, $order_by, $search_permalink, $_GET['page']
+    $top_navigation = $common_functions->get_tablenav(
+      $order_by_class, $order_by, $search_permalink, $_GET['page'], 'top'
+    );
+    $bottom_navigation = $common_functions->get_tablenav(
+      $order_by_class, $order_by, $search_permalink, $_GET['page'], 'bottom'
     );
 
     $html .= '</div>';
     $html .= '<table class="wp-list-table widefat fixed striped posts">' .
-                '<thead>' . $table_navigation . '</thead>' .
+                '<thead>' . $top_navigation . '</thead>' .
                 '<tbody>';
     if ( 0 != $taxonomies && ! empty( $taxonomies ) ) {
       foreach ( $taxonomies as $taxonomy ) {
@@ -192,7 +202,7 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
       $html .= '<tr class="no-items"><td class="colspanchange" colspan="4">No permalinks found.</td></tr>';
     }
     $html .= '</tbody>' .
-              '<tfoot>' . $table_navigation . '</tfoot>' .
+              '<tfoot>' . $bottom_navigation . '</tfoot>' .
               '</table>';
 
     $html .= '<div class="tablenav bottom">' .
@@ -204,7 +214,7 @@ class Permalinks_Customizer_Taxonomy_Permalinks {
                   '</select>' .
                  '<input type="submit" id="doaction2" class="button action" value="Apply">' .
                 '</div>' .
-                $pagination_html .
+                $bottom_pagination .
               '</div>';
     $html .= '</form></div>';
     echo $html;
