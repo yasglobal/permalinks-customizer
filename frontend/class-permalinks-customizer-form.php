@@ -28,9 +28,7 @@ final class Permalinks_Customizer_Form {
       array( $this, 'post_edit_form' ), 10, 4
     );
 
-    add_action( 'add_meta_boxes',
-      array( $this, 'permalink_edit_box' )
-    );
+    add_action( 'add_meta_boxes',  array( $this, 'permalink_edit_box' ) );
 
     add_filter( 'is_protected_meta',
       array( $this, 'make_meta_protected' ), 10, 3
@@ -52,9 +50,7 @@ final class Permalinks_Customizer_Form {
       array( $this, 'save_attachment_post' ), 10, 1
     );
 
-    add_action( 'delete_post',
-      array( $this, 'delete_post_permalink' ), 10
-    );
+    add_action( 'delete_post', array( $this, 'delete_post_permalink' ), 10 );
 
     add_action( 'created_term',
       array( $this, 'generate_term_permalink' ), 10, 3
@@ -76,7 +72,7 @@ final class Permalinks_Customizer_Form {
     add_action( 'rest_api_init', array( $this, 'rest_edit_form' ) );
 
     add_action( 'admin_bar_menu',
-      array( $this, 'flush_permalink_cache' ), 999
+      array( $this, 'add_toolbar_links' ), 999
     );
   }
 
@@ -1671,18 +1667,118 @@ final class Permalinks_Customizer_Form {
    *
    * @param object $wp_admin_bar Contain Toolbar links.
    */
-  public function flush_permalink_cache( $wp_admin_bar ) {
-    if ( is_user_logged_in() && current_user_can( 'manage_options' ) ) {
-      $cache = 'wp-admin/admin.php?page=permalinks-customizer-posts-settings&cache=1';
-      $wp_admin_bar->add_node([
-        'id'    => 'permalinks-customizer',
-        'title' => 'Flush Permalinks Cache',
-        'href'  => trailingslashit( home_url() ) . $cache,
-        'meta'  => array(
-          'target' => '_blank',
-          'title'  => 'Flush Permalinks Cache'
+  public function add_toolbar_links( $wp_admin_bar ) {
+    $child_args = array();
+    $post_args  = array();
+    $tax_args   = array();
+
+    if ( current_user_can( 'pc_manage_permalink_settings' ) ) {
+      $set1 = 'wp-admin/admin.php?page=permalinks-customizer-posts-settings';
+      $set2 = 'wp-admin/admin.php?page=permalinks-customizer-taxonomies-settings';
+
+      $post_args[] = array(
+        'id'     => 'permalinks-customizer-posts-settings',
+        'title'  => __( 'Settings', 'permalinks-customizer' ),
+        'parent' => 'permalinks-customizer-posttypes',
+        'href'   => trailingslashit( home_url() ) . $set1,
+        'meta'   => array(
+          'title' => __( 'PostTypes Settings', 'permalinks-customizer' ),
+        ),
+      );
+      $tax_args[] = array(
+        'id'     => 'permalinks-customizer-taxonomies-settings',
+        'title'  => __( 'Settings', 'permalinks-customizer' ),
+        'parent' => 'permalinks-customizer-taxonomies',
+        'href'   => trailingslashit( home_url() ) . $set2,
+        'meta'   => array(
+          'title' => __( 'Taxonomies Settings', 'permalinks-customizer' ),
+        ),
+      );
+    }
+
+    if ( current_user_can( 'pc_manage_permalinks' ) ) {
+      $perm1 = 'wp-admin/admin.php?page=permalinks-customizer-post-permalinks';
+      $perm2 = 'wp-admin/admin.php?page=permalinks-customizer-taxonomy-permalinks';
+
+      $post_args[] =  array(
+        'id'     => 'permalinks-customizer-posts-permalinks',
+        'title'  => __( 'Permalinks', 'permalinks-customizer' ),
+        'parent' => 'permalinks-customizer-posttypes',
+        'href'   => trailingslashit( home_url() ) . $perm1,
+        'meta'   => array(
+          'title' => __( 'PostTypes Permalinks', 'permalinks-customizer' ),
+        ),
+      );
+
+      $tax_args[] = array(
+        'id'     => 'permalinks-customizer-taxonomies-permalinks',
+        'title'  => __( 'Permalinks', 'permalinks-customizer' ),
+        'parent' => 'permalinks-customizer-taxonomies',
+        'href'   => trailingslashit( home_url() ) . $perm2,
+        'meta'   => array(
+          'title' => __( 'Taxonomies Permalinks', 'permalinks-customizer' ),
+        ),
+      );
+    }
+
+    if ( ! empty( $post_args ) ) {
+      $child_args[] = array(
+        'id'     => 'permalinks-customizer-posttypes',
+        'title'  => __( 'PostTypes', 'permalinks-customizer' ),
+        'parent' => 'permalinks-customizer',
+      );
+
+      $child_args = array_merge( $child_args, $post_args );
+    }
+
+    if ( ! empty( $tax_args ) ) {
+      $child_args[] = array(
+        'id'     => 'permalinks-customizer-taxonomies',
+        'title'  => __( 'Taxonomies', 'permalinks-customizer' ),
+        'parent' => 'permalinks-customizer',
+      );
+
+      $child_args = array_merge( $child_args, $tax_args );
+    }
+
+    if ( current_user_can( 'pc_manage_permalink_redirects' ) ) {
+      $redirects = 'wp-admin/admin.php?page=permalinks-customizer-redirects';
+
+      $child_args[] = array(
+        'id'     => 'permalinks-customizer-redirects',
+        'title'  => __( 'Redirects', 'permalinks-customizer' ),
+        'parent' => 'permalinks-customizer',
+        'href'   => trailingslashit( home_url() ) . $redirects,
+        'meta'   => array(
+          'title' => __( 'Redirects', 'permalinks-customizer' ),
         )
-      ]);
+      );
+    }
+
+    if ( current_user_can( 'manage_options' ) ) {
+      $cache = 'wp-admin/admin.php?page=permalinks-customizer-posts-settings&cache=1';
+
+      $child_args[] = array(
+        'id'     => 'permalinks-customizer-flush-cache',
+        'title'  => __( 'Flush Permalinks Cache', 'permalinks-customizer' ),
+        'parent' => 'permalinks-customizer',
+        'href'   => trailingslashit( home_url() ) . $cache,
+        'meta'   => array(
+          'title'  => __( 'Flush Permalinks Cache', 'permalinks-customizer' ),
+        ),
+      );
+    }
+
+    if ( ! empty( $child_args ) ) {
+      $parent_args = array(
+        'id'    => 'permalinks-customizer',
+        'title' => __( 'Permalinks Customizer', 'permalinks-customizer' ),
+      );
+      $wp_admin_bar->add_node( $parent_args );
+
+      foreach( $child_args as $each_arg )  {
+        $wp_admin_bar->add_node( $each_arg );
+      }
     }
   }
 }
