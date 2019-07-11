@@ -44,19 +44,19 @@ final class Permalinks_Customizer_Form {
       array( $this, 'pc_post_permalink' ), 10, 1
     );
     add_action( 'add_attachment',
-      array( $this, 'save_attachment_post' ), 10, 1
+      array( $this, 'create_attachment_post' ), 10, 1
     );
     add_action( 'edit_attachment',
-      array( $this, 'save_attachment_post' ), 10, 1
+      array( $this, 'update_attachment_post' ), 10, 1
     );
 
     add_action( 'delete_post', array( $this, 'delete_post_permalink' ), 10 );
 
     add_action( 'created_term',
-      array( $this, 'generate_term_permalink' ), 10, 3
+      array( $this, 'create_term_permalink' ), 10, 3
     );
     add_action( 'edited_term',
-      array( $this, 'generate_term_permalink' ), 10, 3
+      array( $this, 'update_term_permalink' ), 10, 3
     );
     add_action( 'delete_term',
       array( $this, 'delete_term_permalink' ), 10, 3
@@ -98,11 +98,11 @@ final class Permalinks_Customizer_Form {
    * @since 2.3.1
    * @access public
    *
-   * @param boolean $protected Whether the key is protected or not.
+   * @param bool $protected Whether the key is protected or not.
    * @param string $meta_key Meta key.
    * @param string $meta_type Meta type.
    *
-   * @return boolean `true` for the permalinks_customizer key.
+   * @return bool `true` for the permalinks_customizer key.
    */
   public function make_meta_protected( $protected, $meta_key, $meta_type ) {
     if ( 'permalink_customizer' === $meta_key
@@ -120,7 +120,7 @@ final class Permalinks_Customizer_Form {
    *
    * @param string $permalink Permalink which is created by the plugin.
    * @param string $original Permalink which set by WordPress.
-   * @param boolean $renderContainers Shows Post/Term Edit.
+   * @param bool $renderContainers Shows Post/Term Edit.
    * @param string $postname Post Name.
    */
   private function get_form( $permalink, $original = '', $renderContainers = true, $postname = '' ) {
@@ -469,7 +469,7 @@ final class Permalinks_Customizer_Form {
    *
    * @param int $post_id Post ID.
    * @param object $post Post Object.
-   * @param bool $update  Whether this is an existing post being updated or not.
+   * @param bool $update Whether this is an existing post being updated or not.
    */
   public function save_post_permalink( $post_id, $post, $update ) {
 
@@ -533,7 +533,8 @@ final class Permalinks_Customizer_Form {
         && 1 != $permalink_status && 'trash' != $post_status )
         || ( isset( $_REQUEST['permalinks_customizer_regenerate_permalink'] )
         && 'true' === $_REQUEST['permalinks_customizer_regenerate_permalink']
-        && 'trash' != $post_status ) ) {
+        && 'trash' != $post_status )
+    ) {
 
       $get_permalink = esc_attr(
         get_option( 'permalinks_customizer_' . $post->post_type )
@@ -602,9 +603,10 @@ final class Permalinks_Customizer_Form {
       }
 
       // Add Redirect on regenrating the permalink
-      if ( 'trash' != $post_status && ( empty( $url )
+      if ( $update && 'trash' != $post_status && ( empty( $url )
         || ( isset( $_REQUEST['permalinks_customizer_regenerate_permalink'] )
-        && 'true' === $_REQUEST['permalinks_customizer_regenerate_permalink'] ) ) ) {
+        && 'true' === $_REQUEST['permalinks_customizer_regenerate_permalink'] ) )
+      ) {
         $post_type = 'post';
         if ( isset( $post->post_type ) && ! empty( $post->post_type ) ) {
           $post_type = $post->post_type;
@@ -614,7 +616,8 @@ final class Permalinks_Customizer_Form {
       }
     } elseif ( isset( $_REQUEST['permalinks_customizer'] )
       && ! empty( $_REQUEST['permalinks_customizer'] )
-      && $url != $_REQUEST['permalinks_customizer'] ) {
+      && $url != $_REQUEST['permalinks_customizer']
+    ) {
       $permalink = $_REQUEST['permalinks_customizer'];
       $permalink = preg_replace( '/(\/+)/', '/', $permalink );
       $permalink = preg_replace( '/(\-+)/', '-', $permalink );
@@ -636,14 +639,29 @@ final class Permalinks_Customizer_Form {
   }
 
   /**
-   * This Function call when the Attachment Post is created/updated.
+   * This Function call when the Attachment Post is created.
    *
    * @since 2.2.0
    * @access public
    *
    * @param int $post_id Post ID.
    */
-  public function save_attachment_post( $post_id ) {
+  public function create_attachment_post( $post_id ) {
+    $post = get_post( $post_id );
+    if ( is_object( $post ) && isset( $post->post_type ) ) {
+      $this->save_post_permalink( $post_id, $post, false );
+    }
+  }
+
+  /**
+   * This Function call when the Attachment Post is updated.
+   *
+   * @since 2.2.0
+   * @access public
+   *
+   * @param int $post_id Post ID.
+   */
+  public function update_attachment_post( $post_id ) {
     $post = get_post( $post_id );
     if ( is_object( $post ) && isset( $post->post_type ) ) {
       $this->save_post_permalink( $post_id, $post, true );
@@ -1079,16 +1097,40 @@ final class Permalinks_Customizer_Form {
   }
 
   /**
-   * Check and Call the Function which saves the Permalink for Taxonomy.
-   * This function generates the Permalink according to the Taxonomy settings
-   * and also saves the permalink if it is updated manually by user.
+   * Call the function which generates the permalink on `created_term` action.
+   *
+   * @since 2.8.0
+   * @access public
+   *
+   * @param int $id Term ID.
+   */
+  public function create_term_permalink( $id ) {
+    $this->generate_term_permalink( $id, false );
+  }
+
+  /**
+   * Call the Function which updates the permalink on `edited_term` action.
+   *
+   * @since 2.8.0
+   * @access public
+   *
+   * @param int $id Term ID.
+   */
+  public function update_term_permalink( $id ) {
+    $this->generate_term_permalink( $id, true );
+  }
+
+  /**
+   * Generates the Permalink according to the Taxonomy settings and also
+   * saves the permalink if it is updated manually by the user.
    *
    * @since 1.0.0
    * @access public
    *
    * @param int $id Term ID.
+   * @param bool $term_updated `true` when called from the`edited_term` hook.
    */
-  public function generate_term_permalink( $id ) {
+  public function generate_term_permalink( $id, $term_updated ) {
     $new_permalink = '';
     if ( isset( $_REQUEST['permalinks_customizer'] ) ) {
       $new_permalink = ltrim( stripcslashes( $_REQUEST['permalinks_customizer'] ), '/' );
@@ -1097,11 +1139,13 @@ final class Permalinks_Customizer_Form {
     $term = get_term( $id );
     if ( empty( $new_permalink )
       || ( isset( $_REQUEST['permalinks_customizer_regenerate_permalink'] )
-      && 'true' === $_REQUEST['permalinks_customizer_regenerate_permalink'] ) ) {
+      && 'true' === $_REQUEST['permalinks_customizer_regenerate_permalink'] )
+    ) {
       $permalinks_customizer_settings = unserialize( get_option( 'permalinks_customizer_taxonomy_settings' ) );
       if ( isset( $permalinks_customizer_settings[$term->taxonomy . '_settings'] )
         && isset( $permalinks_customizer_settings[$term->taxonomy . '_settings']['structure'] )
-        && ! empty( $permalinks_customizer_settings[$term->taxonomy . '_settings']['structure'] ) ) {
+        && ! empty( $permalinks_customizer_settings[$term->taxonomy . '_settings']['structure'] )
+      ) {
         $new_permalink = $this->replace_term_tags( $term, $permalinks_customizer_settings[$term->taxonomy . '_settings']['structure'] );
       }
     }
@@ -1125,7 +1169,7 @@ final class Permalinks_Customizer_Form {
 
     $this->save_term_permalink(
       $term, str_replace( '%2F', '/', urlencode( $new_permalink ) ),
-      $old_permalink, $regenerate
+      $old_permalink, $regenerate, $term_updated
     );
   }
 
@@ -1212,11 +1256,12 @@ final class Permalinks_Customizer_Form {
    * @param object $term Term Object.
    * @param string $permalink New permalink which needs to be saved.
    * @param string $prev Previously saved permalink.
-   * @param string $update `1` for Permaink Regenerating else for creating permalink.
+   * @param string $regenerate `1` for Permaink Regenerating else for creating permalink.
+   * @param string $update Whether this is an existing term being updated or not.
    */
-  private function save_term_permalink( $term, $permalink, $prev, $update ) {
+  private function save_term_permalink( $term, $permalink, $prev, $regenerate, $update ) {
     $url = get_term_meta( $term->term_id, 'permalink_customizer' );
-    if ( empty( $url ) || 1 == $update ) {
+    if ( empty( $url ) || 1 == $regenerate ) {
       global $wpdb;
       $trailing_slash = substr( $permalink, -1 );
       if ( '/' == $trailing_slash ) {
@@ -1231,7 +1276,9 @@ final class Permalinks_Customizer_Form {
           $permalink = $set_permalink . '-' . $i;
           $qry = "SELECT * FROM $wpdb->termmeta WHERE meta_key = 'permalink_customizer' AND meta_value = '" . $permalink . "' AND term_id != " . $term->term_id . " OR meta_key = 'permalink_customizer' AND meta_value = '" . $permalink . "/' AND term_id != " . $term->term_id . " LIMIT 1";
           $check_exist_url = $wpdb->get_results( $qry );
-          if ( empty( $check_exist_url ) ) break;
+          if ( empty( $check_exist_url ) ) {
+            break;
+          }
           $i++;
         }
       }
@@ -1240,7 +1287,7 @@ final class Permalinks_Customizer_Form {
         $permalink = $permalink . '/';
       }
 
-      if ( strpos( $permalink, '/' ) === 0 ) {
+      if ( 0 === strpos( $permalink, '/' ) ) {
         $permalink = substr( $permalink, 1 );
       }
     }
@@ -1250,6 +1297,10 @@ final class Permalinks_Customizer_Form {
     $taxonomy = 'category';
     if ( isset( $term->taxonomy ) && ! empty( $term->taxonomy ) ) {
       $taxonomy = $term->taxonomy;
+    }
+
+    if ( ! $update ) {
+      return;
     }
 
     if ( ! empty( $permalink ) && ! empty( $prev ) && $permalink != $prev  ) {
@@ -1600,7 +1651,7 @@ final class Permalinks_Customizer_Form {
 
       $this->save_term_permalink(
         $term, str_replace( '%2F', '/', urlencode( $new_permalink ) ),
-        $old_permalink, 1
+        $old_permalink, 1, true
       );
       $generated++;
     }
