@@ -163,8 +163,10 @@ final class Permalinks_Customizer_Form {
     }
     $permalink_edit_field = '';
     if ( isset( $this->permalink_metabox ) && 0 === $this->permalink_metabox ) {
-      $permalink_edit_field = '<label style="display:block;">URL</label>';
-      $home_url = '';
+      if ( '' !== $postname ) {
+        $permalink_edit_field = '<label style="display:block;">URL</label>';
+        $home_url = '';
+      }
     }
 
     $permalink_edit_field .= $home_url .
