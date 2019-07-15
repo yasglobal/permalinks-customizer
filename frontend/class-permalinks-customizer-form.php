@@ -1065,6 +1065,11 @@ final class Permalinks_Customizer_Form {
       }
     }
 
+    /*
+    * Hook : Add custom tags
+    */
+    $replace_tag = apply_filters('pc_custom_tags_posttype', $replace_tag, $post);
+
     return $replace_tag;
   }
 

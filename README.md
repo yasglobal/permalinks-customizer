@@ -128,6 +128,21 @@ add_filter( 'permalinks_customizer_disable_redirects', '__return_false');
 ```
 This filter only stop redirects to be work but the automatically create redirects still works. To stop automatically create redirects feature add [this](#disable-automatically-create-redirects) filter.
 
+### Add custom tag
+To add custom tag in permalink
+```
+function replace_custom_tag($replace_tag, $post) {
+    if ( false !== strpos( $replace_tag, '%custom_tag%' ) ) {
+        $slug = "";
+        // Do stuff
+        $replace_tag = str_replace( '%custom_tag%', $slug, $replace_tag );
+    }
+
+    return $replace_tag;
+}
+add_filter( 'pc_custom_tags_posttype', 'replace_custom_tag');
+```
+
 ## Installation
 
 This process defines you the steps to follow either you are installing through WordPress or Manually from FTP.
