@@ -77,6 +77,25 @@ Below mentioned tags are provided by the **Permalinks Customizer** for Taxonomie
 ## Filters
 You can find all the filters below which are provided by **Permalinks Customizer** plugin. These filters can be used as per your Website requirement.
 
+### Set Custom value in Permalink
+
+This filter allow to replace the custom tag with your desired value. It can be any custom field value or anything else. 
+```
+/**
+ * set the text which replace the custom tag from the permalink.
+ *
+ * @since 2.8.0
+ *
+ * @param object $post The post object.
+ *
+ * @return string text which can be replaced with the custom tag.
+ */
+function yasglobal_custom_tag( $post ) {
+  return sanitize_title( $post->post_title ) . '-from-sami';
+}
+add_filter( 'pc_custom_posttype_tag', 'yasglobal_custom_tag', 10, 1 );
+```
+
 ### Exclude Permalinks
 
 If you want to exclude some Permalink to processed with the plugin so, just add the filter looks like this:

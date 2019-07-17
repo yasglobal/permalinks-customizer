@@ -678,7 +678,7 @@ final class Permalinks_Customizer_Form {
    * @access private
    *
    * @param int $post_id Post ID.
-   * @param object $post contains the list of saved values.
+   * @param object $post The post object.
    * @param string $replace_tag Structure which is used to create permalink.
    *
    * @return string permalink after replacing the appropriate tags with their values.
@@ -1063,6 +1063,18 @@ final class Permalinks_Customizer_Form {
         $author      = get_the_author_meta( 'user_login', $post->post_author );
         $replace_tag = str_replace( '%author_lastname%', $author, $replace_tag );
       }
+    }
+
+    /*
+     * Replace custom tag with the provided value by plugin/theme.
+     */
+    if ( false !== strpos( $replace_tag, '%pc_custom_posttype_tag%' ) ) {
+      $custom_tag = apply_filters( 'pc_custom_posttype_tag', $post );
+
+      $custom_tag  = strip_tags( $custom_tag );
+      $replace_tag = str_replace(
+        '%pc_custom_posttype_tag%', $custom_tag, $replace_tag
+      );
     }
 
     return $replace_tag;
