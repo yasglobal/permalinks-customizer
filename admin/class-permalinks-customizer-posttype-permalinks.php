@@ -28,41 +28,85 @@ class Permalinks_Customizer_PostType_Permalinks {
    */
   private function post_permalinks() {
     global $wpdb;
+
     $filter_options   = '';
     $search_permalink = '';
-    $html             = '';
+    $page_html        = '';
 
-    // Handle Bulk Operations
-    if ( ( ( isset( $_POST['action'] ) && 'delete' == $_POST['action'] )
-      || ( isset( $_POST['action2'] ) && 'delete' == $_POST['action2'] ) )
-      && isset( $_POST['permalink'] ) && ! empty( $_POST['permalink'] )
+    if ( isset( $_GET['_wpnonce'] )
+      && wp_verify_nonce( $_GET['_wpnonce'], 'permalinks-customizer_posttype_permalinks' )
     ) {
-      $post_ids =  implode( ',', $_POST['permalink'] );
-      if ( preg_match( '/^\d+(?:,\d+)*$/', $post_ids ) ) {
-        $wpdb->query( "DELETE FROM $wpdb->postmeta WHERE post_id IN ($post_ids) AND meta_key = 'permalink_customizer'" );
-        $permalink = count( $_POST['permalink'] );
-        printf( '<div id="message" class="updated notice notice-success is-dismissible"><p>' .
-          _n( '%s Permalink is deleted.',
-            '%s Permalinks are deleted.',
-            $permalink,
-            'permalinks-customizer'
-          ) . '</p></div>', $permalink );
-      } else {
-        $error = '<div id="message" class="error">' .
-                    '<p>' . __( 'There is some error to proceed your request. Please retry with your request or contact to the plugin author.', 'permalinks-customizer' ) . '</p>' .
-                 '</div>';
+      // Handle Bulk Operations
+      if ( ( ( isset( $_GET['action'] ) && 'delete' == $_GET['action'] )
+        || ( isset( $_GET['action2'] ) && 'delete' == $_GET['action2'] ) )
+        && isset( $_GET['permalink'] ) && ! empty( $_GET['permalink'] )
+      ) {
+        $post_ids = implode( ',', $_GET['permalink'] );
+        if ( preg_match( '/^\d+(?:,\d+)*$/', $post_ids ) ) {
+          $wpdb->query( "DELETE FROM $wpdb->postmeta WHERE post_id IN ($post_ids) AND meta_key = 'permalink_customizer'" );
+
+          $action_comp = array(
+            'action' => wp_kses( 'deleted', array() ),
+            'total'  => wp_kses( count( $_GET['permalink'] ), array() )
+          );
+
+          update_option( 'permalinks_customizer_posttypes_permalinks_action',
+            $action_comp
+          );
+        }
       }
     }
 
-    wp_enqueue_script( 'permalink-customizer-admin', plugins_url( '/js/admin-script.js', __FILE__ ), array(), false, true );
+    $flag_redirect = 0;
+    if ( isset( $_GET ) ) {
+      foreach ( $_GET as $key => $value ) {
+        if ( 'page' !== $key && 'paged' !== $key ) {
+          if ( 's' === $key && '' !== $value ) {
+            continue;
+          }
+          unset( $_GET[$key] );
+          if ( '_wpnonce' === $key || '_wp_http_referer' === $key ) {
+            $flag_redirect = 1;
+          }
+        }
+      }
+    }
+
+    if ( 1 === $flag_redirect ) {
+      $rebuild_query = '/wp-admin/admin.php?' . http_build_query( $_GET );
+      header( 'Location: ' . $rebuild_query, 301 );
+      exit();
+    }
+
+    $message        = '';
+    $applied_action = get_option( 'permalinks_customizer_posttypes_permalinks_action', '' );
+    if ( ! empty( $applied_action ) ) {
+      delete_option( 'permalinks_customizer_posttypes_permalinks_action' );
+      if ( isset( $applied_action['action'] )
+        && isset( $applied_action['total'] )
+        && is_numeric( $applied_action['total'] ) && 0 < $applied_action['total']
+      ) {
+        $del_items = $applied_action['total'];
+        $message   = sprintf( '<div id="message" class="updated notice notice-success is-dismissible"><p>' .
+          _n( '%s Permalink is deleted.',
+            '%s Permalinks are deleted.',
+            $del_items,
+            'permalinks-customizer'
+          ) . '</p></div>', $del_items );
+      }
+    }
 
     require_once(
       PERMALINKS_CUSTOMIZER_PATH . 'admin/class-permalinks-customizer-common-functions.php'
     );
     $common_functions = new Permalinks_Customizer_Common_Functions();
 
-    $html .= '<div class="wrap">' .
-                '<h1 class="wp-heading-inline">' . __( 'PostTypes Permalinks', 'permalinks-customizer' ) . '</h1>';
+    $page_html .= '<div class="wrap">' .
+                    '<h1 class="wp-heading-inline">' .
+                      __( 'PostTypes Permalinks', 'permalinks-customizer' ) .
+                    '</h1>';
+
+    $page_html .= $message;
 
     $search_value     = '';
     $filter_permalink = '';
@@ -73,7 +117,9 @@ class Permalinks_Customizer_PostType_Permalinks {
       $search_value     = htmlspecialchars( ltrim( $_GET['s'], '/' ) );
       $filter_permalink = 'AND pm.meta_value LIKE "%' . $search_value . '%"';
       $search_permalink = '&s=' . $search_value . '';
-      $html            .= '<span class="subtitle">Search results for "' . $search_value . '"</span>';
+      $page_html       .= '<span class="subtitle">' .
+                            __( "Search results for", "permalinks-customizer" ) . ' "' . $search_value . '"' .
+                          '</span>';
     }
 
     if ( isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] ) ) {
@@ -117,31 +163,42 @@ class Permalinks_Customizer_PostType_Permalinks {
                     " AND pm.meta_value != '' " . $filter_permalink . "";
     $count_posts = $wpdb->get_row( $count_query );
 
-    $html .= '<form action="' . $_SERVER["REQUEST_URI"] . '" method="get">';
-    $html .= '<p class="search-box">';
-    $html .= '<input type="hidden" name="page" value="permalinks-customizer-post-permalinks" />';
-    $html .= $filter_options;
-    $html .= '<label class="screen-reader-text" for="permalinks-customizer-search-input">Search Permalinks Customizer:</label>';
-    $html .= '<input type="search" id="permalinks-customizer-search-input" name="s" value="' . $search_value . '">';
-    $html .= '<input type="submit" id="search-submit" class="button" value="Search Permalink"></p>';
-    $html .= '</form>';
-    $html .= '<form action="' . $_SERVER["REQUEST_URI"] . '" method="post">';
-    $html .= '<div class="tablenav top">';
-    $html .= '<div class="alignleft actions bulkactions">' .
-                '<label for="bulk-action-selector-top" class="screen-reader-text">Select bulk action</label>' .
-                '<select name="action" id="bulk-action-selector-top">' .
-                  '<option value="-1">' . __( "Bulk Actions", "permalinks-customizer" ) . '</option>' .
-                  '<option value="delete">' . __( "Delete Permalinks", "permalinks-customizer" ) . '</option>' .
-                '</select>' .
-                '<input type="submit" id="doaction" class="button action" value="Apply">' .
-              '</div>';
+    $page_html .= '<form id="permalinks-filter" method="get">' .
+                    '<p class="search-box">' .
+                      '<label class="screen-reader-text" for="permalinks-customizer-search-input">' .
+                        __( "Search Permalinks:", "permalinks-customizer" ) .
+                      '</label>' .
+                      '<input type="search" id="permalinks-customizer-search-input" name="s" value="' . $search_value . '">' .
+                      '<input type="submit" id="search-submit" class="button" value="' . __( "Search Permalinks", "permalinks-customizer" ) . '">' .
+                    '</p>' .
+                    '<input type="hidden" name="page" value="permalinks-customizer-post-permalinks" />' .
+                    $filter_options .
+                    wp_nonce_field( 'permalinks-customizer_posttype_permalinks' ) .
+                    '<div class="tablenav top">' .
+                    '<div class="alignleft actions bulkactions">' .
+                      '<label for="bulk-action-selector-top" class="screen-reader-text">' .
+                        __( "Select bulk action", "permalinks-customizer" ) .
+                      '</label>' .
+                      '<select name="action" id="bulk-action-selector-top">' .
+                        '<option value="-1">' .
+                          __( "Bulk Actions", "permalinks-customizer" ) .
+                        '</option>' .
+                        '<option value="delete">' .
+                          __( "Delete Permalinks", "permalinks-customizer" ) .
+                        '</option>' .
+                      '</select>' .
+                      '<input type="submit" id="doaction" class="button action" value="' . __( "Apply", "permalinks-customizer" ) . '">' .
+                    '</div>';
 
     $posts             = 0;
     $top_pagination    = '';
     $bottom_pagination = '';
     if ( isset( $count_posts->total_permalinks )
-      && 0 < $count_posts->total_permalinks ) {
-      $html .= '<h2 class="screen-reader-text">Permalinks Customizer navigation</h2>';
+      && 0 < $count_posts->total_permalinks
+    ) {
+      $page_html .= '<h2 class="screen-reader-text">'
+                      . __( "Permalinks Customizer navigation", "permalinks-customizer" ) .
+                    '</h2>';
 
       $query = "SELECT p.ID, p.post_title, p.post_type, pm.meta_value FROM $wpdb->posts AS p " .
                 " LEFT JOIN $wpdb->postmeta AS pm ON (p.ID = pm.post_id) " .
@@ -166,7 +223,7 @@ class Permalinks_Customizer_PostType_Permalinks {
         exit();
       }
 
-      $html .= $top_pagination;
+      $page_html .= $top_pagination;
     }
     $top_navigation = $common_functions->get_tablenav(
       $order_by_class, $order_by, $search_permalink, $_GET['page'], 'top'
@@ -175,38 +232,60 @@ class Permalinks_Customizer_PostType_Permalinks {
       $order_by_class, $order_by, $search_permalink, $_GET['page'], 'bottom'
     );
 
-    $html .= '</div>';
-    $html .= '<table class="wp-list-table widefat fixed striped posts">' .
-                '<thead>' . $top_navigation . '</thead>' .
-                '<tbody>';
+    $page_html .= '</div>' .
+                  '<table class="wp-list-table widefat fixed striped posts">' .
+                    '<thead>' . $top_navigation . '</thead>' .
+                    '<tbody>';
     if ( 0 != $posts && ! empty( $posts ) ) {
       foreach ( $posts as $post ) {
-        $pview = home_url() . '/' . $post->meta_value;
-        $html .= '<tr valign="top">';
-        $html .= '<th scope="row" class="check-column"><input type="checkbox" name="permalink[]" value="' . $post->ID . '" /></th>';
-        $html .= '<td><strong><a class="row-title" href="post.php?action=edit&post=' . $post->ID . '">' . $post->post_title . '</a></strong></td>';
-        $html .= '<td>' . ucwords( $post->post_type ) . '</td>';
-        $html .= '<td><a href="' . $pview . '" target="_blank" title="' . __( "Visit ". $post->post_title, "permalinks-customizer" ) . '">/' . urldecode( $post->meta_value ) . '</a></td></tr>';
+        $pview      = home_url() . '/' . $post->meta_value;
+        $page_html .= '<tr valign="top">' .
+                        '<th scope="row" class="check-column">' .
+                          '<input type="checkbox" name="permalink[]" value="' . $post->ID . '" />' .
+                        '</th>' .
+                        '<td>' .
+                          '<strong><a class="row-title" href="post.php?action=edit&post=' . $post->ID . '">' .
+                            $post->post_title .
+                          '</a></strong>' .
+                        '</td>' .
+                        '<td>' . ucwords( $post->post_type ) . '</td>' .
+                        '<td>' .
+                          '<a href="' . $pview . '" target="_blank" title="' . __( "Visit ", "permalinks-customizer" ) . $post->post_title . '">' .
+                            '/' . urldecode( $post->meta_value ) .
+                          '</a>' .
+                        '</td>' .
+                      '</tr>';
       }
     } else {
-      $html .= '<tr class="no-items"><td class="colspanchange" colspan="4">No permalinks found.</td></tr>';
+      $page_html .= '<tr class="no-items">' .
+                      '<td class="colspanchange" colspan="4">' .
+                        __( "No permalinks found.", "permalinks-customizer" ) .
+                      '</td>' .
+                    '</tr>';
     }
-    $html .= '</tbody>' .
-              '<tfoot>' . $bottom_navigation . '</tfoot>' .
-              '</table>';
+    $page_html .= '</tbody>' .
+                  '<tfoot>' . $bottom_navigation . '</tfoot>' .
+                  '</table>';
 
-    $html .= '<div class="tablenav bottom">' .
-                '<div class="alignleft actions bulkactions">' .
-                  '<label for="bulk-action-selector-bottom" class="screen-reader-text">' . __( "Select bulk action", "permalinks-customizer" ) . '</label>' .
-                  '<select name="action2" id="bulk-action-selector-bottom">' .
-                    '<option value="-1">' . __( "Bulk Actions", "permalinks-customizer" ) . '</option>' .
-                    '<option value="delete">' . __( "Delete Permalinks", "permalinks-customizer" ) . '</option>' .
-                  '</select>' .
-                  '<input type="submit" id="doaction2" class="button action" value="Apply">' .
-                '</div>' .
-                $bottom_pagination .
-              '</div>';
-    $html .= '</form></div>';
-    echo $html;
+    $page_html .= '<div class="tablenav bottom">' .
+                    '<div class="alignleft actions bulkactions">' .
+                      '<label for="bulk-action-selector-bottom" class="screen-reader-text">' .
+                        __( "Select bulk action", "permalinks-customizer" ) .
+                      '</label>' .
+                      '<select name="action2" id="bulk-action-selector-bottom">' .
+                        '<option value="-1">' .
+                          __( "Bulk Actions", "permalinks-customizer" ) .
+                        '</option>' .
+                        '<option value="delete">' .
+                          __( "Delete Permalinks", "permalinks-customizer" ) .
+                        '</option>' .
+                      '</select>' .
+                      '<input type="submit" id="doaction2" class="button action" value="' . __( "Apply", "permalinks-customizer" ) . '">' .
+                    '</div>' .
+                    $bottom_pagination .
+                  '</div>';
+    $page_html .= '</form></div>';
+
+    echo $page_html;
   }
 }

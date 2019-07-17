@@ -122,7 +122,7 @@ class Permalinks_Customizer_Common_Functions {
       if ( 1 == $prev_page ) {
         $pagination_html .= ' <span class="tablenav-pages-navspan button disabled" aria-hidden="true">&laquo;</span>';
       } else {
-        $pagination_html .= ' <a href="' . $remove_pager_uri[0] . '&paged=1" title="First page" class="first-page button">' .
+        $pagination_html .= '<a href="' . $remove_pager_uri[0] . '&paged=1" title="First page" class="first-page button">' .
                               '<span class="screen-reader-text">First page</span>' .
                               '<span aria-hidden="true">&laquo;</span>' .
                             '</a>';

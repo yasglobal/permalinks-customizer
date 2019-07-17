@@ -27,54 +27,103 @@ class Permalinks_Customizer_Redirects {
    * @access private
    */
   private function show_redirects() {
-  
     global $wpdb;
 
     $filter_options   = '';
     $search_permalink = '';
-    $html             = '';
+    $page_html        = '';
 
-    // Handle Bulk Operations
-    if ( isset( $_POST['permalink'] ) && ! empty( $_POST['permalink'] )
-      && ( isset( $_POST['action'] ) || isset( $_POST['action2'] ) ) ) {
-      $rids = implode( ',', $_POST['permalink'] );
-      if ( 'delete' === $_POST['action'] || 'delete' === $_POST['action2'] ) {
-        if ( preg_match( '/^\d+(?:,\d+)*$/', $rids ) ) {
-          $wpdb->query( "DELETE FROM {$wpdb->prefix}permalinks_customizer_redirects WHERE id IN ($rids)" );
-          $permalink = count( $_POST['permalink'] );
-          printf( '<div id="message" class="updated notice notice-success is-dismissible"><p>' .
-            _n( '%s Redirect is deleted.',
-              '%s Redirects are deleted.',
-              $permalink,
-              'permalinks-customizer'
-            ) . '</p></div>', $permalink );
+    if ( isset( $_GET['_wpnonce'] )
+      && wp_verify_nonce( $_GET['_wpnonce'], 'permalinks-customizer_redirects' )
+    ) {
+
+      // Handle Bulk Operations
+      if ( isset( $_GET['permalink'] ) && ! empty( $_GET['permalink'] )
+        && ( isset( $_GET['action'] ) || isset( $_GET['action2'] ) )
+      ) {
+        $rids = implode( ',', $_GET['permalink'] );
+        if ( 'delete' === $_GET['action'] || 'delete' === $_GET['action2'] ) {
+          if ( preg_match( '/^\d+(?:,\d+)*$/', $rids ) ) {
+            $wpdb->query( "DELETE FROM {$wpdb->prefix}permalinks_customizer_redirects WHERE id IN ($rids)" );
+
+            $action_comp = array(
+              'action' => wp_kses( 'deleted', array() ),
+              'total'  => wp_kses( count( $_GET['permalink'] ), array() )
+            );
+
+            update_option( 'permalinks_customizer_redirects_action',
+              $action_comp
+            );
+          }
+        } elseif ( 'disable' === $_GET['action'] || 'disable' === $_GET['action2'] ) {
+          if ( preg_match( '/^\d+(?:,\d+)*$/', $rids ) ) {
+            $wpdb->query( "UPDATE {$wpdb->prefix}permalinks_customizer_redirects SET enable = 0 WHERE id IN ($rids)" );
+
+            $action_comp = array(
+              'action' => wp_kses( 'disabled', array() ),
+              'total'  => wp_kses( count( $_GET['permalink'] ), array() )
+            );
+
+            update_option( 'permalinks_customizer_redirects_action',
+              $action_comp
+            );
+          }
+        } elseif ( 'enable' === $_GET['action'] || 'enable' === $_GET['action2'] ) {
+          if ( preg_match( '/^\d+(?:,\d+)*$/', $rids ) ) {
+            $wpdb->query( "UPDATE {$wpdb->prefix}permalinks_customizer_redirects SET enable = 1 WHERE id IN ($rids)" );
+
+            $action_comp = array(
+              'action' => wp_kses( 'enabled', array() ),
+              'total'  => wp_kses( count( $_GET['permalink'] ), array() )
+            );
+
+            update_option( 'permalinks_customizer_redirects_action',
+              $action_comp
+            );
+          }
         }
-      } elseif ( 'disable' === $_POST['action'] || 'disable' === $_POST['action2'] ) {
-        if ( preg_match( '/^\d+(?:,\d+)*$/', $rids ) ) {
-          $wpdb->query( "UPDATE {$wpdb->prefix}permalinks_customizer_redirects SET enable = 0 WHERE id IN ($rids)" );
-          $permalink = count( $_POST['permalink'] );
-          printf( '<div id="message" class="updated notice notice-success is-dismissible"><p>' .
-            _n( '%s Redirect is disabled.',
-              '%s Redirects are disabled.',
-              $permalink,
-              'permalinks-customizer'
-            ) . '</p></div>', $permalink );
+      }
+    }
+
+    $flag_redirect = 0;
+    if ( isset( $_GET ) ) {
+      foreach ( $_GET as $key => $value ) {
+        if ( 'page' !== $key && 'paged' !== $key ) {
+          if ( 's' === $key && '' !== $value ) {
+            continue;
+          } elseif ( 'redirect_type' === $key ) {
+            continue;
+          }
+          unset( $_GET[$key] );
+          if ( '_wpnonce' === $key || '_wp_http_referer' === $key) {
+            $flag_redirect = 1;
+          }
         }
-      } elseif ( 'enable' === $_POST['action'] || 'enable' === $_POST['action2'] ) {
-        if ( preg_match( '/^\d+(?:,\d+)*$/', $rids ) ) {
-          $wpdb->query( "UPDATE {$wpdb->prefix}permalinks_customizer_redirects SET enable = 1 WHERE id IN ($rids)" );
-          $permalink = count( $_POST['permalink'] );
-          printf( '<div id="message" class="updated notice notice-success is-dismissible"><p>' .
-            _n( '%s Redirect is enabled.',
-              '%s Redirects are enabled.',
-              $permalink,
-              'permalinks-customizer'
-            ) . '</p></div>', $permalink );
-        }
-      } else {
-        echo '<div id="message" class="error">' .
-                '<p>' . __( "There is some error to proceed your request. Please retry with your request or contact to the plugin author.", "permalinks-customizer" ) . '</p>' .
-              '</div>';
+      }
+    }
+
+    if ( 1 === $flag_redirect ) {
+      $rebuild_query = '/wp-admin/admin.php?' . http_build_query( $_GET );
+      header( 'Location: ' . $rebuild_query, 301 );
+      exit();
+    }
+
+    $message        = '';
+    $applied_action = get_option( 'permalinks_customizer_redirects_action', '' );
+    if ( ! empty( $applied_action ) ) {
+      delete_option( 'permalinks_customizer_redirects_action' );
+      if ( isset( $applied_action['action'] )
+        && isset( $applied_action['total'] )
+        && is_numeric( $applied_action['total'] ) && 0 < $applied_action['total']
+      ) {
+        $del_items   = $applied_action['total'];
+        $action_type = $applied_action['action'];
+        $message     = sprintf( '<div id="message" class="updated notice notice-success is-dismissible"><p>' .
+          _n( '%s Redirect is ' . $action_type .'.',
+            '%s Redirects are ' . $action_type . '.',
+            $del_items,
+            'permalinks-customizer'
+          ) . '</p></div>', $del_items );
       }
     }
 
@@ -86,10 +135,79 @@ class Permalinks_Customizer_Redirects {
     $plugin_url = plugins_url( '/admin', PERMALINKS_CUSTOMIZER_FILE );
     wp_enqueue_style( 'style', $plugin_url . '/css/style.min.css' );
 
-    $html .= '<div class="wrap">' .
-              '<h1 class="wp-heading-inline">' .
-                __( 'Redirects', 'permalinks-customizer' ) .
-              '</h1>';
+
+    $enabled_query  = "SELECT count(id) as total FROM {$wpdb->prefix}permalinks_customizer_redirects " .
+        " WHERE enable = 1";
+    $disabled_query = "SELECT count(id) as total FROM {$wpdb->prefix}permalinks_customizer_redirects " .
+        " WHERE enable = 0";
+
+    $enabled_redirects  = $wpdb->get_row( $enabled_query );
+    $disabled_redirects = $wpdb->get_row( $disabled_query );
+
+    $all_redirects = 0;
+    if ( isset( $enabled_redirects->total )
+      && isset( $disabled_redirects->total )
+      && ( 0 < $enabled_redirects->total || 0 < $enabled_redirects->total )
+    ) {
+      $all_redirects = $enabled_redirects->total + $disabled_redirects->total;
+    }
+
+    $type_list = '';
+    if ( 0 < $all_redirects ) {
+      $page_uri       = 'wp-admin/admin.php?page=permalinks-customizer-redirects';
+      $page_path      = trailingslashit( home_url() ) . $page_uri;
+      $all_link       = $page_path . '&redirect_type=all';
+      $enabled_link   = $page_path . '&redirect_type=enabled';
+      $disabled_link  = $page_path . '&redirect_type=disabled';
+
+      $all_class        = '';
+      $enabled_class    = '';
+      $disabled_class   = '';
+      $redirect_filter  = '';
+      $set_hidden_field = '';
+      if ( isset( $_GET['redirect_type'] ) ) {
+        if ( 'all' === $_GET['redirect_type'] ) {
+          $all_class = ' class="current"';
+          $set_hidden_field = '<input type="hidden" name="redirect_type" value="all" />';
+        } elseif ( 'enabled' === $_GET['redirect_type'] ) {
+          $redirect_filter = 1;
+          $enabled_class   = ' class="current"';
+          $set_hidden_field = '<input type="hidden" name="redirect_type" value="enabled" />';
+        } elseif ( 'disabled' === $_GET['redirect_type'] ) {
+          $redirect_filter = 0;
+          $disabled_class  = ' class="current"';
+          $set_hidden_field = '<input type="hidden" name="redirect_type" value="disabled" />';
+        }
+      }
+      $type_list .= '<ul class="subsubsub">' .
+                      '<li class="all">' .
+                        '<a href="' . $all_link . '" ' . $all_class . '>' .
+                          'All <span class="count">(' . $all_redirects . ')</span>' .
+                        '</a>';
+
+      if ( 0 < $enabled_redirects->total ) {
+        $type_list .= '| </li>' .
+                      '<li class="enabled">' .
+                        '<a href="' . $enabled_link . '" ' . $enabled_class . '>' .
+                          'Enabled <span class="count">(' . $enabled_redirects->total . ')</span>' .
+                        '</a>';
+      }
+
+      if ( 0 < $disabled_redirects->total ) {
+        $type_list .= '| </li>' .
+                      '<li class="disabled">' .
+                        '<a href="' . $disabled_link . '" '. $disabled_class .'>' .
+                          'Disabled <span class="count">(' . $disabled_redirects->total . ')</span>' .
+                        '</a>';
+      }
+      $type_list .= '</li>';
+      $type_list .= '</ul>';
+    }
+
+    $page_html .= '<div class="wrap">' .
+                    '<h1 class="wp-heading-inline">' .
+                      __( 'Redirects', 'permalinks-customizer' ) .
+                    '</h1>';
 
     $search_value     = '';
     $filter_permalink = '';
@@ -100,8 +218,18 @@ class Permalinks_Customizer_Redirects {
       $search_value     = htmlspecialchars( ltrim( $_GET['s'], '/' ) );
       $filter_permalink = 'WHERE redirect_from LIKE "%' . $search_value . '%" OR redirect_to LIKE "%' . $search_value . '%"';
       $search_permalink = '&s=' . $search_value . '';
-      $html            .= '<span class="subtitle">Search results for "' . $search_value . '"</span>';
+      $page_html       .= '<span class="subtitle">Search results for "' . $search_value . '"</span>';
     }
+
+    if ( 0 === $redirect_filter || 1 === $redirect_filter ) {
+      if ( '' === $filter_permalink ) {
+        $filter_permalink = 'WHERE enable = ' . $redirect_filter . '';
+      } else {
+        $filter_permalink .= ' AND enable = ' . $redirect_filter . '';
+      }
+    }
+    $page_html .= '<hr class="wp-header-end">';
+    $page_html .= $message;
 
     if ( isset( $_GET['paged'] ) && is_numeric( $_GET['paged'] ) ) {
       $current_page = $_GET['paged'];
@@ -136,44 +264,54 @@ class Permalinks_Customizer_Redirects {
     $count_query = "SELECT COUNT(id) AS total_rids FROM {$wpdb->prefix}permalinks_customizer_redirects $filter_permalink";
     $count_posts = $wpdb->get_row( $count_query );
 
-    $html .= '<form action="' . $_SERVER["REQUEST_URI"] . '" method="get">';
-    $html .= '<p class="search-box">';
-    $html .= '<input type="hidden" name="page" value="permalinks-customizer-redirects" />';
-    $html .= $filter_options;
-    $html .= '<label class="screen-reader-text" for="permalinks-customizer-search-input">Search Permalinks Customizer:</label>';
-    $html .= '<input type="search" id="permalinks-customizer-search-input" name="s" value="' . $search_value . '">';
-    $html .= '<input type="submit" id="search-submit" class="button" value="Search Permalink"></p>';
-    $html .= '</form>';
-    $html .= '<form action="' . $_SERVER["REQUEST_URI"] . '" method="post">';
-    $html .= '<div class="tablenav top">';
-    $html .= '<div class="alignleft actions bulkactions">' .
-                '<label for="bulk-action-selector-top" class="screen-reader-text">' .
-                  'Select bulk action' .
-                '</label>' .
-                '<select name="action" id="bulk-action-selector-top">' .
-                  '<option value="-1">' .
-                    __( "Bulk Actions", "permalinks-customizer" ) .
-                  '</option>' .
-                  '<option value="delete">' .
-                    __( "Delete", "permalinks-customizer" ) .
-                  '</option>' .
-                  '<option value="disable">' .
-                    __( "Disable", "permalinks-customizer" ) .
-                  '</option>' .
-                  '<option value="enable">' .
-                    __( "Enable", "permalinks-customizer" ) .
-                  '</option>' .
-                '</select>' .
-                '<input type="submit" id="doaction" class="button action" value="Apply">' .
-              '</div>';
+
+    if ( '' !== $type_list ) {
+      $page_html .= '<h2 class="screen-reader-text">' .
+                      __( "Filter posts list", "permalinks-customizer" ) .
+                    '</h2>' .
+                    $type_list;
+    }
+    $page_html .= '<form id="permalinks-filter" method="get">' .
+                    '<p class="search-box">' .
+                      '<label class="screen-reader-text" for="permalinks-customizer-search-input">' .
+                        __( "Search Redirects:", "permalinks-customizer" ) .
+                      '</label>' .
+                      '<input type="search" id="permalinks-customizer-search-input" name="s" value="' . $search_value . '">' .
+                      '<input type="submit" id="search-submit" class="button" value="' . __( "Search Redirects", "permalinks-customizer" ) . '">' .
+                    '</p>' .
+                    '<input type="hidden" name="page" value="permalinks-customizer-redirects" />' .
+                    $set_hidden_field .
+                    $filter_options .
+                    wp_nonce_field( 'permalinks-customizer_redirects' ) .
+                    '<div class="tablenav top">' .
+                    '<div class="alignleft actions bulkactions">' .
+                      '<label for="bulk-action-selector-top" class="screen-reader-text">' .
+                        __( "Select bulk action", "permalinks-customizer" ) .
+                      '</label>' .
+                      '<select name="action" id="bulk-action-selector-top">' .
+                        '<option value="-1">' .
+                          __( "Bulk Actions", "permalinks-customizer" ) .
+                        '</option>' .
+                        '<option value="delete">' .
+                          __( "Delete", "permalinks-customizer" ) .
+                        '</option>' .
+                        '<option value="disable">' .
+                          __( "Disable", "permalinks-customizer" ) .
+                        '</option>' .
+                        '<option value="enable">' .
+                          __( "Enable", "permalinks-customizer" ) .
+                        '</option>' .
+                      '</select>' .
+                      '<input type="submit" id="doaction" class="button action" value="' . __( "Apply", "permalinks-customizer" ) . '">' .
+                    '</div>';
 
     $redirects         = 0;
     $top_pagination    = '';
     $bottom_pagination = '';
     if ( isset( $count_posts->total_rids ) && 0 < $count_posts->total_rids ) {
-      $html .= '<h2 class="screen-reader-text">' .
-                  __( "Permalinks Customizer navigation", "permalinks-customizer" ) .
-                '</h2>';
+      $page_html .= '<h2 class="screen-reader-text">' .
+                      __( "Permalinks Customizer navigation", "permalinks-customizer" ) .
+                    '</h2>';
       $query = "SELECT * FROM {$wpdb->prefix}permalinks_customizer_redirects " .
         " $filter_permalink $sorting_by $page_limit";
 
@@ -194,7 +332,7 @@ class Permalinks_Customizer_Redirects {
         exit();
       }
 
-      $html .= $top_pagination;
+      $page_html .= $top_pagination;
     }
     $table_navigation = $this->redirect_nav(
       $order_by_class, $order_by, $search_permalink, $_GET['page'], 'top'
@@ -203,72 +341,84 @@ class Permalinks_Customizer_Redirects {
       $order_by_class, $order_by, $search_permalink, $_GET['page'], 'bottom'
     );
 
-    $html .= '</div>';
-    $html .= '<table class="wp-list-table widefat fixed striped redirects">' .
-              '<thead>' . $table_navigation . '</thead>' .
-              '<tbody>';
+    $page_html .= '</div>';
+    $page_html .= '<table class="wp-list-table widefat fixed striped redirects">' .
+                    '<thead>' . $table_navigation . '</thead>' .
+                    '<tbody>';
     if ( 0 != $redirects && ! empty( $redirects ) ) {
       foreach ( $redirects as $row ) {
         $f_red = home_url() . '/' . $row->redirect_from;
         $t_red = home_url() . '/' . $row->redirect_to;
-        $html .= '<tr valign="top">';
-        $html .= '<th scope="row" class="check-column">';
-        $html .= '<input type="checkbox" name="permalink[]" value="' . $row->id . '" />';
-        $html .= '</th>';
-        $html .= '<td><strong><a class="row-title" href="' . $f_red . '">/' . $row->redirect_from . '</a></strong></td>';
-        $html .= '<td><strong><a class="row-title" href="' . $t_red . '">/' . $row->redirect_to . '</a></strong></td>';
-        $html .= '<td class="type">' . ucwords( $row->type ) . '</td>';
+
+        $page_html .= '<tr valign="top">' .
+                        '<th scope="row" class="check-column">' .
+                          '<input type="checkbox" name="permalink[]" value="' . $row->id . '" />' .
+                        '</th>' .
+                        '<td>' .
+                          '<strong>' .
+                            '<a class="row-title" href="' . $f_red . '">/' . $row->redirect_from . '</a>' .
+                          '</strong>' .
+                        '</td>' .
+                        '<td>' .
+                          '<strong>' .
+                            '<a class="row-title" href="' . $t_red . '">/' . $row->redirect_to . '</a>' .
+                          '</strong>' .
+                        '</td>' .
+                        '<td class="type">' . ucwords( $row->type ) . '</td>';
         if ( 1 == $row->enable) {
-          $html .= '<td class="status enabled"> ' .
-            __( "Enabled", "permalinks-customizer" ) .
-            ' </td>';
+          $page_html .= '<td class="status enabled"> ' .
+                          __( "Enabled", "permalinks-customizer" ) .
+                        ' </td>';
         } else {
-          $html .= '<td class="status disabled"> ' .
-            __( "Disabled", "permalinks-customizer" ) .
-            ' </td>';
+          $page_html .= '<td class="status disabled"> ' .
+                          __( "Disabled", "permalinks-customizer" ) .
+                        ' </td>';
         }
-        $html .= '<td class="count">' . $row->count . '</td>';
+        $page_html .= '<td class="count">' . $row->count . '</td>';
         if ( '' == $row->last_accessed) {
-          $html .= '<td class="accessed">Never</td>';
+          $page_html .= '<td class="accessed">Never</td>';
         } else {
-          $html .= '<td class="accessed">' . $row->last_accessed . '</td>';
+          $page_html .= '<td class="accessed">' . $row->last_accessed . '</td>';
         }
-        $html .= '</tr>';
+        $page_html .= '</tr>';
       }
     } else {
-      $html .= '<tr class="no-items"><td class="colspanchange" colspan="7">' .
-                  __( "No redirects found.", "permalinks-customizer" ) .
-                ' </td></tr>';
+      $page_html .= '<tr class="no-items">' .
+                      '<td class="colspanchange" colspan="7">' .
+                        __( "No redirects found.", "permalinks-customizer" ) .
+                      '</td>' .
+                    '</tr>';
     }
-    $html .= '</tbody>' .
-              '<tfoot>' . $table_navigation . '</tfoot>' .
-              '</table>';
+    $page_html .= '</tbody>' .
+                  '<tfoot>' . $table_navigation . '</tfoot>' .
+                  '</table>';
 
-    $html .= '<div class="tablenav bottom">' .
-              '<div class="alignleft actions bulkactions">' .
-                '<label for="bulk-action-selector-bottom" class="screen-reader-text">' .
-                  __( "Select bulk action", "permalinks-customizer" ) .
-                '</label>' .
-                '<select name="action2" id="bulk-action-selector-bottom">' .
-                  '<option value="-1">' .
-                    __( "Bulk Actions", "permalinks-customizer" ) .
-                  '</option>' .
-                  '<option value="delete">' .
-                    __( "Delete", "permalinks-customizer" ) .
-                  '</option> ' .
-                  '<option value="disable">' .
-                    __( "Disable", "permalinks-customizer" ) .
-                  '</option>' .
-                  '<option value="enable">' .
-                    __( "Enable", "permalinks-customizer" ) .
-                  '</option>' .
-                '</select>' .
-                '<input type="submit" id="doaction2" class="button action" value="Apply">' .
-                '</div>' .
-                $bottom_pagination .
-              '</div>';
-    $html .= '</form></div>';
-    echo $html;
+    $page_html .= '<div class="tablenav bottom">' .
+                    '<div class="alignleft actions bulkactions">' .
+                      '<label for="bulk-action-selector-bottom" class="screen-reader-text">' .
+                        __( "Select bulk action", "permalinks-customizer" ) .
+                      '</label>' .
+                      '<select name="action2" id="bulk-action-selector-bottom">' .
+                        '<option value="-1">' .
+                          __( "Bulk Actions", "permalinks-customizer" ) .
+                        '</option>' .
+                        '<option value="delete">' .
+                          __( "Delete", "permalinks-customizer" ) .
+                        '</option> ' .
+                        '<option value="disable">' .
+                          __( "Disable", "permalinks-customizer" ) .
+                        '</option>' .
+                        '<option value="enable">' .
+                          __( "Enable", "permalinks-customizer" ) .
+                        '</option>' .
+                      '</select>' .
+                      '<input type="submit" id="doaction2" class="button action" value="' . __( "Apply", "permalinks-customizer" ) . '">' .
+                      '</div>' .
+                      $bottom_pagination .
+                    '</div>';
+    $page_html .= '</form></div>';
+
+    echo $page_html;
   }
 
   /**
@@ -286,6 +436,9 @@ class Permalinks_Customizer_Redirects {
    * @return string table row according to the provided params.
    */
   private function redirect_nav( $order_by_class, $order_by, $search_permalink, $page_url, $position ) {
+    if ( isset ( $_GET['redirect_type'] ) && ! empty( $_GET['redirect_type'] ) ) {
+      $page_url = $page_url . '&redirect_type=' . $_GET['redirect_type'];
+    }
     if ( 'top' === $position ) {
       $nav = '<tr>' .
                 '<td id="cb" class="column-cb check-column">' .

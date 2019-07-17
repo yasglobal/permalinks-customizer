@@ -1143,7 +1143,10 @@ final class Permalinks_Customizer_Form {
       || ( isset( $_REQUEST['permalinks_customizer_regenerate_permalink'] )
       && 'true' === $_REQUEST['permalinks_customizer_regenerate_permalink'] )
     ) {
-      $permalinks_customizer_settings = unserialize( get_option( 'permalinks_customizer_taxonomy_settings' ) );
+      $permalinks_customizer_settings = get_option( 'permalinks_customizer_taxonomy_settings', '' );
+      if ( is_string( $permalinks_customizer_settings ) ) {
+        $permalinks_customizer_settings = unserialize( $permalinks_customizer_settings );
+      }
       if ( isset( $permalinks_customizer_settings[$term->taxonomy . '_settings'] )
         && isset( $permalinks_customizer_settings[$term->taxonomy . '_settings']['structure'] )
         && ! empty( $permalinks_customizer_settings[$term->taxonomy . '_settings']['structure'] )
@@ -1618,9 +1621,10 @@ final class Permalinks_Customizer_Form {
     if ( 'permalinks_customizer_regenerate' !== $doaction ) {
       return redirect_to;
     }
-    $settings = unserialize(
-      get_option( 'permalinks_customizer_taxonomy_settings' )
-    );
+    $settings = get_option( 'permalinks_customizer_taxonomy_settings', '' );
+    if ( is_string( $settings ) ) {
+      $settings = unserialize( $settings );
+    }
     $term_struct = '';
     $error       = 0;
     $generated   = 0;
@@ -1808,7 +1812,7 @@ final class Permalinks_Customizer_Form {
       );
     }
 
-    if ( current_user_can( 'manage_options' ) ) {
+    if ( current_user_can( 'pc_manage_permalinks' ) ) {
       $cache = 'wp-admin/admin.php?page=permalinks-customizer-posts-settings&cache=1';
 
       $child_args[] = array(

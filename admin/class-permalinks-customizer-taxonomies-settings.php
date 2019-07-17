@@ -27,37 +27,45 @@ class Permalinks_Customizer_Taxonomies_Settings {
    * @access private
    */
   private function taxonomy_settings() {
-    if ( isset( $_POST['submit'] ) ) {
+    $message = '';
+    if ( isset( $_POST['_wpnonce'] )
+      && wp_verify_nonce( $_POST['_wpnonce'], 'permalinks-customizer_taxonomy_settings' )
+    ) {
       $permalinks_customizer_taxes = array();
       foreach ( $_POST as $key => $value ) {
-        if ( 'submit' === $key ) {
+        if ( '_wpnonce' === $key || '_wp_http_referer' === $key ) {
           continue;
         }
         $permalinks_customizer_taxes[$key . '_settings'] = array(
           'structure' => $value,
         );
+        unset( $_POST[$key] );
       }
-      $permalinks_customizer_taxes = serialize( $permalinks_customizer_taxes );
       update_option(
         'permalinks_customizer_taxonomy_settings', $permalinks_customizer_taxes
       );
-      print '<div id="message" class="updated notice notice-success is-dismissible">' .
-                '<p>' . __(
-                  'Taxonomies Permalinks Settings are updated.',
-                  'permalinks-customizer'
-                ) . '</p>' .
-              '</div>';
+      $message = __( 'Taxonomies Permalinks Settings are updated.', 'permalinks-customizer' );
     }
-    $permalinks_customizer_settings = unserialize(
-      get_option( 'permalinks_customizer_taxonomy_settings' )
-    );
+    $permalinks_customizer_settings = get_option( 'permalinks_customizer_taxonomy_settings', '' );
+
+    if ( is_string( $permalinks_customizer_settings ) ) {
+      $permalinks_customizer_settings = unserialize( $permalinks_customizer_settings );
+    }
+
     $args = array(
       'public' => true
     );
     $taxonomies = get_taxonomies( $args, 'objects' );
     ?>
     <div class="wrap">
-      <h1><?php _e( 'Taxonomies Permalinks Settings', 'permalinks-customizer' ); ?></h1>
+      <h1>
+        <?php _e( 'Taxonomies Permalinks Settings', 'permalinks-customizer' ); ?>
+      </h1>
+      <?php if ( ! empty( $message ) ) { ?>
+        <div id="message" class="updated notice notice-success is-dismissible">
+          <p><?php echo $message; ?></p>
+        </div>
+      <?php } ?>
       <div>
         <p>
           <?php printf( __( 'You can define the structure of the permalinks for the Taxonomies. It can be the same or different as per your requirements. This structure is used when creating the Term/Category or using the Regenerate Permalink button on the Edit page.', 'permalinks-customizer' ), site_url() ); ?>
@@ -66,6 +74,7 @@ class Permalinks_Customizer_Taxonomies_Settings {
       </div>
 
       <form enctype="multipart/form-data" action="" method="POST">
+        <?php wp_nonce_field( 'permalinks-customizer_taxonomy_settings' ); ?>
         <table class="form-table">
           <?php
           foreach ( $taxonomies as $taxonomy ) {
@@ -78,11 +87,15 @@ class Permalinks_Customizer_Taxonomies_Settings {
           ?>
           <tr valign="top">
             <th scope="row"><?php echo $taxonomy->labels->name; ?></th>
-            <td><?php echo site_url(); ?>/<input type="text" name="<?php echo $taxonomy->name; ?>" value="<?php echo $value; ?>" class="regular-text" /></td>
+            <td>
+              <?php echo site_url(); ?>/<input type="text" name="<?php echo $taxonomy->name; ?>" value="<?php echo $value; ?>" class="regular-text" />
+            </td>
           </tr>
           <?php } ?>
         </table>
-        <p class="submit"><input type="submit" name="submit" id="submit" class="button button-primary" value="<?php _e( 'Save Changes', 'permalinks-customizer' ); ?>" /></p>
+        <p class="submit">
+          <input type="submit" id="submit" class="button button-primary" value="<?php _e( 'Save Changes', 'permalinks-customizer' ); ?>" />
+        </p>
       </form>
     </div>
     <?php
