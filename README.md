@@ -60,6 +60,7 @@ Below mentioned tags are provided by the **Permalinks Customizer** for PostTypes
 | &lt;%ctaxparents_custom_taxonomy%&gt; | This tag is similar as `<%ctax_custom_taxonomy%>`.<br><br>Only the difference is that it appends all the **Parents Slug** in the URI if any parent category/tag is selected. |
 | %author_firstname% | A sanitized version of the author first name. If author first name is not available then it uses the author's username. |
 | %author_lastname% | A sanitized version of the author last name. If author last name is not available then it uses the author's username. |
+| %pc_custom_posttype_tag% | Permits a theme or plugin developer define the tag value using a [filter](#set-custom-value-in-posttype-permalink) |
 
 **Note**: `%title%` is similar as `%postname%` tag but the difference is that `%postname%` can only be set once by WordPress whereas `%title%` can be changed by user at multiple times. let's say the title is "This Is A Great Post!" so, it becomes "this-is-a-great-post" in the URI(At the first time, `%postname%` and `%title%` works same) but if you edit and change title let's say "This Is A WordPress Post!" so, `%postname%` in the URI remains same "this-is-a-great-post" whereas `%title%` in the URI becomes "this-is-a-wordpress-post".
 
@@ -73,11 +74,12 @@ Below mentioned tags are provided by the **Permalinks Customizer** for Taxonomie
 | %slug% | A sanitized version of the name of the Term/Category. So "External API" becomes external-api in the URI. |
 | %parent_slug% | This tag is similar as `%slug%`.<br><br> Only the difference is that it appends the immediate **Parent Term/Category Slug** in the URI if any parent Term/Category is selected. |
 | %all_parents_slug% | This tag is similar as `%slug%`.<br><br> Only the difference is that it appends all the **Parent Terms/Category Slugs** in the URI if any parent Term/Category is selected. |
+| %pc_custom_taxonomy_tag% | Permits a theme or plugin developer define the tag value using a [filter](#set-custom-value-in-taxonomy-permalink) |
 
 ## Filters
 You can find all the filters below which are provided by **Permalinks Customizer** plugin. These filters can be used as per your Website requirement.
 
-### Set Custom value in Permalink
+### Set Custom value in PostType Permalink
 
 This filter allow to replace the custom tag with your desired value. It can be any custom field value or anything else. 
 ```
@@ -94,6 +96,25 @@ function yasglobal_custom_tag( $post ) {
   return sanitize_title( $post->post_title ) . '-from-sami';
 }
 add_filter( 'pc_custom_posttype_tag', 'yasglobal_custom_tag', 10, 1 );
+```
+
+### Set Custom value in Taxonomy Permalink
+
+This filter allow to replace the custom tag with your desired value. It can be any custom field value or anything else. 
+```
+/**
+ * set the text which replace the custom tag from the permalink.
+ *
+ * @since 2.8.0
+ *
+ * @param object $term The term object.
+ *
+ * @return string text which can be replaced with the custom tag.
+ */
+function yasglobal_custom_taxonomy_tag( $term ) {
+  return sanitize_title( $term->name ) . '-from-sami';
+}
+add_filter( 'pc_custom_taxonomy_tag', 'yasglobal_custom_taxonomy_tag', 10, 1 );
 ```
 
 ### Exclude Permalinks
