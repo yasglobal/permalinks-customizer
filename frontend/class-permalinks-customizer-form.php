@@ -1261,6 +1261,18 @@ final class Permalinks_Customizer_Form {
       $replace_tag = str_replace( '%all_parents_slug%', $term_names, $replace_tag );
     }
 
+    /*
+     * Replace custom tag with the provided value by plugin/theme.
+     */
+    if ( false !== strpos( $replace_tag, '%pc_custom_taxonomy_tag%' ) ) {
+      $custom_tag = apply_filters( 'pc_custom_taxonomy_tag', $term );
+
+      $custom_tag  = strip_tags( $custom_tag );
+      $replace_tag = str_replace(
+        '%pc_custom_taxonomy_tag%', $custom_tag, $replace_tag
+      );
+    }
+
     return $replace_tag;
   }
 
