@@ -153,6 +153,8 @@ class Permalinks_Customizer_Redirects {
     }
 
     $type_list = '';
+    $redirect_filter  = '';
+    $set_hidden_field = '';
     if ( 0 < $all_redirects ) {
       $page_uri       = 'wp-admin/admin.php?page=permalinks-customizer-redirects';
       $page_path      = trailingslashit( home_url() ) . $page_uri;
@@ -163,8 +165,6 @@ class Permalinks_Customizer_Redirects {
       $all_class        = '';
       $enabled_class    = '';
       $disabled_class   = '';
-      $redirect_filter  = '';
-      $set_hidden_field = '';
       if ( isset( $_GET['redirect_type'] ) ) {
         if ( 'all' === $_GET['redirect_type'] ) {
           $all_class = ' class="current"';
