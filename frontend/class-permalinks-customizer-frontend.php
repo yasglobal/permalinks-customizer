@@ -27,7 +27,7 @@ final class Permalinks_Customizer_Frontend {
     add_filter( 'attachment_link', array( $this, 'customized_attachment_link' ), 10, 2 );
     add_filter( 'term_link', array( $this, 'customized_term_link' ), 10, 3 );
     add_filter( 'url_to_postid', array( $this, 'check_permalink' ), 10 );
-
+    add_filter( 'wpseo_canonical', array( $this, 'fix_double_slash_canonical' ), 20, 1 );
     add_filter( 'user_trailingslashit', array( $this, 'apply_trailingslash' ), 10, 2 );
   }
 
@@ -341,13 +341,18 @@ final class Permalinks_Customizer_Frontend {
         );
       }
 
-      $protocol = 'http://';
-      if ( isset( $_SERVER['HTTPS'] ) && ! empty( $_SERVER['HTTPS'] )
-        && 'off' !== $_SERVER['HTTPS'] ) {
-        $protocol = 'https://';
+      $protocol = '';
+      if ( 0 === strpos( $permalink, 'http://' ) ||
+        0 === strpos( $permalink, 'https://' )
+      ) {
+        $split_protocol = explode( '://', $permalink );
+        if ( 1 < count( $split_protocol ) ) {
+          $protocol = $split_protocol[0] . '://';
+
+          $permalink = str_replace( $protocol, '', $permalink );
+        }
       }
 
-      $permalink = str_replace( $protocol, '', $permalink );
       $permalink = str_replace( '//', '/', $permalink );
       $permalink = $protocol . $permalink;
     }
@@ -384,13 +389,18 @@ final class Permalinks_Customizer_Frontend {
         );
       }
 
-      $protocol = 'http://';
-      if ( isset( $_SERVER['HTTPS'] ) && ! empty( $_SERVER['HTTPS'] )
-        && 'off' !== $_SERVER['HTTPS'] ) {
-        $protocol = 'https://';
+      $protocol = '';
+      if ( 0 === strpos( $permalink, 'http://' ) ||
+        0 === strpos( $permalink, 'https://' )
+      ) {
+        $split_protocol = explode( '://', $permalink );
+        if ( 1 < count( $split_protocol ) ) {
+          $protocol = $split_protocol[0] . '://';
+
+          $permalink = str_replace( $protocol, '', $permalink );
+        }
       }
 
-      $permalink = str_replace( $protocol, '', $permalink );
       $permalink = str_replace( '//', '/', $permalink );
       $permalink = $protocol . $permalink;
     }
@@ -427,13 +437,18 @@ final class Permalinks_Customizer_Frontend {
         );
       }
 
-      $protocol = 'http://';
-      if ( isset( $_SERVER['HTTPS'] ) && ! empty( $_SERVER['HTTPS'] )
-        && 'off' !== $_SERVER['HTTPS'] ) {
-        $protocol = 'https://';
+      $protocol = '';
+      if ( 0 === strpos( $permalink, 'http://' ) ||
+        0 === strpos( $permalink, 'https://' )
+      ) {
+        $split_protocol = explode( '://', $permalink );
+        if ( 1 < count( $split_protocol ) ) {
+          $protocol = $split_protocol[0] . '://';
+
+          $permalink = str_replace( $protocol, '', $permalink );
+        }
       }
 
-      $permalink = str_replace( $protocol, '', $permalink );
       $permalink = str_replace( '//', '/', $permalink );
       $permalink = $protocol . $permalink;
     }
@@ -476,13 +491,18 @@ final class Permalinks_Customizer_Frontend {
         );
       }
 
-      $protocol = 'http://';
-      if ( isset( $_SERVER['HTTPS'] ) && ! empty( $_SERVER['HTTPS'] )
-        && 'off' !== $_SERVER['HTTPS'] ) {
-        $protocol = 'https://';
+      $protocol = '';
+      if ( 0 === strpos( $permalink, 'http://' ) ||
+        0 === strpos( $permalink, 'https://' )
+      ) {
+        $split_protocol = explode( '://', $permalink );
+        if ( 1 < count( $split_protocol ) ) {
+          $protocol = $split_protocol[0] . '://';
+
+          $permalink = str_replace( $protocol, '', $permalink );
+        }
       }
 
-      $permalink = str_replace( $protocol, '', $permalink );
       $permalink = str_replace( '//', '/', $permalink );
       $permalink = $protocol . $permalink;
     }
@@ -750,5 +770,33 @@ final class Permalinks_Customizer_Frontend {
       }
     }
     return $return_uri;
+  }
+
+  /**
+   * Fix double slash issue with canonical of Yoast SEO specially with WPML.
+   *
+   * @since 2.8.0
+   * @access public
+   *
+   * @param string $canonical The canonical.
+   *
+   * @return string the canonical after removing double slash if exist.
+   */
+  public function fix_double_slash_canonical( $canonical ) {
+    $protocol = '';
+    if ( 0 === strpos( $canonical, 'http://' ) ||
+      0 === strpos( $canonical, 'https://' )
+    ) {
+      $split_protocol = explode( '://', $canonical );
+      if ( 1 < count( $split_protocol ) ) {
+        $protocol = $split_protocol[0] . '://';
+        $canonical = str_replace( $protocol, '', $canonical );
+      }
+    }
+
+    $canonical = str_replace( '//', '/', $canonical );
+    $canonical = $protocol . $canonical;
+
+    return $canonical;
   }
 }
