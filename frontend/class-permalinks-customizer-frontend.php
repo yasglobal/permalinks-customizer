@@ -330,16 +330,28 @@ final class Permalinks_Customizer_Frontend {
         'wpml_element_language_code', null,
         array( 'element_id' => $post->ID, 'element_type' => $post_type )
       );
+
       if ( $language_code ) {
-        return apply_filters( 'wpml_permalink',
+        $permalink = apply_filters( 'wpml_permalink',
           trailingslashit( home_url() ) . $permalinks_customizer, $language_code
         );
       } else {
-        return apply_filters( 'wpml_permalink',
+        $permalink = apply_filters( 'wpml_permalink',
           trailingslashit( home_url() ) . $permalinks_customizer
         );
       }
+
+      $protocol = 'http://';
+      if ( isset( $_SERVER['HTTPS'] ) && ! empty( $_SERVER['HTTPS'] )
+        && 'off' !== $_SERVER['HTTPS'] ) {
+        $protocol = 'https://';
+      }
+
+      $permalink = str_replace( $protocol, '', $permalink );
+      $permalink = str_replace( '//', '/', $permalink );
+      $permalink = $protocol . $permalink;
     }
+
     return $permalink;
   }
 
@@ -361,16 +373,28 @@ final class Permalinks_Customizer_Frontend {
         'wpml_element_language_code', null,
         array( 'element_id' => $page, 'element_type' => 'page' )
       );
+
       if ( $language_code ) {
-        return apply_filters( 'wpml_permalink',
+        $permalink = apply_filters( 'wpml_permalink',
           trailingslashit( home_url() ) . $permalinks_customizer, $language_code
         );
       } else {
-        return apply_filters( 'wpml_permalink',
+        $permalink = apply_filters( 'wpml_permalink',
           trailingslashit( home_url() ) . $permalinks_customizer
         );
       }
+
+      $protocol = 'http://';
+      if ( isset( $_SERVER['HTTPS'] ) && ! empty( $_SERVER['HTTPS'] )
+        && 'off' !== $_SERVER['HTTPS'] ) {
+        $protocol = 'https://';
+      }
+
+      $permalink = str_replace( $protocol, '', $permalink );
+      $permalink = str_replace( '//', '/', $permalink );
+      $permalink = $protocol . $permalink;
     }
+
     return $permalink;
   }
 
@@ -392,16 +416,28 @@ final class Permalinks_Customizer_Frontend {
         'wpml_element_language_code', null,
         array( 'element_id' => $id, 'element_type' => 'attachment' )
       );
+
       if ( $language_code ) {
-        return apply_filters( 'wpml_permalink',
+        $permalink = apply_filters( 'wpml_permalink',
           trailingslashit( home_url() ) . $permalinks_customizer, $language_code
         );
       } else {
-        return apply_filters( 'wpml_permalink',
+        $permalink = apply_filters( 'wpml_permalink',
           trailingslashit( home_url() ) . $permalinks_customizer
         );
       }
+
+      $protocol = 'http://';
+      if ( isset( $_SERVER['HTTPS'] ) && ! empty( $_SERVER['HTTPS'] )
+        && 'off' !== $_SERVER['HTTPS'] ) {
+        $protocol = 'https://';
+      }
+
+      $permalink = str_replace( $protocol, '', $permalink );
+      $permalink = str_replace( '//', '/', $permalink );
+      $permalink = $protocol . $permalink;
     }
+
     return $permalink;
   }
 
@@ -430,15 +466,27 @@ final class Permalinks_Customizer_Frontend {
           'wpml_element_language_code', null,
           array( 'element_id' => $taxonomy->term_taxonomy_id, 'element_type' => $term_type )
         );
-        return apply_filters( 'wpml_permalink',
+
+        $permalink = apply_filters( 'wpml_permalink',
           trailingslashit( home_url() ) . $permalinks_customizer, $language_code
         );
       } else {
-        return apply_filters( 'wpml_permalink',
+        $permalink = apply_filters( 'wpml_permalink',
           trailingslashit( home_url() ) . $permalinks_customizer
         );
       }
+
+      $protocol = 'http://';
+      if ( isset( $_SERVER['HTTPS'] ) && ! empty( $_SERVER['HTTPS'] )
+        && 'off' !== $_SERVER['HTTPS'] ) {
+        $protocol = 'https://';
+      }
+
+      $permalink = str_replace( $protocol, '', $permalink );
+      $permalink = str_replace( '//', '/', $permalink );
+      $permalink = $protocol . $permalink;
     }
+
     return $permalink;
   }
 
