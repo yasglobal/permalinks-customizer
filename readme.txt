@@ -3,8 +3,8 @@ Contributors: aliya-yasir, sasiddiqui
 Tags: Link, Permalink, URL, Redirects, Tags
 Requires at least: 3.5
 Requires PHP: 5.2.4
-Tested up to: 5.0
-Stable tag: 2.7.0
+Tested up to: 5.4
+Stable tag: 2.8.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl.html
 
@@ -206,6 +206,17 @@ A. Yes, you can exclude any posttype from the plugin to be worked on. For this j
 
 == Changelog ==
 
+= 2.8.0 - May 28, 2020 =
+
+* Enhancement
+  * Add custom tag that can be used in **Permalinks Customizer** Settings page and can be manipulated from `functions.php` or plugin
+* Bug
+  * [Excessive redirects creation](https://github.com/yasglobal/permalinks-customizer/issues/32)
+  * Fix double slash issue in canonical with WPML
+  * Fix WPML language switcher incompatibility issue
+  * Fix [Undefined constant](https://wordpress.org/support/topic/undefined-constant-8/)
+  * Fix [Array and string offset access syntax with curly braces is deprecated](https://wordpress.org/support/topic/array-and-string-offset-access-syntax-with-curly-braces-is-deprecated/)
+
 = 2.7.0 - Jul 05, 2019 =
 
   * Enhancement
@@ -225,35 +236,6 @@ A. Yes, you can exclude any posttype from the plugin to be worked on. For this j
   * Bug
     * PHP Notice of [Undefined variable](https://github.com/yasglobal/permalinks-customizer/issues/26)
     * [Taxonomy permalink not working under existing page](https://wordpress.org/support/topic/taxonomy-permalink-not-working-under-existing-page/)
-
-= 2.5.2 - Jan 02, 2019 =
-
-  * Enhancement
-    * Added `<%ctaxparents_custom_taxonomy%>` tag for PostTypes
-  * Bug
-    * Fixed PHP Fatal error in `uninstall.php`
-      [https://wordpress.org/support/topic/unable-to-uninstall-10/](https://wordpress.org/support/topic/unable-to-uninstall-10/)
-
-= 2.5.1 - Nov 30, 2018 =
-
-  * Enhancement
-    * &lt;%ctax_custom_taxonomy%&gt; use category which is selected as Primary Category (Yoast SEO)
-
-= 2.5.0 - Nov 28, 2018 =
-
-  * Enhancement
-    * Auto refreshing permalink in Gutenberg
-    * Removing need of Page refresh on `Regenerate Permalink` button
-    * Added Permalink in Sidebar to Support Latest Gutenberg
-
-= 2.4.0 - Oct 25, 2018 =
-
-  * Enhancement
-    * Add `Flush Permalink Cache` option in Admin Toolbar
-  * Bug
-    * `View Post` button does not open expected URL (due to relative Path)
-      [https://wordpress.org/support/topic/view-post-button-does-not-open-expected-url/](https://wordpress.org/support/topic/view-post-button-does-not-open-expected-url/)
-    * Removed auto flush rewrite rules to prevent permalink cache
 
 = Earlier versions =
 
