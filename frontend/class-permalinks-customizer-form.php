@@ -1510,7 +1510,7 @@ final class Permalinks_Customizer_Form {
    */
   public function bulk_posttype_regenerate( $redirect_to, $doaction, $post_ids ) {
     if ( 'permalinks_customizer_regenerate' !== $doaction ) {
-      return redirect_to;
+      return $redirect_to;
     }
     $post_struct = '';
     $generated   = 0;
