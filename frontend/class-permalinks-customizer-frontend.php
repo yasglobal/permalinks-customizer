@@ -27,8 +27,10 @@ final class Permalinks_Customizer_Frontend {
     add_filter( 'attachment_link', array( $this, 'customized_attachment_link' ), 10, 2 );
     add_filter( 'term_link', array( $this, 'customized_term_link' ), 10, 3 );
     add_filter( 'url_to_postid', array( $this, 'check_permalink' ), 10 );
-    add_filter( 'wpseo_canonical', array( $this, 'fix_double_slash_canonical' ), 20, 1 );
     add_filter( 'user_trailingslashit', array( $this, 'apply_trailingslash' ), 10, 2 );
+
+    // WPSEO Filters
+    add_filter( 'wpseo_canonical', array( $this, 'fix_double_slash_canonical' ), 20, 1 );
   }
 
   /**
@@ -335,6 +337,14 @@ final class Permalinks_Customizer_Frontend {
         $permalink = apply_filters( 'wpml_permalink',
           trailingslashit( home_url() ) . $permalinks_customizer, $language_code
         );
+
+        $site_url = site_url();
+        $wpml_href = str_replace( $site_url, '', $permalink );
+        if ( strpos( $wpml_href, '//' ) === 0 ) {
+          if ( strpos( $wpml_href, '//' . $language_code  . '/' ) !== 0 ) {
+            $permalink = $site_url . '/' . $language_code  . '/' . $permalinks_customizer;
+          }
+        }
       } else {
         $permalink = apply_filters( 'wpml_permalink',
           trailingslashit( home_url() ) . $permalinks_customizer
@@ -383,6 +393,14 @@ final class Permalinks_Customizer_Frontend {
         $permalink = apply_filters( 'wpml_permalink',
           trailingslashit( home_url() ) . $permalinks_customizer, $language_code
         );
+
+        $site_url = site_url();
+        $wpml_href = str_replace( $site_url, '', $permalink );
+        if ( strpos( $wpml_href, '//' ) === 0 ) {
+          if ( strpos( $wpml_href, '//' . $language_code  . '/' ) !== 0 ) {
+            $permalink = $site_url . '/' . $language_code  . '/' . $permalinks_customizer;
+          }
+        }
       } else {
         $permalink = apply_filters( 'wpml_permalink',
           trailingslashit( home_url() ) . $permalinks_customizer
@@ -396,7 +414,6 @@ final class Permalinks_Customizer_Frontend {
         $split_protocol = explode( '://', $permalink );
         if ( 1 < count( $split_protocol ) ) {
           $protocol = $split_protocol[0] . '://';
-
           $permalink = str_replace( $protocol, '', $permalink );
         }
       }
@@ -431,6 +448,14 @@ final class Permalinks_Customizer_Frontend {
         $permalink = apply_filters( 'wpml_permalink',
           trailingslashit( home_url() ) . $permalinks_customizer, $language_code
         );
+
+        $site_url = site_url();
+        $wpml_href = str_replace( $site_url, '', $permalink );
+        if ( strpos( $wpml_href, '//' ) === 0 ) {
+          if ( strpos( $wpml_href, '//' . $language_code  . '/' ) !== 0 ) {
+            $permalink = $site_url . '/' . $language_code  . '/' . $permalinks_customizer;
+          }
+        }
       } else {
         $permalink = apply_filters( 'wpml_permalink',
           trailingslashit( home_url() ) . $permalinks_customizer
@@ -482,9 +507,23 @@ final class Permalinks_Customizer_Frontend {
           array( 'element_id' => $taxonomy->term_taxonomy_id, 'element_type' => $term_type )
         );
 
-        $permalink = apply_filters( 'wpml_permalink',
-          trailingslashit( home_url() ) . $permalinks_customizer, $language_code
-        );
+        if ( $language_code ) {
+          $permalink = apply_filters( 'wpml_permalink',
+            trailingslashit( home_url() ) . $permalinks_customizer, $language_code
+          );
+
+          $site_url = site_url();
+          $wpml_href = str_replace( $site_url, '', $permalink );
+          if ( strpos( $wpml_href, '//' ) === 0 ) {
+            if ( strpos( $wpml_href, '//' . $language_code  . '/' ) !== 0 ) {
+              $permalink = $site_url . '/' . $language_code  . '/' . $permalinks_customizer;
+            }
+          }
+        } else {
+          $permalink = apply_filters( 'wpml_permalink',
+            trailingslashit( home_url() ) . $permalinks_customizer
+          );
+        }
       } else {
         $permalink = apply_filters( 'wpml_permalink',
           trailingslashit( home_url() ) . $permalinks_customizer
