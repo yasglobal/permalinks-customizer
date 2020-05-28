@@ -769,11 +769,12 @@ final class Permalinks_Customizer_Frontend {
 
     if ( trim( $_CPRegisteredURL, '/' ) == trim( $request, '/' ) ) {
       if ( isset( $url['path'] ) ) {
-        return ( $string{0} == '/' ? '/' : '' ) . trailingslashit( $url['path'] ) . $_CPRegisteredURL;
+        return ( $string[0] == '/' ? '/' : '' ) . trailingslashit( $url['path'] ) . $_CPRegisteredURL;
       } else {
-        return ( $string{0} == '/' ? '/' : '' ) . $_CPRegisteredURL;
+        return ( $string[0] == '/' ? '/' : '' ) . $_CPRegisteredURL;
       }
     }
+
     return $string;
   }
 
