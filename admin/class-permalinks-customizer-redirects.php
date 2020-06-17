@@ -85,13 +85,25 @@ class Permalinks_Customizer_Redirects {
       }
     }
 
-    $flag_redirect = 0;
+    $flag_redirect   = 0;
+    $orderby_options = array(
+      'redirect_from',
+      'redirect_to',
+      'type',
+      'enable',
+      'count',
+      'last_accessed'
+    );
     if ( isset( $_GET ) ) {
       foreach ( $_GET as $key => $value ) {
         if ( 'page' !== $key && 'paged' !== $key ) {
           if ( 's' === $key && '' !== $value ) {
             continue;
           } elseif ( 'redirect_type' === $key ) {
+            continue;
+          } elseif ( 'orderby' === $key && in_array( $value, $orderby_options ) ) {
+            continue;
+          } elseif ( 'order' === $key ) {
             continue;
           }
           unset( $_GET[$key] );
@@ -134,7 +146,6 @@ class Permalinks_Customizer_Redirects {
 
     $plugin_url = plugins_url( '/admin', PERMALINKS_CUSTOMIZER_FILE );
     wp_enqueue_style( 'style', $plugin_url . '/css/style.min.css' );
-
 
     $enabled_query  = "SELECT count(id) as total FROM {$wpdb->prefix}permalinks_customizer_redirects " .
         " WHERE enable = 1";
@@ -239,17 +250,15 @@ class Permalinks_Customizer_Redirects {
       $pager      = 20 * ( $current_page - 1 );
       $page_limit = 'LIMIT ' . $pager . ', 20';
     }
-    $sorting_by     = 'ORDER By id DESC';
-    $order_by       = 'asc';
-    $order_by_class = 'desc';
-    if ( isset( $_GET['orderby'] ) && ( 'redirect_from' === $_GET['orderby']
-      || 'redirect_to' === $_GET['orderby'] || 'type' === $_GET['orderby']
-      || 'enable' === $_GET['orderby'] || 'count' === $_GET['orderby']
-      || 'last_accessed' === $_GET['orderby'] )
+    $sorting_by       = 'ORDER By id DESC';
+    $order_by         = 'asc';
+    $order_by_class   = 'desc';
+    if ( isset( $_GET['orderby'] )
+      && in_array( $_GET['orderby'], $orderby_options )
     ) {
       $set_orderby     = $_GET['orderby'];
       $filter_options .= '<input type="hidden" name="orderby" value="' . $set_orderby . '" />';
-      if ( isset( $_GET['order'] ) && $_GET['order'] == 'desc' ) {
+      if ( isset( $_GET['order'] ) && 'desc' === $_GET['order'] ) {
         $sorting_by      = 'ORDER By ' . $set_orderby . ' DESC';
         $order_by        = 'asc';
         $order_by_class  = 'desc';
@@ -263,7 +272,6 @@ class Permalinks_Customizer_Redirects {
     }
     $count_query = "SELECT COUNT(id) AS total_rids FROM {$wpdb->prefix}permalinks_customizer_redirects $filter_permalink";
     $count_posts = $wpdb->get_row( $count_query );
-
 
     if ( '' !== $type_list ) {
       $page_html .= '<h2 class="screen-reader-text">' .

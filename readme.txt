@@ -206,6 +206,11 @@ A. Yes, you can exclude any posttype from the plugin to be worked on. For this j
 
 == Changelog ==
 
+= 2.8.1 - June 17, 2020 =
+
+* Bug
+  * [Redirect sorting does not work](https://github.com/yasglobal/permalinks-customizer/issues/44)
+
 = 2.8.0 - May 28, 2020 =
 
 * Enhancement
