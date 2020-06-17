@@ -290,7 +290,7 @@ final class Permalinks_Customizer_Frontend {
       } else {
         $original_permalink = $this->original_post_link( $post->ID );
       }
-    } else if ( is_tag() || is_category() || is_tax() ) {
+    } elseif ( is_tag() || is_category() || is_tax() ) {
       $theTerm                = $wp_query->get_queried_object();
       $permalinks_customizer  = $this->find_permalink_by_id( $theTerm->term_id );
       $original_permalink     = $this->original_taxonomy_link( $theTerm->term_id );
