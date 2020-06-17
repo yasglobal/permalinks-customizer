@@ -92,10 +92,10 @@ This filter allow to replace the custom tag with your desired value. It can be a
  *
  * @return string text which can be replaced with the custom tag.
  */
-function yasglobal_custom_tag( $post ) {
+function yasglobal_custom_posttype_tag( $post ) {
   return sanitize_title( $post->post_title ) . '-from-sami';
 }
-add_filter( 'pc_custom_posttype_tag', 'yasglobal_custom_tag', 10, 1 );
+add_filter( 'pc_custom_posttype_tag', 'yasglobal_custom_posttype_tag', 10, 1 );
 ```
 
 ### Set Custom value in Taxonomy Permalink
@@ -105,7 +105,7 @@ This filter allow to replace the custom tag with your desired value. It can be a
 /**
  * set the text which replace the custom tag from the permalink.
  *
- * @since 2.8.0
+ * @since 2.8.2
  *
  * @param object $term The term object.
  *

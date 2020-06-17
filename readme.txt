@@ -4,7 +4,7 @@ Tags: Link, Permalink, URL, Redirects, Tags
 Requires at least: 3.5
 Requires PHP: 5.2.4
 Tested up to: 5.4
-Stable tag: 2.8.1
+Stable tag: 2.8.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl.html
 
@@ -206,6 +206,13 @@ A. Yes, you can exclude any posttype from the plugin to be worked on. For this j
 
 == Changelog ==
 
+= 2.8.2 - June 17, 2020 =
+
+* Enhancement
+  * Add custom tag for taxonomy that can be used in **Taxonomies Settings** page and can be manipulated from `functions.php` or plugin
+* Bug
+  * Fix warning of undefined variables on redirects page (when there is no redirect)
+
 = 2.8.1 - June 17, 2020 =
 
 * Bug
@@ -214,7 +221,7 @@ A. Yes, you can exclude any posttype from the plugin to be worked on. For this j
 = 2.8.0 - May 28, 2020 =
 
 * Enhancement
-  * Add custom tag that can be used in **Permalinks Customizer** Settings page and can be manipulated from `functions.php` or plugin
+  * Add custom tag for post type that can be used in **PostTypes Settings** page and can be manipulated from `functions.php` or plugin
 * Bug
   * [Excessive redirects creation](https://github.com/yasglobal/permalinks-customizer/issues/32)
   * Fix double slash issue in canonical with WPML
