@@ -163,7 +163,7 @@ class Permalinks_Customizer_Redirects {
       $all_redirects = $enabled_redirects->total + $disabled_redirects->total;
     }
 
-    $type_list = '';
+    $type_list        = '';
     $redirect_filter  = '';
     $set_hidden_field = '';
     if ( 0 < $all_redirects ) {
@@ -178,15 +178,15 @@ class Permalinks_Customizer_Redirects {
       $disabled_class   = '';
       if ( isset( $_GET['redirect_type'] ) ) {
         if ( 'all' === $_GET['redirect_type'] ) {
-          $all_class = ' class="current"';
+          $all_class        = ' class="current"';
           $set_hidden_field = '<input type="hidden" name="redirect_type" value="all" />';
         } elseif ( 'enabled' === $_GET['redirect_type'] ) {
-          $redirect_filter = 1;
-          $enabled_class   = ' class="current"';
+          $redirect_filter  = 1;
+          $enabled_class    = ' class="current"';
           $set_hidden_field = '<input type="hidden" name="redirect_type" value="enabled" />';
         } elseif ( 'disabled' === $_GET['redirect_type'] ) {
-          $redirect_filter = 0;
-          $disabled_class  = ' class="current"';
+          $redirect_filter  = 0;
+          $disabled_class   = ' class="current"';
           $set_hidden_field = '<input type="hidden" name="redirect_type" value="disabled" />';
         }
       }
