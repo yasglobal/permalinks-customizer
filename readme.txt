@@ -222,26 +222,6 @@ A. Yes, you can exclude any posttype from the plugin to be worked on. For this j
   * Fix [Undefined constant](https://wordpress.org/support/topic/undefined-constant-8/)
   * Fix [Array and string offset access syntax with curly braces is deprecated](https://wordpress.org/support/topic/array-and-string-offset-access-syntax-with-curly-braces-is-deprecated/)
 
-= 2.7.0 - Jul 05, 2019 =
-
-  * Enhancement
-    * Added `%parent_title%` tag
-    * Added `%all_parents_title%` tag
-    * [Generate Permalink from code](https://wordpress.org/support/topic/how-to-regenerate-a-specific-post-id-in-my-function-php/)
-    * Revamp `Tags` page
-  * Bug
-    * [Flush Permalinks Cache](https://wordpress.org/support/topic/flush-permalinks-cache/)
-
-= 2.6.0 - Jul 04, 2019 =
-
-  * Enhancement
-    * Fix issue of Polylang `Hide Default` language Setting
-    * Hide Default Permalink metabox when making changes in content
-    * Compatible with `url_to_postid()`
-  * Bug
-    * PHP Notice of [Undefined variable](https://github.com/yasglobal/permalinks-customizer/issues/26)
-    * [Taxonomy permalink not working under existing page](https://wordpress.org/support/topic/taxonomy-permalink-not-working-under-existing-page/)
-
 = Earlier versions =
 
-  * For the changelog of earlier versions, please refer to the separate changelog.txt file.
+* For the changelog of earlier versions, please refer to the separate changelog.txt file.
