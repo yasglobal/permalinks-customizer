@@ -4,7 +4,7 @@ Tags: Link, Permalink, URL, Redirects, Tags
 Requires at least: 3.5
 Requires PHP: 5.2.4
 Tested up to: 5.4
-Stable tag: 2.8.0
+Stable tag: 2.8.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl.html
 
