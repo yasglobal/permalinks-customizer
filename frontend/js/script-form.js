@@ -192,7 +192,7 @@ function permalinkContentLoaded() {
     if (checkYoastSEO) {
         window.addEventListener("load", changeSEOLink);
     }
-    if (document.querySelector("#permalinks-customizer-edit-box .inside").innerHTML.trim() === "") {
+    if (document.querySelector("#permalinks-customizer-edit-box .inside") === null || document.querySelector("#permalinks-customizer-edit-box .inside").innerHTML.trim() === "") {
         permalinkEdit.style.display = "none";
     }
     if (wp.data) {
