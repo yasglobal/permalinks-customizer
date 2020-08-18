@@ -96,7 +96,7 @@ class Permalinks_Customizer_PostTypes_Settings {
           <tr valign="top">
             <th scope="row"><?php echo $post_type->labels->name; ?></th>
             <td>
-              <?php echo site_url(); ?>/<input type="text" name="<?php echo $perm_struct; ?>" value="<?php echo $value; ?>" class="regular-text" />
+              <?php echo home_url(); ?>/<input type="text" name="<?php echo $perm_struct; ?>" value="<?php echo $value; ?>" class="regular-text" />
             </td>
           </tr>
           <?php } ?>
