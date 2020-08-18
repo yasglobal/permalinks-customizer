@@ -88,7 +88,7 @@ class Permalinks_Customizer_Taxonomies_Settings {
           <tr valign="top">
             <th scope="row"><?php echo $taxonomy->labels->name; ?></th>
             <td>
-              <?php echo site_url(); ?>/<input type="text" name="<?php echo $taxonomy->name; ?>" value="<?php echo $value; ?>" class="regular-text" />
+              <?php echo home_url(); ?>/<input type="text" name="<?php echo $taxonomy->name; ?>" value="<?php echo $value; ?>" class="regular-text" />
             </td>
           </tr>
           <?php } ?>
